@@ -32,7 +32,7 @@ namespace MemorizeWords_UnitTest
             {
                 WordEntity? wordEntity = AddWord(memorizeWordsDbContext);
 
-                Assert.True(wordEntity != null, "Word didnt added.");
+                Assert.True(wordEntity == null, "Word didnt added.");
             }
         }
 
@@ -48,6 +48,8 @@ namespace MemorizeWords_UnitTest
                 wordEntity = new WordEntity() { Word = WORD, Meaning = MEANING };
                 memorizeWordsDbContext.Add(wordEntity);
             }
+
+            memorizeWordsDbContext.SaveChanges();
 
             var addedWordEntity = memorizeWordsDbContext.Word.FirstOrDefault();
 
