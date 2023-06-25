@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  memorizewords:
+    image: ${DOCKER_REGISTRY-}memorizewords
+    build:
+      context: .
+      dockerfile: MemorizeWords/Dockerfile
