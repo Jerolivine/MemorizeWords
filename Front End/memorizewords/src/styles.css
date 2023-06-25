@@ -1,7 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* alertifty */
 @import "../node_modules/alertifyjs/build/css/alertify.css";
 @import "../node_modules/alertifyjs/build/css/themes/bootstrap.min.css";
 @import "../node_modules/alertifyjs//build/css/themes/default.min.css";
+
+/* ag grid */
+@import "../node_modules/ag-grid-community/styles/ag-grid.css";
+@import "../node_modules/ag-grid-community/styles/ag-theme-balham.css";
 
 html,
 body {

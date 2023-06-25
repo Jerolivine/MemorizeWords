@@ -1,0 +1,11 @@
+.container {
+    display: flex;
+}
+
+.empty-column{
+    flex-grow: 2;
+}
+
+.grid{
+    flex-grow: 6;
+}

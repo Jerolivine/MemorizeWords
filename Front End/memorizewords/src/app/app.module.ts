@@ -9,19 +9,23 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularMaterialModule } from './modules/angular-material.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AlertifyService } from './services/alertify-service.service';
+import { AnswersComponent } from './pages/main-page/answers/answers.component';
+import { AgGridModule } from 'ag-grid-angular';
 
 @NgModule({
   declarations: [
     AppComponent,
     MainPageComponent,
-    AddNewWordComponent
+    AddNewWordComponent,
+    AnswersComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     AngularMaterialModule,
-    HttpClientModule
+    HttpClientModule,
+    AgGridModule
   ],
   providers: [AlertifyService],
   bootstrap: [AppComponent]
