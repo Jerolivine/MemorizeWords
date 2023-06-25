@@ -14,8 +14,8 @@ export class WordService extends BaseService {
         super(http);
     }
 
-    public addWord(word: Word) {
-        return this.post("/word", word);
+    public addWord<WordResponse>(word: Word) {
+        return this.post<WordResponse>("/word", word);
     }
 
     public answer(answer:Answer){

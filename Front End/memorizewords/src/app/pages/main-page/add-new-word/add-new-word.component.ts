@@ -4,6 +4,7 @@ import { WordService } from 'src/app/services/http/word.service';
 import { Word } from 'src/app/services/http/model/call/word'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertifyService } from 'src/app/services/alertify-service.service';
+import { WordResponse } from 'src/app/services/http/model/back/word-response';
 
 @Component({
   selector: 'app-add-new-word',
@@ -49,8 +50,8 @@ export class AddNewWordComponent implements OnInit {
       meaning: this.getFormValue("meaning")
     };
 
-    this.wordService.addWord(word).subscribe(response => {
-      this.alertifyService.success("Success");
+    this.wordService.addWord<WordResponse>(word).subscribe(response => {
+      this.alertifyService.success(`The word "${response.word}" is added successfully`);
       this.dialogRef.close();
     });
   }

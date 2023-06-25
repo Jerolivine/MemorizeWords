@@ -1,7 +1,5 @@
 import {Injectable} from '@angular/core';
 import * as alertify from 'alertifyjs';
-// import * as yourModuleName from 'module-name';
-// const alertify = require('alertifyjs');
 
 @Injectable({
   providedIn: 'root'
