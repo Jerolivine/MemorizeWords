@@ -42,7 +42,7 @@ namespace MemorizeWords.Api
                 var wordEntity = memorizeWordsDbContext.Word.FirstOrDefault(x => x.Id == wordAnswerRequest.WordId);
                 ArgumentNullException.ThrowIfNull(wordEntity, $"Word Couldnt found by given Id, {wordAnswerRequest.WordId}");
 
-                bool answer = wordEntity.Meaning.ToUpper().Equals(wordAnswerRequest?.GivenAnswerMeaning);
+                bool answer = wordEntity.Meaning.ToUpper().Equals(wordAnswerRequest?.GivenAnswerMeaning.ToUpper());
 
                 memorizeWordsDbContext.WordAnswer.Add(new WordAnswerEntity()
                 {
