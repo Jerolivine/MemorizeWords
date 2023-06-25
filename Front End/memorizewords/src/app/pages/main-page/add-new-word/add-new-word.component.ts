@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-new-word',
@@ -7,4 +8,10 @@ import { Component } from '@angular/core';
 })
 export class AddNewWordComponent {
 
+  constructor(private dialogRef: MatDialogRef<AddNewWordComponent>) {}
+
+  closeDialog(): void {
+    this.dialogRef.close();
+  }
+  
 }
