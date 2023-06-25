@@ -8,7 +8,7 @@
             <mat-form-field appearance="outline" class="form-field">
                 <input matInput placeholder="" formControlName="word">
                 <mat-label>Word</mat-label>
-                <mat-error class="error" *ngIf="errorHandling('word', 'required')">This field is required</mat-error>
+                <mat-error class="error" *ngIf="errorHandling('word', 'required')">Word is required</mat-error>
             </mat-form-field>
         </div>
 
@@ -16,14 +16,14 @@
             <mat-form-field appearance="outline" class="form-field">
                 <input matInput placeholder="" formControlName="meaning">
                 <mat-label>Meaning</mat-label>
-                <mat-error class="error" *ngIf="errorHandling('meaning', 'required')">This field is required</mat-error>
+                <mat-error class="error" *ngIf="errorHandling('word', 'required')">Meaning is required</mat-error>
             </mat-form-field>
         </div>
     </div>
-
+    
     <mat-dialog-actions align="end">
-        <button mat-stroked-button mat-dialog-close type="submit">Close</button>
-        <button mat-stroked-button (click)="addNewWord()">Add</button>
+        <button mat-stroked-button mat-dialog-close>Close</button>
+        <button mat-stroked-button type="submit" (click)="addNewWord()">Add</button>
     </mat-dialog-actions>
 
 </mat-dialog-content>

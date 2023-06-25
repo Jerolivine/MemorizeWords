@@ -8,6 +8,7 @@ import { AddNewWordComponent } from './pages/main-page/add-new-word/add-new-word
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularMaterialModule } from './modules/angular-material.module';
 import { HttpClientModule } from '@angular/common/http';
+import { AlertifyService } from './services/alertify-service.service';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,7 @@ import { HttpClientModule } from '@angular/common/http';
     AngularMaterialModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [AlertifyService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

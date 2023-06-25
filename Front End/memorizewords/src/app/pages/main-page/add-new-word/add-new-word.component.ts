@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { WordService } from 'src/app/services/word.service';
-import { Word } from 'src/app/services/model/call/word'
+import { WordService } from 'src/app/services/http/word.service';
+import { Word } from 'src/app/services/http/model/call/word'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AlertifyService } from 'src/app/services/alertify-service.service';
 
 @Component({
   selector: 'app-add-new-word',
@@ -11,11 +12,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class AddNewWordComponent implements OnInit {
 
+  submitted: boolean = false;
   public form: FormGroup;
 
   constructor(private dialogRef: MatDialogRef<AddNewWordComponent>,
     private wordService: WordService,
-    private formBuilder: FormBuilder) { }
+    private formBuilder: FormBuilder,
+    private alertifyService: AlertifyService) { }
 
   ngOnInit() {
     this.createForm();
@@ -23,7 +26,7 @@ export class AddNewWordComponent implements OnInit {
 
   get formControls() { return this.form.controls; }
 
-  private createForm(){
+  private createForm() {
     this.form = this.formBuilder.group({
       word: ['', Validators.required],
       meaning: ['', Validators.required],
@@ -35,18 +38,32 @@ export class AddNewWordComponent implements OnInit {
   }
 
   addNewWord() {
+    this.submitted = true;
+    this.form.markAllAsTouched();
+    if (!this.form.valid) {
+      return;
+    }
+
     const word: Word = {
-      word: '',
-      meaning: ''
+      word: this.getFormValue("word"),
+      meaning: this.getFormValue("meaning")
     };
 
     this.wordService.addWord(word).subscribe(response => {
+      this.alertifyService.success("Success");
       this.dialogRef.close();
     });
   }
 
   public errorHandling = (control: string, error: string) => {
-    return this.formControls[control]?.hasError(error);
+    let result = this.formControls[control]?.hasError(error) &&
+      (this.formControls[control].touched || (this.submitted && this.form.invalid));
+
+    return result;
+  }
+
+  getFormValue(control: string) {
+    return this.formControls[control].value;
   }
 
 }
