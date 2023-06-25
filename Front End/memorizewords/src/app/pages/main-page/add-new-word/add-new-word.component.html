@@ -1,1 +1,22 @@
-<p>add-new-word works!</p>
+<h2 mat-dialog-title>Enter New Word</h2>
+
+<mat-dialog-content [formGroup]="form">
+  
+    <mat-form-field>
+        <input matInput
+                placeholder="Word"
+               formControlName="word">
+    </mat-form-field>
+ 
+    <mat-form-field>
+        <input matInput
+                placeholder="Meaning"
+               formControlName="meaning">
+    </mat-form-field>
+ 
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button class="mat-raised-button"(click)="closeDialog()">Close</button>
+    <button class="mat-raised-button mat-primary"(click)="addNewWord()">Add</button>
+</mat-dialog-actions>
