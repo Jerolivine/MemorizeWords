@@ -24,7 +24,7 @@ export class BooleanAgColumnComponent implements ICellRendererAngularComp {
     } else if (this.selection === false) {
       return 'fa-times';
     } else {
-      return 'fa-question'
+      return 'fa-sharp fa-light fa-square-minus';
     }
   }
 

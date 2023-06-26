@@ -136,7 +136,7 @@ namespace MemorizeWords.Api.Apis
         {
             int sequentTrueAnswerCount = GetSequentTrueAnswerCount(configuration);
             var answers = await memorizeWordsDbContext.WordAnswer.Where(x => x.WordId == wordId).OrderByDescending(x => x.AnswerDate).Take(sequentTrueAnswerCount).ToListAsync();
-            if (answers.Any(x => !x.Answer))
+            if (answers?.Count == sequentTrueAnswerCount && answers.Any(x => !x.Answer))
             {
                 return;
             }
