@@ -36,7 +36,8 @@ namespace MemorizeWords.Api.Apis
             {
                 ValidationAnswer(wordAnswerRequest, memorizeWordsDbContext);
 
-                bool isAnswerTrue = GetGivenAnswer(wordAnswerRequest, memorizeWordsDbContext);
+                WordEntity wordEntity;
+                bool isAnswerTrue = GetGivenAnswer(wordAnswerRequest, memorizeWordsDbContext,out wordEntity);
 
                 memorizeWordsDbContext.WordAnswer.Add(new WordAnswerEntity()
                 {
@@ -52,7 +53,11 @@ namespace MemorizeWords.Api.Apis
                     await UpdateIsLearnedIfItIsLearned(wordAnswerRequest.WordId, memorizeWordsDbContext, configuration);
                 }
 
-                return Results.Ok();
+                return Results.Ok(new AnswerResponse()
+                {
+                    IsAnswerTrue = isAnswerTrue,
+                    Meaning = wordEntity.Meaning
+                });
             });
 
             app.MapGet("/unlearnedWords", async (MemorizeWordsDbContext memorizeWordsDbContext) =>
@@ -114,9 +119,9 @@ namespace MemorizeWords.Api.Apis
             ArgumentNullException.ThrowIfNull(wordAddRequest?.Meaning, "Meaning Cannot Be Empty");
         }
 
-        private bool GetGivenAnswer(WordAnswerRequest wordAnswerRequest, MemorizeWordsDbContext memorizeWordsDbContext)
+        private bool GetGivenAnswer(WordAnswerRequest wordAnswerRequest, MemorizeWordsDbContext memorizeWordsDbContext,out WordEntity wordEntity)
         {
-            var wordEntity = memorizeWordsDbContext.Word.FirstOrDefault(x => x.Id == wordAnswerRequest.WordId);
+            wordEntity = memorizeWordsDbContext.Word.FirstOrDefault(x => x.Id == wordAnswerRequest.WordId);
 
             bool answer = wordEntity.Meaning.ToUpper().Equals(wordAnswerRequest.GivenAnswerMeaning.ToUpper());
             return answer;
