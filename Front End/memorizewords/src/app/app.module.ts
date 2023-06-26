@@ -12,13 +12,15 @@ import { AlertifyService } from './services/alertify-service.service';
 import { AnswersComponent } from './pages/main-page/answers/answers.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { AngularGridModule } from './modules/angular-grid.module';
+import { BooleanAgColumnComponent } from './core/components/ag-grid/column/boolean-ag-column/boolean-ag-column.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MainPageComponent,
     AddNewWordComponent,
-    AnswersComponent
+    AnswersComponent,
+    BooleanAgColumnComponent
   ],
   imports: [
     BrowserModule,
