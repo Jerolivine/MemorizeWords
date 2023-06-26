@@ -20,8 +20,8 @@ export class WordService extends BaseService {
         return this.post<WordResponse>("/word", word);
     }
 
-    public answer(answer: Answer) {
-        return this.post("/answer", answer);
+    public answer<AnswerResponse>(answer: Answer) {
+        return this.post<AnswerResponse>("/answer", answer);
     }
 
     public getUnlearnedWords(): Observable<WordResponse[]> {

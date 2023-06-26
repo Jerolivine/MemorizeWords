@@ -5,6 +5,7 @@ import { WordService } from 'src/app/services/http/word.service';
 import { Question } from './model/question';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Answer } from 'src/app/services/http/model/call/answer';
+import { AnswerResponse } from 'src/app/services/http/model/back/answer-response';
 
 @Component({
   selector: 'question',
@@ -72,10 +73,20 @@ export class QuestionComponent implements OnInit {
     }
 
     const answer: Answer = { wordId: this.question!.id, givenAnswerMeaning: this.getFormValue("meaning") };
-    this.wordService.answer(answer).subscribe(response => {
+    this.wordService.answer<AnswerResponse>(answer).subscribe(response => {
+      this.checkAnswer(response);
       this.askQuestion();
     });
 
+  }
+
+  private checkAnswer(answerResponse:AnswerResponse){
+    if (answerResponse.isAnswerTrue) {
+      this.alertifyService.success("That is correct!");
+    }
+    else {
+      this.alertifyService.warning(`Incorrect. "${answerResponse.meaning}"`);
+    }
   }
 
   get formControls() { return this.form.controls; }
