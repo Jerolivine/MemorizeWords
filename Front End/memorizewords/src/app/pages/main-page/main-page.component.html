@@ -1,11 +1,16 @@
 <div class="container">
     <div class="empty-column"></div>
     <div class="grid">
-        <div>
-            <button (click)="addNewWordClick()">Add New Word</button>
+
+        <div class="width-full bottom-divider top-divider">
+            <button class="btn btn-info width-full" (click)="addNewWordClick()">Add New Word</button>
         </div>
 
-        <answers></answers>
+        <div class="width-full bottom-divider">
+            <button type="button" class="btn btn-success width-full" (click)="openQuestion()">Memorize Words</button>
+        </div>
+
+        <answers [refreshData$]="refreshAnswers$"></answers>
     </div>
     <div class="empty-column"></div>
 </div>

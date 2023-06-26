@@ -13,6 +13,7 @@ import { AnswersComponent } from './pages/main-page/answers/answers.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { AngularGridModule } from './modules/angular-grid.module';
 import { BooleanAgColumnComponent } from './core/components/ag-grid/column/boolean-ag-column/boolean-ag-column.component';
+import { QuestionComponent } from './pages/main-page/question/question.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { BooleanAgColumnComponent } from './core/components/ag-grid/column/boole
     MainPageComponent,
     AddNewWordComponent,
     AnswersComponent,
-    BooleanAgColumnComponent
+    BooleanAgColumnComponent,
+    QuestionComponent
   ],
   imports: [
     BrowserModule,

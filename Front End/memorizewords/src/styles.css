@@ -42,3 +42,15 @@ body {
 .title {
     padding-bottom: 2px;
 }
+
+.width-full{
+    width: 100%;
+}
+
+.bottom-divider{
+    padding-bottom: 10px;
+}
+
+.top-divider{
+    margin-top: 10px;
+}

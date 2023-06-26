@@ -19,7 +19,6 @@ export class BooleanAgColumnComponent implements ICellRendererAngularComp {
   }
 
   getIconClass(): string {
-    debugger;
     if (this.selection === true) {
       return 'fa-check';
     } else if (this.selection === false) {

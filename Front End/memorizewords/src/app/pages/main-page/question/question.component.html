@@ -1,0 +1,26 @@
+<div>
+    <h2 mat-dialog-title>Answer The Meaning</h2>
+</div>
+
+<mat-dialog-content [formGroup]="form">
+    <div *ngIf="question" fxLayout="column" fxLayoutAlign="center center">
+        
+        <div fxFlex="100%" class="word">
+            <mat-label>{{question.word}}</mat-label>
+        </div>
+
+        <div fxFlex="100%">
+            <mat-form-field appearance="outline" class="form-field">
+                <input matInput placeholder="" formControlName="meaning">
+                <mat-label>Meaning</mat-label>
+                <mat-error class="error" *ngIf="errorHandling('word', 'required')">Meaning is required</mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    
+    <mat-dialog-actions align="end">
+        <button mat-stroked-button mat-dialog-close>Close</button>
+        <button *ngIf="question" mat-stroked-button type="submit" (click)="answer()">Answer</button>
+    </mat-dialog-actions>
+
+</mat-dialog-content>

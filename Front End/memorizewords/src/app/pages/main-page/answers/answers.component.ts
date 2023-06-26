@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { WordResponse } from 'src/app/services/http/model/back/word-response';
 import { WordService } from 'src/app/services/http/word.service';
 import { Answer } from './model/answer';
 import { BooleanAgColumnComponent } from 'src/app/core/components/ag-grid/column/boolean-ag-column/boolean-ag-column.component';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Component({
   selector: 'answers',
@@ -18,9 +19,11 @@ export class AnswersComponent implements OnInit {
   private readonly MAX_WIDTH_ANSWER: number = 70;
   private readonly SEQUENT_TRUE_ANSWER_COUNT = 10; // TODO-Arda Get this value from service
 
+  @Input() public refreshData$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
   columnDefs: ColDef[] = [
-    { headerName: 'Word', field: 'word',filter: true },
-    { headerName: 'Meaning', field: 'meaning',filter: true },
+    { headerName: 'Word', field: 'word', filter: true },
+    { headerName: 'Meaning', field: 'meaning', filter: true },
     { headerName: 'Answer1', field: 'answer1', maxWidth: this.MAX_WIDTH_ANSWER, cellRenderer: BooleanAgColumnComponent },
     { headerName: 'Answer2', field: 'answer2', maxWidth: this.MAX_WIDTH_ANSWER, cellRenderer: BooleanAgColumnComponent },
     { headerName: 'Answer3', field: 'answer3', maxWidth: this.MAX_WIDTH_ANSWER, cellRenderer: BooleanAgColumnComponent },
@@ -45,6 +48,14 @@ export class AnswersComponent implements OnInit {
   ngOnInit() {
     this.setGridDefaultColDef();
     this.refreshGrids();
+
+    this.refreshData$.subscribe(response => {
+      debugger;
+      if (!response) {
+        return;
+      }
+      this.refreshGrids();
+    });
   }
 
   private setGridDefaultColDef() {
@@ -69,7 +80,6 @@ export class AnswersComponent implements OnInit {
       if (wordAnswers) {
         wordAnswers.map((wordAnswer) => {
 
-          debugger;
           const answerObj: Answer = {} as Answer;
 
           answerObj["word"] = wordAnswer.word;
@@ -91,7 +101,6 @@ export class AnswersComponent implements OnInit {
         });
       }
 
-      console.log(JSON.stringify(this.unlearnedWords));
     });
   }
 

@@ -90,6 +90,21 @@ namespace MemorizeWords.Api
                 return Results.Ok(result);
             });
 
+            app.MapGet("/questionWords", (MemorizeWordsDbContext memorizeWordsDbContext) =>
+            {
+
+                var randomWords = memorizeWordsDbContext.Word
+                                   .OrderBy(x => Guid.NewGuid())
+                                   .Take(20) 
+                                   .Select(x => new QuestionWordResponse()
+                                   {
+                                       Word = x.Word,
+                                       Id = x.Id
+                                   });
+
+                return Results.Ok(randomWords);
+            });
+
         }
 
         private static void ValidationAddUpdateWord(WordAddRequest wordAddRequest)
@@ -121,7 +136,7 @@ namespace MemorizeWords.Api
         {
             int sequentTrueAnswerCount = GetSequentTrueAnswerCount(configuration);
             var answers = await memorizeWordsDbContext.WordAnswer.Where(x => x.WordId == wordId).OrderByDescending(x => x.AnswerDate).Take(sequentTrueAnswerCount).ToListAsync();
-            if(answers.Any(x => !x.Answer))
+            if (answers.Any(x => !x.Answer))
             {
                 return;
             }

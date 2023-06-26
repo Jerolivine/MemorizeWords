@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AddNewWordComponent } from './add-new-word/add-new-word.component';
+import { QuestionComponent } from './question/question.component';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-main-page',
@@ -9,15 +11,29 @@ import { AddNewWordComponent } from './add-new-word/add-new-word.component';
 })
 export class MainPageComponent {
 
-  constructor(private dialog: MatDialog) {}
+  @Input() refreshAnswers$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
-  addNewWordClick(){
+  constructor(private dialog: MatDialog) { }
+
+  addNewWordClick() {
     const dialogRef = this.dialog.open(AddNewWordComponent);
 
-    // dialogRef.afterClosed().subscribe(result => {
-    //   // Handle dialog close event, if needed
-    //   console.log('Dialog closed with result:', result);
-    // });
+    dialogRef.afterClosed().subscribe(result => {
+      this.refreshAnswers();
+    });
+  }
+
+  openQuestion() {
+    const dialogRef = this.dialog.open(QuestionComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.refreshAnswers();
+    });
+  }
+
+  private refreshAnswers() {
+    debugger;
+    this.refreshAnswers$.next(true);
   }
 
 }
