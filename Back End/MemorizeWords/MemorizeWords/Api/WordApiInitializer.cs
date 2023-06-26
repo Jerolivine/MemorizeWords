@@ -4,6 +4,7 @@ using MemorizeWords.Models.Dto;
 using MemorizeWords.Models.Request;
 using MemorizeWords.Models.Response;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace MemorizeWords.Api
 {
@@ -13,9 +14,7 @@ namespace MemorizeWords.Api
         {
             app.MapPost("/word", async (WordAddRequest wordAddRequest, MemorizeWordsDbContext memorizeWordsDbContext) =>
             {
-                ArgumentNullException.ThrowIfNull(wordAddRequest, "Request Cannot Be Empty");
-                ArgumentNullException.ThrowIfNull(wordAddRequest?.Word, "Word Cannot Be Empty");
-                ArgumentNullException.ThrowIfNull(wordAddRequest?.Meaning, "Meaning Cannot Be Empty");
+                ValidationAddUpdateWord(wordAddRequest);
 
                 var wordEntity = await memorizeWordsDbContext.Word.FirstOrDefaultAsync(x => x.Word.Equals(wordAddRequest.Word.ToUpper()));
                 if (wordEntity != null)
@@ -33,33 +32,33 @@ namespace MemorizeWords.Api
                 return Results.Created($"/word/{wordEntity.Id}", wordEntity);
             });
 
-            app.MapPost("/answer", async (WordAnswerRequest wordAnswerRequest, MemorizeWordsDbContext memorizeWordsDbContext) =>
+            app.MapPost("/answer", async (WordAnswerRequest wordAnswerRequest, MemorizeWordsDbContext memorizeWordsDbContext, IConfiguration configuration) =>
             {
-                ArgumentNullException.ThrowIfNull(wordAnswerRequest, "Request Cannot Be Empty");
-                ArgumentNullException.ThrowIfNull(wordAnswerRequest?.WordId, "WordId Cannot Be Empty");
-                ArgumentNullException.ThrowIfNull(wordAnswerRequest?.GivenAnswerMeaning, "GivenAnswerMeaning Cannot Be Empty");
+                ValidationAnswer(wordAnswerRequest, memorizeWordsDbContext);
 
-                var wordEntity = memorizeWordsDbContext.Word.FirstOrDefault(x => x.Id == wordAnswerRequest.WordId);
-                ArgumentNullException.ThrowIfNull(wordEntity, $"Word Couldnt found by given Id, {wordAnswerRequest.WordId}");
-
-                bool answer = wordEntity.Meaning.ToUpper().Equals(wordAnswerRequest?.GivenAnswerMeaning.ToUpper());
+                bool isAnswerTrue = GetGivenAnswer(wordAnswerRequest, memorizeWordsDbContext);
 
                 memorizeWordsDbContext.WordAnswer.Add(new WordAnswerEntity()
                 {
                     WordId = wordAnswerRequest.WordId,
-                    Answer = answer,
+                    Answer = isAnswerTrue,
                     AnswerDate = DateTime.Now,
                 });
 
                 await memorizeWordsDbContext.SaveChangesAsync();
 
+                if (isAnswerTrue)
+                {
+                    await UpdateIsLearnedIfItIsLearned(wordAnswerRequest.WordId, memorizeWordsDbContext, configuration);
+                }
+
                 return Results.Ok();
             });
 
-            app.MapGet("/word", (MemorizeWordsDbContext memorizeWordsDbContext) =>
+            app.MapGet("/unlearnedWords", async (MemorizeWordsDbContext memorizeWordsDbContext) =>
             {
 
-                var result = memorizeWordsDbContext.Word
+                var result = await memorizeWordsDbContext.Word.Where(x => !x.IsLearned)
                             .Select(p => new WordResponse()
                             {
                                 WordId = p.Id,
@@ -68,15 +67,77 @@ namespace MemorizeWords.Api
                                 WordAnswers = p.WordAnswers.OrderByDescending(x => x.AnswerDate).Take(10).Select(x => new WordAnswerDto()
                                 {
                                     Answer = x.Answer,
-                                    Id = x.Id,
-                                    AnswerDate = x.AnswerDate
+                                    Id = x.Id
                                 }).ToList()
+                            })
+                            .ToListAsync();
+
+                return Results.Ok(result);
+            });
+
+            app.MapGet("/learnedWords", (MemorizeWordsDbContext memorizeWordsDbContext) =>
+            {
+
+                var result = memorizeWordsDbContext.Word.Where(x => x.IsLearned)
+                            .Select(p => new WordResponse()
+                            {
+                                WordId = p.Id,
+                                Meaning = p.Meaning,
+                                Word = p.Word
                             })
                             .ToList();
 
                 return Results.Ok(result);
             });
 
+        }
+
+        private static void ValidationAddUpdateWord(WordAddRequest wordAddRequest)
+        {
+            ArgumentNullException.ThrowIfNull(wordAddRequest, "Request Cannot Be Empty");
+            ArgumentNullException.ThrowIfNull(wordAddRequest?.Word, "Word Cannot Be Empty");
+            ArgumentNullException.ThrowIfNull(wordAddRequest?.Meaning, "Meaning Cannot Be Empty");
+        }
+
+        private static bool GetGivenAnswer(WordAnswerRequest wordAnswerRequest, MemorizeWordsDbContext memorizeWordsDbContext)
+        {
+            var wordEntity = memorizeWordsDbContext.Word.FirstOrDefault(x => x.Id == wordAnswerRequest.WordId);
+
+            bool answer = wordEntity.Meaning.ToUpper().Equals(wordAnswerRequest.GivenAnswerMeaning.ToUpper());
+            return answer;
+        }
+
+        private static void ValidationAnswer(WordAnswerRequest wordAnswerRequest, MemorizeWordsDbContext memorizeWordsDbContext)
+        {
+            ArgumentNullException.ThrowIfNull(wordAnswerRequest, "Request Cannot Be Empty");
+            ArgumentNullException.ThrowIfNull(wordAnswerRequest?.WordId, "WordId Cannot Be Empty");
+            ArgumentNullException.ThrowIfNull(wordAnswerRequest?.GivenAnswerMeaning, "GivenAnswerMeaning Cannot Be Empty");
+
+            var wordEntity = memorizeWordsDbContext.Word.FirstOrDefault(x => x.Id == wordAnswerRequest.WordId);
+            ArgumentNullException.ThrowIfNull(wordEntity, $"Word Couldnt found by given Id, {wordAnswerRequest.WordId}");
+        }
+
+        private static async Task UpdateIsLearnedIfItIsLearned(int wordId, MemorizeWordsDbContext memorizeWordsDbContext, IConfiguration configuration)
+        {
+            int sequentTrueAnswerCount = GetSequentTrueAnswerCount(configuration);
+            var answers = await memorizeWordsDbContext.WordAnswer.Where(x => x.WordId == wordId).OrderByDescending(x => x.AnswerDate).Take(sequentTrueAnswerCount).ToListAsync();
+            if(answers.Any(x => !x.Answer))
+            {
+                return;
+            }
+
+            var wordEntityGivenAnswer = await memorizeWordsDbContext.Word.FirstOrDefaultAsync(x => x.Id == wordId);
+            wordEntityGivenAnswer.IsLearned = true;
+
+            await memorizeWordsDbContext.SaveChangesAsync();
+        }
+
+        private static int GetSequentTrueAnswerCount(IConfiguration configuration)
+        {
+            int sequentTrueAnswerCount;
+            int.TryParse(configuration["SequentTrueAnswerCount"], out sequentTrueAnswerCount);
+
+            return sequentTrueAnswerCount;
         }
     }
 }

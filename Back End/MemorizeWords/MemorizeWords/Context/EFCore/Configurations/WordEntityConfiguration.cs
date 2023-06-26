@@ -15,6 +15,7 @@ namespace MemorizeWords.Context.EFCore.Configurations
             builder.Property(x => x.Id).HasColumnName("ID");
             builder.Property(x => x.Word).HasColumnName("WORD").IsRequired();
             builder.Property(x =>x.Meaning).HasColumnName("MEANING").IsRequired();
+            builder.Property(x => x.IsLearned).HasColumnName("IS_LEARNED").IsRequired();
 
             builder.HasMany(a => a.WordAnswers)
                .WithOne(b => b.Word)

@@ -4,6 +4,7 @@ import { BaseService } from './base-service';
 import { Word } from './model/call/word';
 import { Answer } from './model/call/answer';
 import { WordResponse } from './model/back/word-response';
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
@@ -22,8 +23,11 @@ export class WordService extends BaseService {
         return this.post("/answer", answer);
     }
 
-    public getWords(){
-        return this.get<WordResponse>("/word");
+    public getUnlearnedWords():Observable<WordResponse[]>{
+        return this.get("/unlearnedWords");
     }
 
+    public getLearnedWords():Observable<WordResponse[]>{
+        return this.get("/learnedWords");
+    }
 }

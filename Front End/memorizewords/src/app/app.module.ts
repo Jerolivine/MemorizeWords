@@ -11,6 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AlertifyService } from './services/alertify-service.service';
 import { AnswersComponent } from './pages/main-page/answers/answers.component';
 import { AgGridModule } from 'ag-grid-angular';
+import { AngularGridModule } from './modules/angular-grid.module';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,7 @@ import { AgGridModule } from 'ag-grid-angular';
     BrowserAnimationsModule,
     AngularMaterialModule,
     HttpClientModule,
-    AgGridModule
+    AngularGridModule
   ],
   providers: [AlertifyService],
   bootstrap: [AppComponent]

@@ -4,6 +4,5 @@
     {
         public int Id { get; set; }
         public bool Answer { get; set; }
-        public DateTime AnswerDate { get; set; }
     }
 }
