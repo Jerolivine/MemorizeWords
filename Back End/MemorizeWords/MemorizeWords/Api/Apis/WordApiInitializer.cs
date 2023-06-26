@@ -6,11 +6,11 @@ using MemorizeWords.Models.Response;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace MemorizeWords.Api
+namespace MemorizeWords.Api.Apis
 {
-    public static class WordApiInitializer
+    public class WordApiInitializer : IInitializer
     {
-        public static void Initialize(WebApplication app)
+        public void Initialize(WebApplication app)
         {
             app.MapPost("/word", async (WordAddRequest wordAddRequest, MemorizeWordsDbContext memorizeWordsDbContext) =>
             {
@@ -95,7 +95,7 @@ namespace MemorizeWords.Api
 
                 var randomWords = memorizeWordsDbContext.Word
                                    .OrderBy(x => Guid.NewGuid())
-                                   .Take(20) 
+                                   .Take(20)
                                    .Select(x => new QuestionWordResponse()
                                    {
                                        Word = x.Word,
@@ -107,14 +107,14 @@ namespace MemorizeWords.Api
 
         }
 
-        private static void ValidationAddUpdateWord(WordAddRequest wordAddRequest)
+        private  void ValidationAddUpdateWord(WordAddRequest wordAddRequest)
         {
             ArgumentNullException.ThrowIfNull(wordAddRequest, "Request Cannot Be Empty");
             ArgumentNullException.ThrowIfNull(wordAddRequest?.Word, "Word Cannot Be Empty");
             ArgumentNullException.ThrowIfNull(wordAddRequest?.Meaning, "Meaning Cannot Be Empty");
         }
 
-        private static bool GetGivenAnswer(WordAnswerRequest wordAnswerRequest, MemorizeWordsDbContext memorizeWordsDbContext)
+        private  bool GetGivenAnswer(WordAnswerRequest wordAnswerRequest, MemorizeWordsDbContext memorizeWordsDbContext)
         {
             var wordEntity = memorizeWordsDbContext.Word.FirstOrDefault(x => x.Id == wordAnswerRequest.WordId);
 
@@ -122,7 +122,7 @@ namespace MemorizeWords.Api
             return answer;
         }
 
-        private static void ValidationAnswer(WordAnswerRequest wordAnswerRequest, MemorizeWordsDbContext memorizeWordsDbContext)
+        private  void ValidationAnswer(WordAnswerRequest wordAnswerRequest, MemorizeWordsDbContext memorizeWordsDbContext)
         {
             ArgumentNullException.ThrowIfNull(wordAnswerRequest, "Request Cannot Be Empty");
             ArgumentNullException.ThrowIfNull(wordAnswerRequest?.WordId, "WordId Cannot Be Empty");
@@ -132,7 +132,7 @@ namespace MemorizeWords.Api
             ArgumentNullException.ThrowIfNull(wordEntity, $"Word Couldnt found by given Id, {wordAnswerRequest.WordId}");
         }
 
-        private static async Task UpdateIsLearnedIfItIsLearned(int wordId, MemorizeWordsDbContext memorizeWordsDbContext, IConfiguration configuration)
+        private  async Task UpdateIsLearnedIfItIsLearned(int wordId, MemorizeWordsDbContext memorizeWordsDbContext, IConfiguration configuration)
         {
             int sequentTrueAnswerCount = GetSequentTrueAnswerCount(configuration);
             var answers = await memorizeWordsDbContext.WordAnswer.Where(x => x.WordId == wordId).OrderByDescending(x => x.AnswerDate).Take(sequentTrueAnswerCount).ToListAsync();
@@ -147,7 +147,7 @@ namespace MemorizeWords.Api
             await memorizeWordsDbContext.SaveChangesAsync();
         }
 
-        private static int GetSequentTrueAnswerCount(IConfiguration configuration)
+        private  int GetSequentTrueAnswerCount(IConfiguration configuration)
         {
             int sequentTrueAnswerCount;
             int.TryParse(configuration["SequentTrueAnswerCount"], out sequentTrueAnswerCount);
