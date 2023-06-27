@@ -15,7 +15,7 @@
 
         <div fxFlex="100%">
             <mat-form-field appearance="outline" class="form-field">
-                <input matInput placeholder="" formControlName="meaning">
+                <input matInput placeholder="" formControlName="meaning" (keyup.enter)="answer()">
                 <mat-label>Meaning</mat-label>
                 <mat-error class="error" *ngIf="errorHandling('word', 'required')">Meaning is required</mat-error>
             </mat-form-field>

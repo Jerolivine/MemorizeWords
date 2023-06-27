@@ -17,7 +17,6 @@ namespace MemorizeWords.Context.EFCore.Configurations
             builder.Property(x => x.IsLearned).HasColumnName("IS_LEARNED").IsRequired();
             builder.Property(x => x.WritingInLanguage).HasColumnName("WRITING_IN_LANGUAGE");
             
-
             builder.HasMany(a => a.WordAnswers)
                .WithOne(b => b.Word)
                .HasForeignKey(b => b.WordId);

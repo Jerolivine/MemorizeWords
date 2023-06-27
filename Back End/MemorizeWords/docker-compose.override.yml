@@ -22,4 +22,4 @@ services:
        SA_PASSWORD: "12345678A@"
        ACCEPT_EULA: "Y"
      volumes:
-       - ./mssql/data:/var/opt/mssql/data
+       - ./volume/mssql/data:/var/opt/mssql/data
