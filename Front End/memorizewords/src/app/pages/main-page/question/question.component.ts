@@ -23,7 +23,7 @@ export class QuestionComponent implements OnInit {
   constructor(private dialogRef: MatDialogRef<QuestionComponent>,
     private wordService: WordService,
     private alertifyService: AlertifyService,
-    private formBuilder: FormBuilder,) { }
+    private formBuilder: FormBuilder) { }
 
   ngOnInit() {
     this.getQuestionWords();
@@ -56,6 +56,7 @@ export class QuestionComponent implements OnInit {
   }
 
   askQuestion() {
+    this.resetForm();
     let question: Question | undefined = this.questions.pop();
     if (question === undefined) {
       this.getQuestionWords();
@@ -63,6 +64,10 @@ export class QuestionComponent implements OnInit {
 
     this.submitted = false;
     this.question = question;
+  }
+
+  private resetForm(){
+    this.form.reset();
   }
 
   answer() {
@@ -98,8 +103,12 @@ export class QuestionComponent implements OnInit {
     return result;
   }
 
+  getFormControl(control:string){
+    return this.formControls[control];
+  }
+
   getFormValue(control: string) {
-    return this.formControls[control].value;
+    return this.getFormControl(control).value;
   }
 
 }
