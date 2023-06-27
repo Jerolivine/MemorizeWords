@@ -14,6 +14,7 @@ import { AgGridModule } from 'ag-grid-angular';
 import { AngularGridModule } from './modules/angular-grid.module';
 import { BooleanAgColumnComponent } from './core/components/ag-grid/column/boolean-ag-column/boolean-ag-column.component';
 import { QuestionComponent } from './pages/main-page/question/question.component';
+import { ProgressbarAgColumnComponent } from './core/components/ag-grid/column/progressbar-ag-column/progressbar-ag-column.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { QuestionComponent } from './pages/main-page/question/question.component
     AddNewWordComponent,
     AnswersComponent,
     BooleanAgColumnComponent,
-    QuestionComponent
+    QuestionComponent,
+    ProgressbarAgColumnComponent
   ],
   imports: [
     BrowserModule,
