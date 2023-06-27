@@ -1,6 +1,5 @@
 ﻿using MemorizeWords.Entity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
 namespace MemorizeWords.Context.EFCore
 {

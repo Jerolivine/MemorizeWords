@@ -31,6 +31,7 @@ export class AddNewWordComponent implements OnInit {
     this.form = this.formBuilder.group({
       word: ['', Validators.required],
       meaning: ['', Validators.required],
+      writingInLanguage: ['']
     });
   }
 
@@ -47,7 +48,8 @@ export class AddNewWordComponent implements OnInit {
 
     const word: Word = {
       word: this.getFormValue("word"),
-      meaning: this.getFormValue("meaning")
+      meaning: this.getFormValue("meaning"),
+      writingInLanguage: this.getFormValue("writingInLanguage")
     };
 
     this.wordService.addWord<WordResponse>(word).subscribe(response => {

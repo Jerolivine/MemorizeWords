@@ -32,7 +32,6 @@ export class MainPageComponent {
   }
 
   private refreshAnswers() {
-    debugger;
     this.refreshAnswers$.next(true);
   }
 

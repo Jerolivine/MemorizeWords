@@ -19,10 +19,11 @@ namespace MemorizeWords.Api.Apis
                 if (wordEntity != null)
                 {
                     wordEntity.Meaning = wordAddRequest.Meaning;
+                    wordEntity.WritingInLanguage = wordEntity.WritingInLanguage;
                 }
                 else
                 {
-                    wordEntity = new WordEntity() { Word = wordAddRequest.Word, Meaning = wordAddRequest.Meaning };
+                    wordEntity = new WordEntity() { Word = wordAddRequest.Word, Meaning = wordAddRequest.Meaning,WritingInLanguage = wordAddRequest.WritingInLanguage };
                     memorizeWordsDbContext.Add(wordEntity);
                 }
 
@@ -69,6 +70,7 @@ namespace MemorizeWords.Api.Apis
                                 WordId = x.Id,
                                 Meaning = x.Meaning,
                                 Word = x.Word,
+                                WritingInLanguage = x.WritingInLanguage,
                                 WordAnswers = x.WordAnswers.OrderByDescending(x => x.AnswerDate).Take(sequentTrueAnswerCount).Select(x => new WordAnswerDto()
                                 {
                                     Answer = x.Answer,
@@ -81,6 +83,7 @@ namespace MemorizeWords.Api.Apis
                                 Meaning = p.Meaning,
                                 Word = p.Word,
                                 WordAnswers = p.WordAnswers,
+                                WritingInLanguage = p.WritingInLanguage,
                                 Percentage = ((((double)p.WordAnswers.Where(x => x.Answer).Count() / sequentTrueAnswerCount)) * 100).ToString()
                             })
                             .ToListAsync();
@@ -96,7 +99,8 @@ namespace MemorizeWords.Api.Apis
                             {
                                 WordId = p.Id,
                                 Meaning = p.Meaning,
-                                Word = p.Word
+                                Word = p.Word,
+                                WritingInLanguage = p.WritingInLanguage
                             })
                             .ToList();
 
