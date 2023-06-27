@@ -18,12 +18,12 @@ namespace MemorizeWords.Api.Apis
                 var wordEntity = await memorizeWordsDbContext.Word.FirstOrDefaultAsync(x => x.Word.Equals(wordAddRequest.Word.ToUpper()));
                 if (wordEntity != null)
                 {
-                    wordEntity.Meaning = wordAddRequest.Meaning;
-                    wordEntity.WritingInLanguage = wordEntity.WritingInLanguage;
+                    wordEntity.Meaning = wordAddRequest.Meaning.TrimEnd();
+                    wordEntity.WritingInLanguage = wordEntity.WritingInLanguage.TrimEnd();
                 }
                 else
                 {
-                    wordEntity = new WordEntity() { Word = wordAddRequest.Word, Meaning = wordAddRequest.Meaning,WritingInLanguage = wordAddRequest.WritingInLanguage };
+                    wordEntity = new WordEntity() { Word = wordAddRequest.Word.TrimEnd(), Meaning = wordAddRequest.Meaning.TrimEnd(), WritingInLanguage = wordAddRequest.WritingInLanguage.TrimEnd() };
                     memorizeWordsDbContext.Add(wordEntity);
                 }
 
