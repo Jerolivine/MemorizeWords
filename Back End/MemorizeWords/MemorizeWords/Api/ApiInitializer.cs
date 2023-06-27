@@ -1,5 +1,4 @@
-﻿using MemorizeWords.Api.Apis;
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace MemorizeWords.Api
 {

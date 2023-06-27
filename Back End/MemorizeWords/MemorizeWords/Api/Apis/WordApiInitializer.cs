@@ -106,7 +106,7 @@ namespace MemorizeWords.Api.Apis
             app.MapGet("/questionWords", (MemorizeWordsDbContext memorizeWordsDbContext) =>
             {
 
-                var randomWords = memorizeWordsDbContext.Word
+                var randomWords = memorizeWordsDbContext.Word.Where(x => x.IsLearned == false)
                                    .OrderBy(x => Guid.NewGuid())
                                    .Take(20)
                                    .Select(x => new QuestionWordResponse()
