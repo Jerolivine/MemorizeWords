@@ -116,7 +116,8 @@ namespace MemorizeWords.Api.Apis
                                    .Select(x => new QuestionWordResponse()
                                    {
                                        Word = x.Word,
-                                       Id = x.Id
+                                       Id = x.Id,
+                                       WritingInLanguage = x.WritingInLanguage
                                    });
 
                 return Results.Ok(randomWords);
