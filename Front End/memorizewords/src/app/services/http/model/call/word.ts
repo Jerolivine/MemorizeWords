@@ -1,4 +1,5 @@
 export interface Word{
     word:string;
-    meaning:string
+    meaning:string;
+    writingInLanguage:string;
 }

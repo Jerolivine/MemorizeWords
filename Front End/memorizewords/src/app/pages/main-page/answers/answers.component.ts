@@ -23,9 +23,10 @@ export class AnswersComponent implements OnInit {
   @Input() public refreshData$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   columnDefs: ColDef[] = [
-    { headerName: 'Word', field: 'word', filter: true },
-    { headerName: 'Meaning', field: 'meaning', filter: true },
-    { headerName: 'Percentage', field: 'percentage', filter: true, cellRenderer: ProgressbarAgColumnComponent },
+    { headerName: 'Word', field: 'word', filter: true, width: 100 },
+    { headerName: 'Meaning', field: 'meaning', filter: true, width: 100 },
+    { headerName: 'Writing In Language', field: 'writingInLanguage', filter: true, width: 100 },
+    { headerName: 'Percentage', field: 'percentage', filter: true, width: 150 ,cellRenderer: ProgressbarAgColumnComponent },
     { headerName: 'Answer1', field: 'answer1', maxWidth: this.MAX_WIDTH_ANSWER, cellRenderer: BooleanAgColumnComponent },
     { headerName: 'Answer2', field: 'answer2', maxWidth: this.MAX_WIDTH_ANSWER, cellRenderer: BooleanAgColumnComponent },
     { headerName: 'Answer3', field: 'answer3', maxWidth: this.MAX_WIDTH_ANSWER, cellRenderer: BooleanAgColumnComponent },
@@ -86,6 +87,7 @@ export class AnswersComponent implements OnInit {
           answerObj["word"] = wordAnswer.word;
           answerObj["meaning"] = wordAnswer.meaning;
           answerObj["percentage"] = wordAnswer.percentage;
+          answerObj["writingInLanguage"] = wordAnswer.writingInLanguage;
 
           for (let index = 0; index < this.SEQUENT_TRUE_ANSWER_COUNT; index++) {
             const answerProperty = 'answer' + (index + 1).toString();

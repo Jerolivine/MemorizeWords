@@ -1,7 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using MemorizeWords.Entity;
 using Microsoft.EntityFrameworkCore;
-using MemorizeWords.Entity;
-using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace MemorizeWords.Context.EFCore.Configurations
 {
@@ -16,6 +15,8 @@ namespace MemorizeWords.Context.EFCore.Configurations
             builder.Property(x => x.Word).HasColumnName("WORD").IsRequired();
             builder.Property(x =>x.Meaning).HasColumnName("MEANING").IsRequired();
             builder.Property(x => x.IsLearned).HasColumnName("IS_LEARNED").IsRequired();
+            builder.Property(x => x.WritingInLanguage).HasColumnName("WRITING_IN_LANGUAGE");
+            
 
             builder.HasMany(a => a.WordAnswers)
                .WithOne(b => b.Word)

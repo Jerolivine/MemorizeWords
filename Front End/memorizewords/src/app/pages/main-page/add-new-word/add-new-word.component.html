@@ -19,6 +19,15 @@
                 <mat-error class="error" *ngIf="errorHandling('word', 'required')">Meaning is required</mat-error>
             </mat-form-field>
         </div>
+
+        <div fxFlex="100%">
+            <mat-form-field appearance="outline" class="form-field">
+                <input matInput placeholder="" formControlName="writingInLanguage">
+                <mat-label>Writing In Language</mat-label>
+                <mat-error class="error" *ngIf="errorHandling('writingInLanguage', 'required')">Writing In Language is required</mat-error>
+            </mat-form-field>
+        </div>
+
     </div>
     
     <mat-dialog-actions align="end">

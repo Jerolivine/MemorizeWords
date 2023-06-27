@@ -5,5 +5,6 @@ export interface WordResponse {
     word: string;
     meaning: string;
     percentage:string;
+    writingInLanguage:string;
     wordAnswers: WordAnswer[];
 }
