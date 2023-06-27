@@ -6,6 +6,7 @@ import { Question } from './model/question';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Answer } from 'src/app/services/http/model/call/answer';
 import { AnswerResponse } from 'src/app/services/http/model/back/answer-response';
+import { StringCompare } from 'src/app/core/utility/string-utility';
 
 @Component({
   selector: 'question',
@@ -46,7 +47,8 @@ export class QuestionComponent implements OnInit {
       response.map(questionWord => {
         const question: Question = {
           id: questionWord.id,
-          word: questionWord.word
+          word: questionWord.word,
+          writingInLanguage: questionWord.writingInLanguage
         };
         this.questions.push(question);
       })
@@ -66,7 +68,7 @@ export class QuestionComponent implements OnInit {
     this.question = question;
   }
 
-  private resetForm(){
+  private resetForm() {
     this.form.reset();
   }
 
@@ -85,7 +87,7 @@ export class QuestionComponent implements OnInit {
 
   }
 
-  private checkAnswer(answerResponse:AnswerResponse){
+  private checkAnswer(answerResponse: AnswerResponse) {
     if (answerResponse.isAnswerTrue) {
       this.alertifyService.success("That is correct!");
     }
@@ -103,7 +105,7 @@ export class QuestionComponent implements OnInit {
     return result;
   }
 
-  getFormControl(control:string){
+  getFormControl(control: string) {
     return this.formControls[control];
   }
 
