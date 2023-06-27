@@ -37,7 +37,7 @@ namespace MemorizeWords.Api.Apis
                 ValidationAnswer(wordAnswerRequest, memorizeWordsDbContext);
 
                 WordEntity wordEntity;
-                bool isAnswerTrue = GetGivenAnswer(wordAnswerRequest, memorizeWordsDbContext,out wordEntity);
+                bool isAnswerTrue = GetGivenAnswer(wordAnswerRequest, memorizeWordsDbContext, out wordEntity);
 
                 memorizeWordsDbContext.WordAnswer.Add(new WordAnswerEntity()
                 {
@@ -60,20 +60,29 @@ namespace MemorizeWords.Api.Apis
                 });
             });
 
-            app.MapGet("/unlearnedWords", async (MemorizeWordsDbContext memorizeWordsDbContext) =>
+            app.MapGet("/unlearnedWords", async (MemorizeWordsDbContext memorizeWordsDbContext, IConfiguration configuration) =>
             {
 
+                int sequentTrueAnswerCount = GetSequentTrueAnswerCount(configuration);
                 var result = await memorizeWordsDbContext.Word.Where(x => x.IsLearned == false)
-                            .Select(p => new WordResponse()
+                            .Select(x => new
                             {
-                                WordId = p.Id,
-                                Meaning = p.Meaning,
-                                Word = p.Word,
-                                WordAnswers = p.WordAnswers.OrderByDescending(x => x.AnswerDate).Take(10).Select(x => new WordAnswerDto()
+                                WordId = x.Id,
+                                Meaning = x.Meaning,
+                                Word = x.Word,
+                                WordAnswers = x.WordAnswers.OrderByDescending(x => x.AnswerDate).Take(sequentTrueAnswerCount).Select(x => new WordAnswerDto()
                                 {
                                     Answer = x.Answer,
                                     Id = x.Id
                                 }).ToList()
+                            })
+                            .Select(p => new WordResponse()
+                            {
+                                WordId = p.WordId,
+                                Meaning = p.Meaning,
+                                Word = p.Word,
+                                WordAnswers = p.WordAnswers,
+                                Percentage = ((((double)p.WordAnswers.Where(x => x.Answer).Count() / sequentTrueAnswerCount)) * 100).ToString()
                             })
                             .ToListAsync();
 
@@ -119,7 +128,7 @@ namespace MemorizeWords.Api.Apis
             ArgumentNullException.ThrowIfNull(wordAddRequest?.Meaning, "Meaning Cannot Be Empty");
         }
 
-        private bool GetGivenAnswer(WordAnswerRequest wordAnswerRequest, MemorizeWordsDbContext memorizeWordsDbContext,out WordEntity wordEntity)
+        private bool GetGivenAnswer(WordAnswerRequest wordAnswerRequest, MemorizeWordsDbContext memorizeWordsDbContext, out WordEntity wordEntity)
         {
             wordEntity = memorizeWordsDbContext.Word.FirstOrDefault(x => x.Id == wordAnswerRequest.WordId);
 

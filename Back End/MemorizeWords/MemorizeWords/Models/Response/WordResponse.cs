@@ -7,6 +7,7 @@ namespace MemorizeWords.Models.Response
         public int WordId { get; set; }
         public string Word { get; set; }
         public string Meaning { get; set; }
+        public string Percentage { get; set; }
         public List<WordAnswerDto> WordAnswers { get; set; }
     }
 }
