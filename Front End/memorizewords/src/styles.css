@@ -54,3 +54,8 @@ body {
 .top-divider{
     margin-top: 10px;
 }
+
+.progress-bar-memorize .mat-mdc-progress-bar {
+    --mdc-linear-progress-active-indicator-height: 40px !important;
+    --mdc-linear-progress-track-height: 40px !important;
+}
