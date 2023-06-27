@@ -25,7 +25,7 @@ export class AnswersComponent implements OnInit {
   columnDefs: ColDef[] = [
     { headerName: 'Word', field: 'word', filter: true },
     { headerName: 'Meaning', field: 'meaning', filter: true },
-    { headerName: 'Percentage', field: 'percentage', filter: true ,cellRenderer: ProgressbarAgColumnComponent },
+    { headerName: 'Percentage', field: 'percentage', filter: true, cellRenderer: ProgressbarAgColumnComponent },
     { headerName: 'Answer1', field: 'answer1', maxWidth: this.MAX_WIDTH_ANSWER, cellRenderer: BooleanAgColumnComponent },
     { headerName: 'Answer2', field: 'answer2', maxWidth: this.MAX_WIDTH_ANSWER, cellRenderer: BooleanAgColumnComponent },
     { headerName: 'Answer3', field: 'answer3', maxWidth: this.MAX_WIDTH_ANSWER, cellRenderer: BooleanAgColumnComponent },
@@ -117,6 +117,7 @@ export class AnswersComponent implements OnInit {
 
           answerObj["word"] = wordAnswer.word;
           answerObj["meaning"] = wordAnswer.meaning;
+          answerObj["percentage"] = "100";
 
           for (let index = 0; index < this.SEQUENT_TRUE_ANSWER_COUNT; index++) {
             const answerProperty = 'answer' + (index + 1).toString();
