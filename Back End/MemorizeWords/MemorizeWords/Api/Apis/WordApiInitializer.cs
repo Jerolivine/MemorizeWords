@@ -4,7 +4,6 @@ using MemorizeWords.Models.Dto;
 using MemorizeWords.Models.Request;
 using MemorizeWords.Models.Response;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace MemorizeWords.Api.Apis
 {
