@@ -23,9 +23,9 @@ export class AnswersComponent implements OnInit {
   @Input() public refreshData$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   columnDefs: ColDef[] = [
-    { headerName: 'Word', field: 'word', filter: true, width: 100 },
-    { headerName: 'Meaning', field: 'meaning', filter: true, width: 100 },
-    { headerName: 'Writing In Language', field: 'writingInLanguage', filter: true, width: 100 },
+    { headerName: 'Word', field: 'word', filter: true, width: 150 },
+    { headerName: 'Writing In Language', field: 'writingInLanguage', filter: true, width: 150 },
+    { headerName: 'Meaning', field: 'meaning', filter: true, width: 150 },
     { headerName: 'Percentage', field: 'percentage', filter: true, width: 150 ,cellRenderer: ProgressbarAgColumnComponent },
     { headerName: 'Answer1', field: 'answer1', maxWidth: this.MAX_WIDTH_ANSWER, cellRenderer: BooleanAgColumnComponent },
     { headerName: 'Answer2', field: 'answer2', maxWidth: this.MAX_WIDTH_ANSWER, cellRenderer: BooleanAgColumnComponent },

@@ -92,7 +92,7 @@ export class QuestionComponent implements OnInit {
       this.alertifyService.success("That is correct!");
     }
     else {
-      this.alertifyService.warning(`Incorrect. "${answerResponse.meaning}"`);
+      this.alertifyService.warning(`Incorrect. "${this.question?.word} means ${answerResponse.meaning}"`);
     }
   }
 
