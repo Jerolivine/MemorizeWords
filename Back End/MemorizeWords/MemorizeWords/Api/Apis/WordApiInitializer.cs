@@ -1,5 +1,5 @@
-﻿using MemorizeWords.Context.EFCore;
-using MemorizeWords.Entity;
+﻿using MemorizeWords.Entity;
+using MemorizeWords.Infrastructure.Persistance.Context.EFCore;
 using MemorizeWords.Infrastructure.Transversal.Exception.Exceptions;
 using MemorizeWords.Models.Dto;
 using MemorizeWords.Models.Request;

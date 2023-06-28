@@ -1,5 +1,5 @@
-using MemorizeWords.Context.EFCore;
 using MemorizeWords.Entity;
+using MemorizeWords.Infrastructure.Persistance.Context.EFCore;
 using MemorizeWords.Models;
 using MemorizeWords.Models.Request;
 using Microsoft.EntityFrameworkCore;
