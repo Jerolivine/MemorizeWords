@@ -8,6 +8,7 @@ import { Answer } from './model/answer';
 import { BooleanAgColumnComponent } from 'src/app/core/components/ag-grid/column/boolean-ag-column/boolean-ag-column.component';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ProgressbarAgColumnComponent } from 'src/app/core/components/ag-grid/column/progressbar-ag-column/progressbar-ag-column.component';
+import { TextColumnComponent } from 'src/app/core/components/ag-grid/column/text-column/text-column.component';
 
 @Component({
   selector: 'answers',
@@ -24,9 +25,9 @@ export class AnswersComponent implements OnInit {
 
   columnDefs: ColDef[] = [
     { headerName: 'Word', field: 'word', filter: true, width: 150 },
-    { headerName: 'Writing In Language', field: 'writingInLanguage', filter: true, width: 150 },
+    { headerName: 'Writing In Language', field: 'writingInLanguage', filter: true, width: 150, cellRenderer: TextColumnComponent },
     { headerName: 'Meaning', field: 'meaning', filter: true, width: 150 },
-    { headerName: 'Percentage', field: 'percentage', filter: true, width: 150 ,cellRenderer: ProgressbarAgColumnComponent },
+    { headerName: 'Percentage', field: 'percentage', filter: true, width: 150, cellRenderer: ProgressbarAgColumnComponent },
     { headerName: 'Answer1', field: 'answer1', maxWidth: this.MAX_WIDTH_ANSWER, cellRenderer: BooleanAgColumnComponent },
     { headerName: 'Answer2', field: 'answer2', maxWidth: this.MAX_WIDTH_ANSWER, cellRenderer: BooleanAgColumnComponent },
     { headerName: 'Answer3', field: 'answer3', maxWidth: this.MAX_WIDTH_ANSWER, cellRenderer: BooleanAgColumnComponent },
@@ -87,7 +88,10 @@ export class AnswersComponent implements OnInit {
           answerObj["word"] = wordAnswer.word;
           answerObj["meaning"] = wordAnswer.meaning;
           answerObj["percentage"] = wordAnswer.percentage;
-          answerObj["writingInLanguage"] = wordAnswer.writingInLanguage;
+          answerObj["writingInLanguage"] = {
+            value: wordAnswer.writingInLanguage,
+            hasTextToSpeech: true
+          }
 
           for (let index = 0; index < this.SEQUENT_TRUE_ANSWER_COUNT; index++) {
             const answerProperty = 'answer' + (index + 1).toString();
@@ -120,6 +124,10 @@ export class AnswersComponent implements OnInit {
           answerObj["word"] = wordAnswer.word;
           answerObj["meaning"] = wordAnswer.meaning;
           answerObj["percentage"] = "100";
+          answerObj["writingInLanguage"] = {
+            value: wordAnswer.writingInLanguage,
+            hasTextToSpeech: true
+          }
 
           for (let index = 0; index < this.SEQUENT_TRUE_ANSWER_COUNT; index++) {
             const answerProperty = 'answer' + (index + 1).toString();
