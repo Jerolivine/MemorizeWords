@@ -1,6 +1,6 @@
 using MemorizeWords.Api;
-using MemorizeWords.Context.EFCore;
 using MemorizeWords.Infrastructure.Configuration;
+using MemorizeWords.Infrastructure.Persistance.Context.EFCore;
 using MemorizeWords.Infrastructure.Transversal.Exception;
 
 var builder = WebApplication.CreateBuilder(args);
