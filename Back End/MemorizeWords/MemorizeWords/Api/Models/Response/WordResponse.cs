@@ -1,6 +1,6 @@
-﻿using MemorizeWords.Models.Dto;
+﻿using MemorizeWords.Api.Models.Dto;
 
-namespace MemorizeWords.Models.Response
+namespace MemorizeWords.Api.Models.Response
 {
     public class WordResponse
     {
