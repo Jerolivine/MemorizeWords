@@ -12,7 +12,7 @@ builder.Services.AddDbContext<MemorizeWordsDbContext>();
 
 var app = builder.Build();
 
-app.UseMiddleware<ExceptionMiddleware>();
+app.AddExceptionMiddieware();
 app.InitializeApis();
 app.ConfigureSwagger();
 app.ConfigureCORS();
