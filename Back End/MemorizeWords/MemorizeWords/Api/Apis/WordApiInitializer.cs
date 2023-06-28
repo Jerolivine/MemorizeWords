@@ -1,9 +1,8 @@
 ﻿using MemorizeWords.Api.Models.Request;
+using MemorizeWords.Api.Models.Response;
 using MemorizeWords.Entity;
 using MemorizeWords.Infrastructure.Persistance.Context.EFCore;
 using MemorizeWords.Infrastructure.Transversal.Exception.Exceptions;
-using MemorizeWords.Models.Dto;
-using MemorizeWords.Models.Response;
 using Microsoft.EntityFrameworkCore;
 
 namespace MemorizeWords.Api.Apis
