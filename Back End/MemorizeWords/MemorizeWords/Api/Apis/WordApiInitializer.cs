@@ -1,5 +1,6 @@
 ﻿using MemorizeWords.Context.EFCore;
 using MemorizeWords.Entity;
+using MemorizeWords.Infrastructure.Transversal.Exception.Exceptions;
 using MemorizeWords.Models.Dto;
 using MemorizeWords.Models.Request;
 using MemorizeWords.Models.Response;
@@ -127,9 +128,9 @@ namespace MemorizeWords.Api.Apis
 
         private void ValidationAddUpdateWord(WordAddRequest wordAddRequest)
         {
-            ArgumentNullException.ThrowIfNull(wordAddRequest, "Request Cannot Be Empty");
-            ArgumentNullException.ThrowIfNull(wordAddRequest?.Word, "Word Cannot Be Empty");
-            ArgumentNullException.ThrowIfNull(wordAddRequest?.Meaning, "Meaning Cannot Be Empty");
+            NotImplementedBusinessException.ThrowIfNull(wordAddRequest, "Request Cannot Be Empty");
+            NotImplementedBusinessException.ThrowIfNull(wordAddRequest?.Word, "Word Cannot Be Empty");
+            NotImplementedBusinessException.ThrowIfNull(wordAddRequest?.Meaning, "Meaning Cannot Be Empty");
         }
 
         private bool GetGivenAnswer(WordAnswerRequest wordAnswerRequest, MemorizeWordsDbContext memorizeWordsDbContext, out WordEntity wordEntity)
@@ -142,12 +143,12 @@ namespace MemorizeWords.Api.Apis
 
         private void ValidationAnswer(WordAnswerRequest wordAnswerRequest, MemorizeWordsDbContext memorizeWordsDbContext)
         {
-            ArgumentNullException.ThrowIfNull(wordAnswerRequest, "Request Cannot Be Empty");
-            ArgumentNullException.ThrowIfNull(wordAnswerRequest?.WordId, "WordId Cannot Be Empty");
-            ArgumentNullException.ThrowIfNull(wordAnswerRequest?.GivenAnswerMeaning, "GivenAnswerMeaning Cannot Be Empty");
+            NotImplementedBusinessException.ThrowIfNull(wordAnswerRequest, "Request Cannot Be Empty");
+            NotImplementedBusinessException.ThrowIfNull(wordAnswerRequest?.WordId, "WordId Cannot Be Empty");
+            NotImplementedBusinessException.ThrowIfNull(wordAnswerRequest?.GivenAnswerMeaning, "GivenAnswerMeaning Cannot Be Empty");
 
             var wordEntity = memorizeWordsDbContext.Word.FirstOrDefault(x => x.Id == wordAnswerRequest.WordId);
-            ArgumentNullException.ThrowIfNull(wordEntity, $"Word Couldnt found by given Id, {wordAnswerRequest.WordId}");
+            NotImplementedBusinessException.ThrowIfNull(wordEntity, $"Word Couldnt found by given Id, {wordAnswerRequest.WordId}");
         }
 
         private async Task UpdateIsLearnedIfItIsLearned(int wordId, MemorizeWordsDbContext memorizeWordsDbContext, IConfiguration configuration)
