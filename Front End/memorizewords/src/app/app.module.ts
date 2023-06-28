@@ -16,6 +16,7 @@ import { BooleanAgColumnComponent } from './core/components/ag-grid/column/boole
 import { QuestionComponent } from './pages/main-page/question/question.component';
 import { ProgressbarAgColumnComponent } from './core/components/ag-grid/column/progressbar-ag-column/progressbar-ag-column.component';
 import { ErrorInterceptor } from './services/interceptor/error-interceptor';
+import { TextColumnComponent } from './core/components/ag-grid/column/text-column/text-column.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { ErrorInterceptor } from './services/interceptor/error-interceptor';
     AnswersComponent,
     BooleanAgColumnComponent,
     QuestionComponent,
-    ProgressbarAgColumnComponent
+    ProgressbarAgColumnComponent,
+    TextColumnComponent
   ],
   imports: [
     BrowserModule,
