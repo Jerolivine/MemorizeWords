@@ -8,13 +8,13 @@ INSERT INTO dbo.WORD (WORD, MEANING, WRITING_IN_LANGUAGE) VALUES ('Czy rozumiesz
 INSERT INTO dbo.WORD (WORD, MEANING, WRITING_IN_LANGUAGE) VALUES ('Mam pytanie', 'Bir sorum var', 'Mam pytanie');
 INSERT INTO dbo.WORD (WORD, MEANING, WRITING_IN_LANGUAGE) VALUES ('Nie ma problemu', 'Sorun değil', 'Nie ma problemu');
 INSERT INTO dbo.WORD (WORD, MEANING, WRITING_IN_LANGUAGE) VALUES ('Co to znaczy', 'Bu ne anlama geliyor', 'Co to znaczy');
-INSERT INTO dbo.WORD (WORD, MEANING, WRITING_IN_LANGUAGE) VALUES ('Jak jest po polsku', 'Lehçe'de ne anlama geliyor', 'Jak jest po polsku');
+INSERT INTO dbo.WORD (WORD, MEANING, WRITING_IN_LANGUAGE) VALUES ('Jak jest po polsku', 'Lehçede ne anlama geliyor', 'Jak jest po polsku');
 INSERT INTO dbo.WORD (WORD, MEANING, WRITING_IN_LANGUAGE) VALUES ('Powtorz prosze', 'Tekrarlayın lütfen', 'Powtórz proszę');
 INSERT INTO dbo.WORD (WORD, MEANING, WRITING_IN_LANGUAGE) VALUES ('Przepraszam', 'Pardon', 'Przepraszam');
 INSERT INTO dbo.WORD (WORD, MEANING, WRITING_IN_LANGUAGE) VALUES ('Mam na imie Arda', 'Adım Arda', 'Mam na imie Arda');
 INSERT INTO dbo.WORD (WORD, MEANING, WRITING_IN_LANGUAGE) VALUES ('Nazymam sie Arda Şentunalı', 'Adım Soyadım Arda Şentunalı', 'Nazymam sie Arda Şentunalı');
-INSERT INTO dbo.WORD (WORD, MEANING, WRITING_IN_LANGUAGE) VALUES ('Jestem z polski', 'Polonya'lıyım', 'Jestem z polski');
-INSERT INTO dbo.WORD (WORD, MEANING, WRITING_IN_LANGUAGE) VALUES ('Mieszkam Polsce', 'Polonya'da yaşıyorum', 'Mieszkam Polsce');
+INSERT INTO dbo.WORD (WORD, MEANING, WRITING_IN_LANGUAGE) VALUES ('Jestem z polski', 'Polonyalıyım', 'Jestem z polski');
+INSERT INTO dbo.WORD (WORD, MEANING, WRITING_IN_LANGUAGE) VALUES ('Mieszkam Polsce', 'Polonyada yaşıyorum', 'Mieszkam Polsce');
 INSERT INTO dbo.WORD (WORD, MEANING, WRITING_IN_LANGUAGE) VALUES ('Mam xx lat', 'xx yaşındayım', 'Mam xx lat');
 INSERT INTO dbo.WORD (WORD, MEANING, WRITING_IN_LANGUAGE) VALUES ('Mowie po xx', 'x dili konuşuyorum', 'Mowie po xx');
 INSERT INTO dbo.WORD (WORD, MEANING, WRITING_IN_LANGUAGE) VALUES ('Teraz jestem w pracz/domu', 'Şu anda işteyim/evdeyim', 'Teraz jestem w pracz/domu');
