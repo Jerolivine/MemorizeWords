@@ -23,3 +23,5 @@ services:
        ACCEPT_EULA: "Y"
      volumes:
        - ./volume/mssql/data:/var/opt/mssql/data
+
+#saa;#O0je~dyx9cNpZ40me
