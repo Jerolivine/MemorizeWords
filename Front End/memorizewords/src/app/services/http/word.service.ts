@@ -38,7 +38,7 @@ export class WordService extends BaseService {
     }
 
     public updateIsLearned(wordUpdateIsLearnedRequest: WordUpdateIsLearnedRequest) {
-        return this.put("/updateIsLearned", wordUpdateIsLearnedRequest);
+        return this.post("/updateIsLearned", wordUpdateIsLearnedRequest);
     }
 
 }

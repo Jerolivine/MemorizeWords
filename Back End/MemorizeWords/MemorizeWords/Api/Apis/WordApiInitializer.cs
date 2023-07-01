@@ -125,7 +125,7 @@ namespace MemorizeWords.Api.Apis
                 return Results.Ok(randomWords);
             });
 
-            app.MapPut("/updateIsLearned", async (WordUpdateIsLearnedRequest wordUpdateIsLearnedRequest, MemorizeWordsDbContext memorizeWordsDbContext) =>
+            app.MapPost("/updateIsLearned", async (WordUpdateIsLearnedRequest wordUpdateIsLearnedRequest, MemorizeWordsDbContext memorizeWordsDbContext) =>
             {
                 ValidationupdateIsLearned(wordUpdateIsLearnedRequest);
 
