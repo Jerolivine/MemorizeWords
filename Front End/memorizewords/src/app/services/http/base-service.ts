@@ -16,6 +16,10 @@ export class BaseService {
         return this.http.post<T>(this.getUrl(url), model);
     }
 
+    protected put<T>(url: string, model: any) {
+        return this.http.put<T>(this.getUrl(url), model);
+    }
+
     private getUrl(url: string): string {
         return `${this.apiURL}${url}`;
     }

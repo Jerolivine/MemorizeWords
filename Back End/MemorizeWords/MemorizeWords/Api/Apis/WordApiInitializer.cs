@@ -125,6 +125,30 @@ namespace MemorizeWords.Api.Apis
                 return Results.Ok(randomWords);
             });
 
+            app.MapPut("/updateIsLearned", async (WordUpdateIsLearnedRequest wordUpdateIsLearnedRequest, MemorizeWordsDbContext memorizeWordsDbContext) =>
+            {
+                ValidationupdateIsLearned(wordUpdateIsLearnedRequest);
+
+                await memorizeWordsDbContext.Word.Where(x => wordUpdateIsLearnedRequest.Ids.Contains(x.Id))
+                .ExecuteUpdateAsync(s => s.SetProperty(
+                n => n.IsLearned,
+                n => wordUpdateIsLearnedRequest.IsLearned));
+
+                // remove all answers
+                if (!wordUpdateIsLearnedRequest.IsLearned)
+                {
+                    await memorizeWordsDbContext.WordAnswer.Where(x => wordUpdateIsLearnedRequest.Ids.Contains(x.WordId))
+                    .ExecuteDeleteAsync();
+                }
+
+                return Results.Ok(wordUpdateIsLearnedRequest.Ids);
+            });
+
+        }
+
+        private static void ValidationupdateIsLearned(WordUpdateIsLearnedRequest wordUpdateIsLearnedRequest)
+        {
+            NotImplementedBusinessException.ThrowIfNull(wordUpdateIsLearnedRequest, "Request Cannot Be Empty");
         }
 
         private void ValidationAddUpdateWord(WordAddRequest wordAddRequest)
@@ -138,7 +162,7 @@ namespace MemorizeWords.Api.Apis
         {
             wordEntity = memorizeWordsDbContext.Word.FirstOrDefault(x => x.Id == wordAnswerRequest.WordId);
 
-            bool answer = wordEntity.Meaning.ToUpper().Equals(wordAnswerRequest.GivenAnswerMeaning.ToUpper());
+            bool answer = wordEntity.Meaning.ToUpperInvariant().Equals(wordAnswerRequest.GivenAnswerMeaning.ToUpperInvariant().ToUpper(), StringComparison.OrdinalIgnoreCase);
             return answer;
         }
 

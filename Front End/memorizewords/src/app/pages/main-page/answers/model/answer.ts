@@ -14,5 +14,5 @@
 // }
 
 export interface Answer {
-    [key: string]: string | boolean | null;
+    [key: string]: any;
 }
