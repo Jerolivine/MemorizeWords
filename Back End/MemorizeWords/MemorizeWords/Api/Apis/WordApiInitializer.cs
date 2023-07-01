@@ -118,7 +118,8 @@ namespace MemorizeWords.Api.Apis
                                    {
                                        Word = x.Word,
                                        Id = x.Id,
-                                       WritingInLanguage = x.WritingInLanguage
+                                       WritingInLanguage = x.WritingInLanguage,
+                                       Meaning = x.Meaning
                                    });
 
                 return Results.Ok(randomWords);

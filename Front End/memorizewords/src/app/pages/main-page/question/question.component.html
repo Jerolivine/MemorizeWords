@@ -15,16 +15,21 @@
 
         <div fxFlex="100%">
             <mat-form-field appearance="outline" class="form-field">
-                <input matInput placeholder="" formControlName="meaning" (keyup.enter)="answer()">
+                <input matInput placeholder="" formControlName="meaning" (keyup.enter)="answer()" (keyup)="onCtrlKeyUpForTip($event)">
                 <mat-label>Meaning</mat-label>
                 <mat-error class="error" *ngIf="errorHandling('word', 'required')">Meaning is required</mat-error>
             </mat-form-field>
+        </div>
+
+        <div fxFlex="100%" class="bottom-divider">
+            <mat-label>{{this.tip}}</mat-label>
         </div>
 
     </div>
 
     <mat-dialog-actions align="end">
         <button mat-stroked-button mat-dialog-close>Close</button>
+        <button mat-stroked-button (click)="onTipClick()" [disabled]="!canTipGiven">Tip</button>
         <button *ngIf="question" mat-stroked-button type="submit" (click)="answer()">Answer</button>
     </mat-dialog-actions>
 

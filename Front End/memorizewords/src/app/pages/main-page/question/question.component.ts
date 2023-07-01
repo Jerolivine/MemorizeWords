@@ -7,6 +7,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AnswerResponse } from 'src/app/services/http/model/back/answer-response';
 import { StringCompare } from 'src/app/core/utility/string-utility';
 import { WordAnswerRequest } from 'src/app/services/http/model/call/WordAnswerRequest';
+import { TextToSpeechService } from 'src/app/services/text-to-speech.service';
 
 @Component({
   selector: 'question',
@@ -21,10 +22,17 @@ export class QuestionComponent implements OnInit {
   public form: FormGroup;
   public question: Question | undefined;
 
+  public tip: string;
+
+  get canTipGiven() {
+    return this.tip?.length < 3;
+  }
+
   constructor(private dialogRef: MatDialogRef<QuestionComponent>,
     private wordService: WordService,
     private alertifyService: AlertifyService,
-    private formBuilder: FormBuilder) { }
+    private formBuilder: FormBuilder,
+    private textToSpeechService: TextToSpeechService) { }
 
   ngOnInit() {
     this.getQuestionWords();
@@ -48,7 +56,8 @@ export class QuestionComponent implements OnInit {
         const question: Question = {
           id: questionWord.id,
           word: questionWord.word,
-          writingInLanguage: questionWord.writingInLanguage
+          writingInLanguage: questionWord.writingInLanguage,
+          meaning: questionWord.meaning
         };
         this.questions.push(question);
       })
@@ -62,14 +71,17 @@ export class QuestionComponent implements OnInit {
     let question: Question | undefined = this.questions.pop();
     if (question === undefined) {
       this.getQuestionWords();
+      return;
     }
 
     this.submitted = false;
     this.question = question;
+    this.textToSpeechService.speak(this.question!.writingInLanguage);
   }
 
   private resetForm() {
     this.form.reset();
+    this.tip = "";
   }
 
   answer() {
@@ -111,6 +123,25 @@ export class QuestionComponent implements OnInit {
 
   getFormValue(control: string) {
     return this.getFormControl(control).value;
+  }
+
+  onTipClick() {
+    debugger;
+    this.giveTip();
+  }
+
+  giveTip() {
+    if (this.tip.length === 3) {
+      return;
+    }
+
+    this.tip += this.question?.meaning[this.tip.length];
+  }
+
+  onCtrlKeyUpForTip(event: KeyboardEvent) {
+    if (event.key === 'Control') {
+      this.giveTip();
+    }
   }
 
 }
