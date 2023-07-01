@@ -13,7 +13,9 @@
                                       {
                                           policy.AllowAnyOrigin()
                                                 .AllowAnyHeader()
-                                                .AllowAnyMethod();
+                                                .AllowAnyMethod()
+                                                //.AllowCredentials()
+                                                .SetIsOriginAllowed((host) => true);
                                       });
             });
         }
