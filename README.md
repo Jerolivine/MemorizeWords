@@ -1,7 +1,7 @@
 http://www.memorizewords.com.tr/
 
 How to run application
-1) Install Docker
+1) Install Docker Desktop
 2) Install MSSQL
 3) Create your Database
    RUN scripts in the Scripts file
