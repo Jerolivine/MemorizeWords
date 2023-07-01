@@ -1,14 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
-import { ColDef, ICellRendererParams } from 'ag-grid-community';
+import { ColDef, ICellRendererParams, RowNode } from 'ag-grid-community';
 import { WordResponse } from 'src/app/services/http/model/back/word-response';
 import { WordService } from 'src/app/services/http/word.service';
 import { Answer } from './model/answer';
 import { BooleanAgColumnComponent } from 'src/app/core/components/ag-grid/column/boolean-ag-column/boolean-ag-column.component';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, concatMap, of } from 'rxjs';
 import { ProgressbarAgColumnComponent } from 'src/app/core/components/ag-grid/column/progressbar-ag-column/progressbar-ag-column.component';
 import { TextColumnComponent } from 'src/app/core/components/ag-grid/column/text-column/text-column.component';
+import { WordUpdateIsLearnedRequest } from 'src/app/services/http/model/call/WordUpdateIsLearnedRequest';
 
 @Component({
   selector: 'answers',
@@ -21,10 +22,27 @@ export class AnswersComponent implements OnInit {
   private readonly MAX_WIDTH_ANSWER: number = 70;
   private readonly SEQUENT_TRUE_ANSWER_COUNT = 10; // TODO-Arda Get this value from service
 
+  public selectedUnlearnedGridRows: any[] = [];
+
+  get hasSelectedUnlearnedGridRows(): boolean {
+    return this.selectedUnlearnedGridRows.length > 0;
+  }
+
+  public selectedLearnedGridRows: any[] = [];
+
+  get hasSelectedLearnedGridRows(): boolean {
+    return this.selectedLearnedGridRows.length > 0;
+  }
+
   @Input() public refreshData$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
+  @ViewChild('gridUnlearned') gridUnlearned: AgGridAngular;
+
   columnDefs: ColDef[] = [
-    { headerName: 'Word', field: 'word', filter: true, width: 150 },
+    { headerName: '', field: 'checkbox', checkboxSelection: true, width: 30 },
+    // { field: 'id', colId: 'id' },
+    { headerName: 'Word', field: 'word', filter: true, width: 150, },
+    { headerName: 'Word', field: 'word', filter: true, width: 150, },
     { headerName: 'Writing In Language', field: 'writingInLanguage', filter: true, width: 150, cellRenderer: TextColumnComponent },
     { headerName: 'Meaning', field: 'meaning', filter: true, width: 150 },
     { headerName: 'Percentage', field: 'percentage', filter: true, width: 150, cellRenderer: ProgressbarAgColumnComponent },
@@ -85,6 +103,7 @@ export class AnswersComponent implements OnInit {
 
           const answerObj: Answer = {} as Answer;
 
+          answerObj["id"] = wordAnswer.wordId;
           answerObj["word"] = wordAnswer.word;
           answerObj["meaning"] = wordAnswer.meaning;
           answerObj["percentage"] = wordAnswer.percentage;
@@ -121,6 +140,7 @@ export class AnswersComponent implements OnInit {
 
           const answerObj: Answer = {} as Answer;
 
+          answerObj["id"] = wordAnswer.wordId;
           answerObj["word"] = wordAnswer.word;
           answerObj["meaning"] = wordAnswer.meaning;
           answerObj["percentage"] = "100";
@@ -143,6 +163,53 @@ export class AnswersComponent implements OnInit {
   private refreshGrids() {
     this.refreshUnlearnedWords();
     this.refreshlearnedWords();
+  }
+
+  public onGridUnlearnedRowClicked(event: any) {
+    this.selectedUnlearnedGridRows = this.getSelectedRows(event);
+  }
+
+  public onGridLearnedRowClicked(event: any) {
+    this.selectedLearnedGridRows = this.getSelectedRows(event);
+  }
+
+  private getSelectedRows(event:any){
+    const selectedRows: RowNode[] = event.api.getSelectedNodes();
+    const selectedRowData = selectedRows.map(node => node.data);
+
+    return selectedRowData;
+  }
+
+  public onMoveToLearnedWordsClick() {
+    const ids: number[] = this.selectedUnlearnedGridRows.map(x => x.id);
+    const wordUpdateIsLearnedRequest: WordUpdateIsLearnedRequest = {
+      ids: ids,
+      isLearned: true
+    };
+
+    this.wordService.updateIsLearned(wordUpdateIsLearnedRequest).pipe(
+      concatMap(response => {
+        this.selectedUnlearnedGridRows = [];
+        this.refreshGrids();
+        return of();
+      })).subscribe();
+
+  }
+
+  public onMoveToUnLearnedWordsClick() {
+    const ids: number[] = this.selectedLearnedGridRows.map(x => x.id);
+    const wordUpdateIsLearnedRequest: WordUpdateIsLearnedRequest = {
+      ids: ids,
+      isLearned: false
+    };
+
+    this.wordService.updateIsLearned(wordUpdateIsLearnedRequest).pipe(
+      concatMap(response => {
+        this.selectedLearnedGridRows = [];
+        this.refreshGrids();
+        return of();
+      })).subscribe();
+
   }
 
 }

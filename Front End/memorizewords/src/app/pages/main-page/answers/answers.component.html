@@ -1,5 +1,10 @@
 <div style="width: 100%; height: 500px;">
   <h2>The words you need to learn</h2>
+
+  <div class="bottom-divider">
+    <button class="btn btn-info" (click)="onMoveToLearnedWordsClick()" [disabled]="!hasSelectedUnlearnedGridRows">Move to Learned Words</button>
+  </div>
+
   <ag-grid-angular
       style="width: 100%; height: 100%;"
       class="ag-theme-balham"
@@ -8,9 +13,17 @@
       [defaultColDef]="defaultColDef"
       [pagination]="true"
       [paginationPageSize]="30"
+      rowSelection="multiple"
+      [rowMultiSelectWithClick] = true
+      (rowSelected)="onGridUnlearnedRowClicked($event)"
   ></ag-grid-angular>
 
   <h2>The words you have learned</h2>
+
+  <div class="bottom-divider">
+    <button class="btn btn-info" (click)="onMoveToUnLearnedWordsClick()" [disabled]="!hasSelectedLearnedGridRows">Move to UnLearned Words</button>
+  </div>
+
   <ag-grid-angular
       style="width: 100%; height: 100%;"
       class="ag-theme-balham"
@@ -19,5 +32,8 @@
       [defaultColDef]="defaultColDef"
       [pagination]="true"
       [paginationPageSize]="30"
+      rowSelection="multiple"
+      [rowMultiSelectWithClick] = true
+      (rowSelected)="onGridLearnedRowClicked($event)"
   ></ag-grid-angular>
 </div>

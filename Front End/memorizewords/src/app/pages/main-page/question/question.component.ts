@@ -4,9 +4,9 @@ import { AlertifyService } from 'src/app/services/alertify-service.service';
 import { WordService } from 'src/app/services/http/word.service';
 import { Question } from './model/question';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Answer } from 'src/app/services/http/model/call/answer';
 import { AnswerResponse } from 'src/app/services/http/model/back/answer-response';
 import { StringCompare } from 'src/app/core/utility/string-utility';
+import { WordAnswerRequest } from 'src/app/services/http/model/call/WordAnswerRequest';
 
 @Component({
   selector: 'question',
@@ -79,8 +79,8 @@ export class QuestionComponent implements OnInit {
       return;
     }
 
-    const answer: Answer = { wordId: this.question!.id, givenAnswerMeaning: this.getFormValue("meaning") };
-    this.wordService.answer<AnswerResponse>(answer).subscribe(response => {
+    const wordAnswerRequest: WordAnswerRequest = { wordId: this.question!.id, givenAnswerMeaning: this.getFormValue("meaning") };
+    this.wordService.answer<AnswerResponse>(wordAnswerRequest).subscribe(response => {
       this.checkAnswer(response);
       this.askQuestion();
     });
