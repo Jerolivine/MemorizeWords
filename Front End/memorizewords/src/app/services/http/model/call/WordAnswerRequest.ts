@@ -1,4 +1,4 @@
-export interface Answer {
+export interface WordAnswerRequest {
     wordId: number;
     givenAnswerMeaning:string
 }
