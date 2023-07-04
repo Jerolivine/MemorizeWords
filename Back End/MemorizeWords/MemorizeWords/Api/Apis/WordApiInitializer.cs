@@ -65,7 +65,7 @@ namespace MemorizeWords.Api.Apis
             {
 
                 int sequentTrueAnswerCount = GetSequentTrueAnswerCount(configuration);
-                var result = await memorizeWordsDbContext.Word.Where(x => x.IsLearned == false)
+                var unlearnedWords = await memorizeWordsDbContext.Word.Where(x => x.IsLearned == false)
                             .Select(x => new
                             {
                                 WordId = x.Id,
@@ -75,7 +75,8 @@ namespace MemorizeWords.Api.Apis
                                 WordAnswers = x.WordAnswers.OrderByDescending(x => x.AnswerDate).Take(sequentTrueAnswerCount).Select(x => new WordAnswerDto()
                                 {
                                     Answer = x.Answer,
-                                    Id = x.Id
+                                    Id = x.Id,
+
                                 }).ToList()
                             })
                             .Select(p => new WordResponse()
@@ -85,11 +86,17 @@ namespace MemorizeWords.Api.Apis
                                 Word = p.Word,
                                 WordAnswers = p.WordAnswers,
                                 WritingInLanguage = p.WritingInLanguage,
-                                Percentage = ((((double)p.WordAnswers.Where(x => x.Answer).Count() / sequentTrueAnswerCount)) * 100).ToString()
+                                //Percentage = ((((double)p.WordAnswers.Where(x => x.Answer).Count() / sequentTrueAnswerCount)) * 100).ToString()
                             })
                             .ToListAsync();
 
-                return Results.Ok(result);
+                foreach (var unlearnedWord in unlearnedWords)
+                {
+                    int trueAnswerCount = GetTrueAnswerCount(unlearnedWord);
+                    unlearnedWord.Percentage = ((((double)trueAnswerCount / sequentTrueAnswerCount)) * 100).ToString();
+                }
+
+                return Results.Ok(unlearnedWords);
             });
 
             app.MapGet("/learnedWords", (MemorizeWordsDbContext memorizeWordsDbContext) =>
@@ -144,6 +151,24 @@ namespace MemorizeWords.Api.Apis
                 return Results.Ok(wordUpdateIsLearnedRequest.Ids);
             });
 
+        }
+
+        private static int GetTrueAnswerCount(WordResponse unlearnedWord)
+        {
+            int trueAnswerCount = 0;
+            foreach (var wordAnswer in unlearnedWord.WordAnswers)
+            {
+                if (wordAnswer.Answer)
+                {
+                    trueAnswerCount++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            return trueAnswerCount;
         }
 
         private static void ValidationupdateIsLearned(WordUpdateIsLearnedRequest wordUpdateIsLearnedRequest)
