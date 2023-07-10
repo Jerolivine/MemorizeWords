@@ -17,6 +17,7 @@ import { QuestionComponent } from './pages/main-page/question/question.component
 import { ProgressbarAgColumnComponent } from './core/components/ag-grid/column/progressbar-ag-column/progressbar-ag-column.component';
 import { ErrorInterceptor } from './services/interceptor/error-interceptor';
 import { TextColumnComponent } from './core/components/ag-grid/column/text-column/text-column.component';
+import { HttpResponseInterceptor } from './services/interceptor/http-response-interceptor';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,12 @@ import { TextColumnComponent } from './core/components/ag-grid/column/text-colum
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
       multi: true
-    }],
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpResponseInterceptor,
+      multi: true
+    },],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

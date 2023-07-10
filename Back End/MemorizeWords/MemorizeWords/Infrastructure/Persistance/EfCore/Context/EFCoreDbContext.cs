@@ -1,16 +1,16 @@
 ﻿using MemorizeWords.Entity;
 using Microsoft.EntityFrameworkCore;
 
-namespace MemorizeWords.Infrastructure.Persistance.Context.EFCore
+namespace MemorizeWords.Infrastructure.Persistance.FCore.Context
 {
-    public class MemorizeWordsDbContext : DbContext
+    public class EFCoreDbContext : DbContext
     {
         public DbSet<WordEntity> Word => Set<WordEntity>();
         public DbSet<WordAnswerEntity> WordAnswer => Set<WordAnswerEntity>();
 
         public IConfiguration Configuration { get; }
 
-        public MemorizeWordsDbContext(DbContextOptions<MemorizeWordsDbContext> options, IConfiguration configuration)
+        public EFCoreDbContext(DbContextOptions<EFCoreDbContext> options, IConfiguration configuration)
            : base(options)
         {
             Configuration = configuration;
@@ -27,7 +27,7 @@ namespace MemorizeWords.Infrastructure.Persistance.Context.EFCore
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(MemorizeWordsDbContext).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(EFCoreDbContext).Assembly);
         }
     }
 }

@@ -13,32 +13,30 @@ import { WordUpdateIsLearnedRequest } from './model/call/WordUpdateIsLearnedRequ
 })
 export class WordService extends BaseService {
 
+    protected override baseApiName: string="word";
+
     constructor(http: HttpClient) {
         super(http);
     }
 
     public addWord<WordResponse>(word: Word) {
-        return this.post<WordResponse>("/word", word);
-    }
-
-    public answer<AnswerResponse>(wordAnswerRequest: WordAnswerRequest) {
-        return this.post<AnswerResponse>("/answer", wordAnswerRequest);
+        return this.post<WordResponse>("", word);
     }
 
     public getUnlearnedWords(): Observable<WordResponse[]> {
-        return this.get("/unlearnedWords");
+        return this.get("unlearned-words");
     }
 
     public getLearnedWords(): Observable<WordResponse[]> {
-        return this.get("/learnedWords");
+        return this.get("learned-words");
     }
 
     public getQuestionWords(): Observable<QuestionWordResponse[]> {
-        return this.get<QuestionWordResponse[]>("/questionWords");
+        return this.get<QuestionWordResponse[]>("question-words");
     }
 
     public updateIsLearned(wordUpdateIsLearnedRequest: WordUpdateIsLearnedRequest) {
-        return this.post("/updateIsLearned", wordUpdateIsLearnedRequest);
+        return this.post("update-is-learned", wordUpdateIsLearnedRequest);
     }
 
 }

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace MemorizeWords.Infrastructure.Persistance.Context.EFCore.Configurations
+namespace MemorizeWords.Infrastructure.Persistance.FCore.Context.Configurations
 {
     public class WordEntityConfiguration : IEntityTypeConfiguration<WordEntity>
     {

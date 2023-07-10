@@ -1,4 +1,4 @@
-﻿using MemorizeWords.Entity.Interfaces;
+﻿using MemorizeWords.Infrastructure.Entity.Core.Interfaces;
 
 namespace MemorizeWords.Entity
 {

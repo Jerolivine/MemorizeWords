@@ -1,9 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 
-export class BaseService {
+export abstract class BaseService {
     
     apiURL = environment.apiURL;
+    protected abstract baseApiName:string; 
+
     constructor(private http: HttpClient) {
 
     }
@@ -21,6 +23,6 @@ export class BaseService {
     }
 
     private getUrl(url: string): string {
-        return `${this.apiURL}${url}`;
+        return `${this.apiURL}/${this.baseApiName}/${url}`;
     }
 }

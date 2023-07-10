@@ -1,4 +1,4 @@
-﻿using MemorizeWords.Entity.Interfaces;
+﻿using MemorizeWords.Infrastructure.Entity.Core.Interfaces;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MemorizeWords.Entity

@@ -41,7 +41,7 @@ namespace MemorizeWords.Infrastructure.Transversal.Exception
                 stackTrace = exception.StackTrace;
                 userMessage = exception.Message;
             }
-            else if (exceptionType == typeof(NotImplementedBusinessException))
+            else if (exceptionType == typeof(KeyNotFoundBusinessException))
             {
                 status = HttpStatusCode.NotImplemented;
                 message = exception.Message;

@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using MemorizeWords.Infrastructure.Utilities;
+using System.Reflection;
 
 namespace MemorizeWords.Api
 {
@@ -6,10 +7,7 @@ namespace MemorizeWords.Api
     {
         public static void InitializeApis(this WebApplication app)
         {
-            var assembly = Assembly.GetExecutingAssembly();
-            var implementations = assembly.GetTypes()
-                .Where(t => typeof(IInitializer).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract)
-                .ToList();
+            var implementations = GenericUtility.GetImplementationsByType<IInitializer>();
 
             // Register the implementations in the service collection
             foreach (var implementation in implementations)
