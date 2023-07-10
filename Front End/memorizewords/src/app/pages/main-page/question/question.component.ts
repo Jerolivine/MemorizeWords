@@ -8,6 +8,7 @@ import { AnswerResponse } from 'src/app/services/http/model/back/answer-response
 import { StringCompare } from 'src/app/core/utility/string-utility';
 import { WordAnswerRequest } from 'src/app/services/http/model/call/WordAnswerRequest';
 import { TextToSpeechService } from 'src/app/services/text-to-speech.service';
+import { WordAnswerService } from 'src/app/services/http/word-answer.service';
 
 @Component({
   selector: 'question',
@@ -30,6 +31,7 @@ export class QuestionComponent implements OnInit {
 
   constructor(private dialogRef: MatDialogRef<QuestionComponent>,
     private wordService: WordService,
+    private wordAnswerService: WordAnswerService,
     private alertifyService: AlertifyService,
     private formBuilder: FormBuilder,
     private textToSpeechService: TextToSpeechService) { }
@@ -92,7 +94,7 @@ export class QuestionComponent implements OnInit {
     }
 
     const wordAnswerRequest: WordAnswerRequest = { wordId: this.question!.id, givenAnswerMeaning: this.getFormValue("meaning") };
-    this.wordService.answer<AnswerResponse>(wordAnswerRequest).subscribe(response => {
+    this.wordAnswerService.answer<AnswerResponse>(wordAnswerRequest).subscribe(response => {
       this.checkAnswer(response);
       this.askQuestion();
     });
@@ -126,7 +128,6 @@ export class QuestionComponent implements OnInit {
   }
 
   onTipClick() {
-    debugger;
     this.giveTip();
   }
 
