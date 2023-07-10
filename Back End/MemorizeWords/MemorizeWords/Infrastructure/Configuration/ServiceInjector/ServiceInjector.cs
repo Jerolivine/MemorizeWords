@@ -1,4 +1,5 @@
 ﻿using MemorizeWords.Infrastructure.Application.Interfaces;
+using MemorizeWords.Infrastructure.Persistance.Interfaces;
 
 namespace MemorizeWords.Infrastructure.Configuration.ServiceInjector
 {
