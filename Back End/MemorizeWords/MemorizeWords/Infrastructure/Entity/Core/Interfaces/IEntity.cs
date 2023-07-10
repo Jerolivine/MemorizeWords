@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MemorizeWords.Entity.Interfaces
+namespace MemorizeWords.Infrastructure.Entity.Core.Interfaces
 {
     public interface IEntity<T> where T : struct
     {

@@ -2,7 +2,7 @@
 using MemorizeWords.Api.Models.Request;
 using MemorizeWords.Api.Models.Response;
 using MemorizeWords.Entity;
-using MemorizeWords.Infrastructure.Persistance.Context.EFCore;
+using MemorizeWords.Infrastructure.Persistance.FCore.Context;
 using MemorizeWords.Infrastructure.Transversal.Exception.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,7 +12,7 @@ namespace MemorizeWords.Api.Apis
     {
         public void Initialize(WebApplication app)
         {
-            app.MapPost("/word", async (WordAddRequest wordAddRequest, MemorizeWordsDbContext memorizeWordsDbContext) =>
+            app.MapPost("/word", async (WordAddRequest wordAddRequest, EFCoreDbContext memorizeWordsDbContext) =>
             {
                 ValidationAddUpdateWord(wordAddRequest);
 
@@ -33,7 +33,7 @@ namespace MemorizeWords.Api.Apis
                 return Results.Created($"/word/{wordEntity.Id}", wordEntity);
             });
 
-            app.MapPost("/answer", async (WordAnswerRequest wordAnswerRequest, MemorizeWordsDbContext memorizeWordsDbContext, IConfiguration configuration) =>
+            app.MapPost("/answer", async (WordAnswerRequest wordAnswerRequest, EFCoreDbContext memorizeWordsDbContext, IConfiguration configuration) =>
             {
                 ValidationAnswer(wordAnswerRequest, memorizeWordsDbContext);
 
@@ -61,7 +61,7 @@ namespace MemorizeWords.Api.Apis
                 });
             });
 
-            app.MapGet("/unlearnedWords", async (MemorizeWordsDbContext memorizeWordsDbContext, IConfiguration configuration) =>
+            app.MapGet("/unlearnedWords", async (EFCoreDbContext memorizeWordsDbContext, IConfiguration configuration) =>
             {
 
                 int sequentTrueAnswerCount = GetSequentTrueAnswerCount(configuration);
@@ -99,7 +99,7 @@ namespace MemorizeWords.Api.Apis
                 return Results.Ok(unlearnedWords);
             });
 
-            app.MapGet("/learnedWords", (MemorizeWordsDbContext memorizeWordsDbContext) =>
+            app.MapGet("/learnedWords", (EFCoreDbContext memorizeWordsDbContext) =>
             {
 
                 var result = memorizeWordsDbContext.Word.Where(x => x.IsLearned)
@@ -115,7 +115,7 @@ namespace MemorizeWords.Api.Apis
                 return Results.Ok(result);
             });
 
-            app.MapGet("/questionWords", (MemorizeWordsDbContext memorizeWordsDbContext) =>
+            app.MapGet("/questionWords", (EFCoreDbContext memorizeWordsDbContext) =>
             {
 
                 var randomWords = memorizeWordsDbContext.Word.Where(x => x.IsLearned == false)
@@ -132,7 +132,7 @@ namespace MemorizeWords.Api.Apis
                 return Results.Ok(randomWords);
             });
 
-            app.MapPost("/updateIsLearned", async (WordUpdateIsLearnedRequest wordUpdateIsLearnedRequest, MemorizeWordsDbContext memorizeWordsDbContext) =>
+            app.MapPost("/updateIsLearned", async (WordUpdateIsLearnedRequest wordUpdateIsLearnedRequest, EFCoreDbContext memorizeWordsDbContext) =>
             {
                 ValidationupdateIsLearned(wordUpdateIsLearnedRequest);
 
@@ -183,7 +183,7 @@ namespace MemorizeWords.Api.Apis
             NotImplementedBusinessException.ThrowIfNull(wordAddRequest?.Meaning, "Meaning Cannot Be Empty");
         }
 
-        private bool GetGivenAnswer(WordAnswerRequest wordAnswerRequest, MemorizeWordsDbContext memorizeWordsDbContext, out WordEntity wordEntity)
+        private bool GetGivenAnswer(WordAnswerRequest wordAnswerRequest, EFCoreDbContext memorizeWordsDbContext, out WordEntity wordEntity)
         {
             wordEntity = memorizeWordsDbContext.Word.FirstOrDefault(x => x.Id == wordAnswerRequest.WordId);
 
@@ -191,7 +191,7 @@ namespace MemorizeWords.Api.Apis
             return answer;
         }
 
-        private void ValidationAnswer(WordAnswerRequest wordAnswerRequest, MemorizeWordsDbContext memorizeWordsDbContext)
+        private void ValidationAnswer(WordAnswerRequest wordAnswerRequest, EFCoreDbContext memorizeWordsDbContext)
         {
             NotImplementedBusinessException.ThrowIfNull(wordAnswerRequest, "Request Cannot Be Empty");
             NotImplementedBusinessException.ThrowIfNull(wordAnswerRequest?.WordId, "WordId Cannot Be Empty");
@@ -201,7 +201,7 @@ namespace MemorizeWords.Api.Apis
             NotImplementedBusinessException.ThrowIfNull(wordEntity, $"Word Couldnt found by given Id, {wordAnswerRequest.WordId}");
         }
 
-        private async Task UpdateIsLearnedIfItIsLearned(int wordId, MemorizeWordsDbContext memorizeWordsDbContext, IConfiguration configuration)
+        private async Task UpdateIsLearnedIfItIsLearned(int wordId, EFCoreDbContext memorizeWordsDbContext, IConfiguration configuration)
         {
             int sequentTrueAnswerCount = GetSequentTrueAnswerCount(configuration);
             var answers = await memorizeWordsDbContext.WordAnswer.Where(x => x.WordId == wordId).OrderByDescending(x => x.AnswerDate).Take(sequentTrueAnswerCount).ToListAsync();

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using MemorizeWords.Entity;
 
-namespace MemorizeWords.Infrastructure.Persistance.Context.EFCore.Configurations
+namespace MemorizeWords.Infrastructure.Persistance.FCore.Context.Configurations
 {
     public class WordAnswerEntityConfiguration : IEntityTypeConfiguration<WordAnswerEntity>
     {

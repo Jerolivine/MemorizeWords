@@ -1,5 +1,5 @@
 using MemorizeWords.Entity;
-using MemorizeWords.Infrastructure.Persistance.Context.EFCore;
+using MemorizeWords.Infrastructure.Persistance.FCore.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -24,9 +24,9 @@ namespace MemorizeWords_UnitTest
         public void AddWord_ShouldAddWord()
         {
 
-            DbContextOptions<MemorizeWordsDbContext> options = GetDbContextOptions();
+            DbContextOptions<EFCoreDbContext> options = GetDbContextOptions();
 
-            using (var memorizeWordsDbContext = new MemorizeWordsDbContext(options, _configuration))
+            using (var memorizeWordsDbContext = new EFCoreDbContext(options, _configuration))
             {
                 WordEntity? wordEntity = AddWord(memorizeWordsDbContext);
 
@@ -34,7 +34,7 @@ namespace MemorizeWords_UnitTest
             }
         }
 
-        private WordEntity AddWord(MemorizeWordsDbContext memorizeWordsDbContext)
+        private WordEntity AddWord(EFCoreDbContext memorizeWordsDbContext)
         {
             var wordEntity = memorizeWordsDbContext.Word.FirstOrDefault(x => x.Word.ToUpper().Equals(WORD.ToUpper()));
             if (wordEntity != null)
@@ -57,9 +57,9 @@ namespace MemorizeWords_UnitTest
         [Fact]
         public void Answer_ShouldAddRecord()
         {
-            DbContextOptions<MemorizeWordsDbContext> options = GetDbContextOptions();
+            DbContextOptions<EFCoreDbContext> options = GetDbContextOptions();
 
-            using (var memorizeWordsDbContext = new MemorizeWordsDbContext(options, _configuration))
+            using (var memorizeWordsDbContext = new EFCoreDbContext(options, _configuration))
             {
                 WordEntity? wordEntity = AddWord(memorizeWordsDbContext);
 
@@ -79,9 +79,9 @@ namespace MemorizeWords_UnitTest
             }
         }
 
-        private static DbContextOptions<MemorizeWordsDbContext> GetDbContextOptions()
+        private static DbContextOptions<EFCoreDbContext> GetDbContextOptions()
         {
-            return new DbContextOptionsBuilder<MemorizeWordsDbContext>()
+            return new DbContextOptionsBuilder<EFCoreDbContext>()
                             .UseInMemoryDatabase(databaseName: "TestDatabase")
                             .Options;
         }

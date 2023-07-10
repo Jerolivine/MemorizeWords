@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace MemorizeWords.Infrastructure.Transversal.Exception.Exceptions
 {
-    public class NotImplementedBusinessException : System.Exception
+    public class NotImplementedBusinessException : BusinessException
     {
         public NotImplementedBusinessException(string message) : base(message)
         {
@@ -11,7 +11,7 @@ namespace MemorizeWords.Infrastructure.Transversal.Exception.Exceptions
         }
 
         [DoesNotReturn]
-        public static void ThrowIfNull([NotNull] object? argument, [CallerArgumentExpression("argument")] string? paramName = null)
+        public static void ThrowIfNull([NotNull] object argument, [CallerArgumentExpression("argument")] string paramName = null)
         {
             if (argument is null)
             {
