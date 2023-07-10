@@ -121,25 +121,6 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
 
         }
 
-        //public void UpdateIsLearned()
-        //{
-        //    ValidationupdateIsLearned(wordUpdateIsLearnedRequest);
-
-        //    await memorizeWordsDbContext.Word.Where(x => wordUpdateIsLearnedRequest.Ids.Contains(x.Id))
-        //    .ExecuteUpdateAsync(s => s.SetProperty(
-        //    n => n.IsLearned,
-        //    n => wordUpdateIsLearnedRequest.IsLearned));
-
-        //    // remove all answers
-        //    if (!wordUpdateIsLearnedRequest.IsLearned)
-        //    {
-        //        await memorizeWordsDbContext.WordAnswer.Where(x => wordUpdateIsLearnedRequest.Ids.Contains(x.WordId))
-        //        .ExecuteDeleteAsync();
-        //    }
-
-        //    return Results.Ok(wordUpdateIsLearnedRequest.Ids);
-        //}
-
         private void ValidationAddUpdateWord(WordAddRequest wordAddRequest)
         {
             NotImplementedBusinessException.ThrowIfNull(wordAddRequest, "Request Cannot Be Empty");
