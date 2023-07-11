@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MemorizeWords", "MemorizeWo
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{3BC2FCF6-CF39-4F30-93D3-3F051A881337}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemorizeWords-UnitTest", "..\MemorizeWords-UnitTest\MemorizeWords-UnitTest.csproj", "{5C65D6EF-73D7-44AE-AE94-BD878788F997}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MemorizeWords-UnitTest", "..\MemorizeWords-UnitTest\MemorizeWords-UnitTest.csproj", "{5C65D6EF-73D7-44AE-AE94-BD878788F997}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

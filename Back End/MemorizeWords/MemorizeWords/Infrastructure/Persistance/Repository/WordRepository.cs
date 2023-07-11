@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MemorizeWords.Infrastructure.Persistance.Repository
 {
-    public class WordRepository : EFCoreRepository<WordEntity, int> ,IWordRepository, IBusinessRepository
+    public class WordRepository : EFCoreRepository<WordEntity, int>, IWordRepository, IBusinessRepository
     {
         private readonly IConfiguration _configuration;
 
@@ -44,10 +44,22 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
         {
             ValidationupdateIsLearned(wordUpdateIsLearnedRequest.Ids);
 
-            await Queryable().Where(x => wordUpdateIsLearnedRequest.Ids.Contains(x.Id))
-            .ExecuteUpdateAsync(s => s.SetProperty(
-            n => n.IsLearned,
-            n => wordUpdateIsLearnedRequest.IsLearned));
+            if (wordUpdateIsLearnedRequest.IsLearned)
+            {
+                await Queryable().Where(x => wordUpdateIsLearnedRequest.Ids.Contains(x.Id))
+                .ExecuteUpdateAsync(s =>
+                    s.SetProperty(n => n.IsLearned, n => wordUpdateIsLearnedRequest.IsLearned)
+                     .SetProperty(n => n.LearnedDate, n => DateTime.Now.Date)
+                );
+            }
+            else
+            {
+                await Queryable().Where(x => wordUpdateIsLearnedRequest.Ids.Contains(x.Id))
+                .ExecuteUpdateAsync(s =>
+                    s.SetProperty(n => n.IsLearned, n => wordUpdateIsLearnedRequest.IsLearned)
+                );
+            }
+
 
         }
 
@@ -129,6 +141,23 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
                                    }).ToListAsync();
 
             return randomWords;
+        }
+
+        public async Task<List<int>> SetLearnedWordsSinceOneWeekAsUnlearnedAsync()
+        {
+            List<int> learnedWordsSinceOneWeekIds = await Queryable().Where(x => x.IsLearned && x.LearnedDate < DateTime.Now.AddDays(-7).Date).Select(x => x.Id).ToListAsync();
+
+            if (learnedWordsSinceOneWeekIds == null || learnedWordsSinceOneWeekIds.Count == 0)
+            {
+                return null;
+            }
+
+            await Queryable().Where(x => learnedWordsSinceOneWeekIds.Contains(x.Id))
+            .ExecuteUpdateAsync(s =>
+                s.SetProperty(n => n.IsLearned, n => false)
+                .SetProperty(n => n.LearnedDate, n => null));
+
+            return learnedWordsSinceOneWeekIds;
         }
 
         private static void ValidationupdateIsLearned(List<int> ids)

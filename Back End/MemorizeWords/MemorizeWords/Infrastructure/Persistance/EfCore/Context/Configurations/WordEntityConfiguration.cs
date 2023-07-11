@@ -16,6 +16,7 @@ namespace MemorizeWords.Infrastructure.Persistance.FCore.Context.Configurations
             builder.Property(x => x.Meaning).HasColumnName("MEANING").UseCollation("Turkish_CI_AI").IsRequired();
             builder.Property(x => x.IsLearned).HasColumnName("IS_LEARNED").IsRequired();
             builder.Property(x => x.WritingInLanguage).HasColumnName("WRITING_IN_LANGUAGE");
+            builder.Property(x => x.LearnedDate).HasColumnName("LEARNED_DATE");
 
             builder.HasMany(a => a.WordAnswers)
                .WithOne(b => b.Word)
