@@ -7,5 +7,6 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository.Interfaces
     {
         Task<AnswerResponse> AnswerAsync(WordAnswerRequest wordAnswerRequest);
         Task DeleteAllAnswersAsync(List<int> wordIds);
+        Task LeaveEnoughTrueAnswerToMemorize(List<int> wordIds);
     }
 }

@@ -37,12 +37,6 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
                 await IsAllAnswersTrue(wordAnswerRequest.WordId);
             }
 
-            //return Results.Ok(new AnswerResponse()
-            //{
-            //    IsAnswerTrue = isAnswerTrue,
-            //    Meaning = wordEntity.Meaning
-            //});
-
             return new AnswerResponse()
             {
                 IsAnswerTrue = isAnswerTrue,
@@ -54,6 +48,35 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
         {
             await Queryable().Where(x => wordIds.Contains(x.WordId))
                .ExecuteDeleteAsync();
+        }
+
+        public async Task LeaveEnoughTrueAnswerToMemorize(List<int> wordIds)
+        {
+            int enoughAnswerToMemorize = int.Parse(_configuration["EnoughAnswerToMemorize"]);
+
+            await Queryable().Where(x => wordIds.Contains(x.WordId))
+               .ExecuteDeleteAsync();
+
+            await AddEnoughTruAnswer(wordIds, enoughAnswerToMemorize);
+
+            await _dbContext.SaveChangesAsync();
+
+        }
+
+        private async Task AddEnoughTruAnswer(List<int> wordIds, int enoughAnswerToMemorize)
+        {
+            foreach (var wordId in wordIds)
+            {
+                for (int i = 0; i < enoughAnswerToMemorize; i++)
+                {
+                    await _dbContext.WordAnswer.AddAsync(new WordAnswerEntity()
+                    {
+                        WordId = wordId,
+                        Answer = true,
+                        AnswerDate = DateTime.Now
+                    });
+                }
+            }
         }
 
         private void ValidationAnswer(WordAnswerRequest wordAnswerRequest)
@@ -88,16 +111,6 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
 
             return false;
 
-
-            // TODO- move to service side 
-            //var wordEntityGivenAnswer = await Queryable().FirstOrDefaultAsync(x => x.Id == wordId);
-            //if (wordEntityGivenAnswer == null)
-            //{
-            //    throw new KeyNotFoundBusinessException($"WordId: {wordId} not found");
-            //}
-            //wordEntityGivenAnswer.IsLearned = true;
-
-            //await memorizeWordsDbContext.SaveChangesAsync();
         }
         private int GetSequentTrueAnswerCount()
         {
