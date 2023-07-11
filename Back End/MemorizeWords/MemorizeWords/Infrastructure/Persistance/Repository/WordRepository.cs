@@ -1,14 +1,13 @@
-﻿using MemorizeWords.Api.Models.Dto;
-using MemorizeWords.Api.Models.Request;
-using MemorizeWords.Api.Models.Response;
-using MemorizeWords.Entity;
+﻿using MemorizeWords.Entity;
 using MemorizeWords.Infrastructure.Persistance.Context.Repository;
 using MemorizeWords.Infrastructure.Persistance.FCore.Context;
 using MemorizeWords.Infrastructure.Persistance.Interfaces;
 using MemorizeWords.Infrastructure.Persistance.Repository.Interfaces;
 using MemorizeWords.Infrastructure.Transversal.Exception.Exceptions;
+using MemorizeWords.Presentation.Models.Dto;
+using MemorizeWords.Presentation.Models.Request;
+using MemorizeWords.Presentation.Models.Response;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace MemorizeWords.Infrastructure.Persistance.Repository
 {
@@ -38,7 +37,6 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
                 await AddAsnyc(wordEntity);
             }
 
-            //return Results.Created($"/word/{wordEntity.Id}", wordEntity);
             return wordEntity;
         }
 
@@ -50,17 +48,6 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
             .ExecuteUpdateAsync(s => s.SetProperty(
             n => n.IsLearned,
             n => wordUpdateIsLearnedRequest.IsLearned));
-
-            // remove all answe
-            /// add to service take it from wordanswerrepository
-            if (!wordUpdateIsLearnedRequest.IsLearned)
-            {
-                //await Queryable().Where(x => wordUpdateIsLearnedRequest.Ids.Contains(x.WordId))
-                //.ExecuteDeleteAsync();
-            }
-
-            //return Results.Ok(wordUpdateIsLearnedRequest.Ids);
-
 
         }
 

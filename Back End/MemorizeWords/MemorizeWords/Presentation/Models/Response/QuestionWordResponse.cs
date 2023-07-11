@@ -1,4 +1,4 @@
-﻿namespace MemorizeWords.Api.Models.Response
+﻿namespace MemorizeWords.Presentation.Models.Response
 {
     public class QuestionWordResponse
     {

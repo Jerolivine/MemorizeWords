@@ -1,4 +1,4 @@
-﻿namespace MemorizeWords.Api
+﻿namespace MemorizeWords.Infrastructure.Configuration.MinimalAPI.Interfaces
 {
     public interface IInitializer
     {

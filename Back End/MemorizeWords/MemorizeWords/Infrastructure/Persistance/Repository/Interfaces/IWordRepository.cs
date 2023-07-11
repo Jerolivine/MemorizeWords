@@ -1,6 +1,6 @@
-﻿using MemorizeWords.Api.Models.Request;
-using MemorizeWords.Api.Models.Response;
-using MemorizeWords.Entity;
+﻿using MemorizeWords.Entity;
+using MemorizeWords.Presentation.Models.Request;
+using MemorizeWords.Presentation.Models.Response;
 
 namespace MemorizeWords.Infrastructure.Persistance.Repository.Interfaces
 {

@@ -1,5 +1,5 @@
-﻿using MemorizeWords.Api.Models.Request;
-using MemorizeWords.Api.Models.Response;
+﻿using MemorizeWords.Presentation.Models.Request;
+using MemorizeWords.Presentation.Models.Response;
 
 namespace MemorizeWords.Application.Word.Interfaces
 {
