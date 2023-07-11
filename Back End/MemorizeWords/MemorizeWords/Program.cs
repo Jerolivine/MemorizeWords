@@ -18,7 +18,6 @@ var app = builder.Build();
 app.MapControllers();
 
 app.AddExceptionMiddieware();
-//app.InitializeApis();
 app.ConfigureSwagger();
 app.ConfigureCORS();
 

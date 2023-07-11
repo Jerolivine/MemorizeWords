@@ -1,4 +1,4 @@
-﻿namespace MemorizeWords.Api.Models.Dto
+﻿namespace MemorizeWords.Presentation.Models.Dto
 {
     public class WordAnswerDto
     {
