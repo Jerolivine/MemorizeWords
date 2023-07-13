@@ -4,6 +4,9 @@ namespace MemorizeWords.Infrastructure.Utilities
 {
     public class GenericUtility
     {
+
+        protected GenericUtility() { }
+
         /// <summary>
         /// TType tipinden tureyen tum classlarin tiplerini doner
         /// </summary>

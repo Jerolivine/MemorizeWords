@@ -90,7 +90,7 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
         }
         private bool GetGivenAnswer(WordAnswerRequest wordAnswerRequest, out WordEntity wordEntity)
         {
-            wordEntity = _dbContext.Word.FirstOrDefault(x => x.Id == wordAnswerRequest.WordId);
+            wordEntity = _dbContext.Word.FirstOrDefault(x => x.Id == wordAnswerRequest.WordId) ?? throw new KeyNotFoundBusinessException($"wordId: {wordAnswerRequest.WordId} couldn't found");
 
             bool answer = wordEntity.Meaning.ToUpperInvariant().Equals(wordAnswerRequest.GivenAnswerMeaning.ToUpperInvariant().ToUpper(), StringComparison.OrdinalIgnoreCase);
             return answer;
@@ -104,7 +104,7 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
                 return false;
             }
 
-            if (answers.Any(x => !x.Answer))
+            if (answers.Exists(x => !x.Answer))
             {
                 return true;
             }
@@ -115,7 +115,11 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
         private int GetSequentTrueAnswerCount()
         {
             int sequentTrueAnswerCount;
-            int.TryParse(_configuration["SequentTrueAnswerCount"], out sequentTrueAnswerCount);
+            var success = int.TryParse(_configuration["SequentTrueAnswerCount"], out sequentTrueAnswerCount);
+            if (!success)
+            {
+                throw new Exception("SequentTrueAnswerCount is not an integer");
+            }
 
             return sequentTrueAnswerCount;
         }

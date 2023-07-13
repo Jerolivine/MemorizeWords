@@ -67,7 +67,7 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
         {
 
             int sequentTrueAnswerCount = GetSequentTrueAnswerCount();
-            var unlearnedWords = await Queryable().Where(x => x.IsLearned == false)
+            var unlearnedWords = await Queryable().Where(x => !x.IsLearned)
                         .Select(x => new
                         {
                             WordId = x.Id,
@@ -95,10 +95,9 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
             foreach (var unlearnedWord in unlearnedWords)
             {
                 int trueAnswerCount = GetTrueAnswerCount(unlearnedWord);
-                unlearnedWord.Percentage = ((((double)trueAnswerCount / sequentTrueAnswerCount)) * 100).ToString();
+                unlearnedWord.Percentage = (((double)trueAnswerCount / sequentTrueAnswerCount) * 100).ToString();
             }
 
-            //return Results.Ok(unlearnedWords);
             return unlearnedWords;
         }
 
@@ -115,12 +114,11 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
                         })
                         .ToListAsync();
 
-            //return Results.Ok(result);
             return learnedWords;
 
         }
 
-        private void ValidationAddUpdateWord(WordAddRequest wordAddRequest)
+        private static void ValidationAddUpdateWord(WordAddRequest wordAddRequest)
         {
             NotImplementedBusinessException.ThrowIfNull(wordAddRequest, "Request Cannot Be Empty");
             NotImplementedBusinessException.ThrowIfNull(wordAddRequest?.Word, "Word Cannot Be Empty");
@@ -129,7 +127,7 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
 
         public async Task<List<QuestionWordResponse>> GetQuestionWordsAsync()
         {
-            var randomWords = await Queryable().Where(x => x.IsLearned == false)
+            var randomWords = await Queryable().Where(x => !x.IsLearned)
                                    .OrderBy(x => Guid.NewGuid())
                                    .Take(20)
                                    .Select(x => new QuestionWordResponse()
@@ -174,7 +172,7 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
             return sequentTrueAnswerCount;
         }
 
-        private int GetTrueAnswerCount(WordResponse unlearnedWord)
+        private static int GetTrueAnswerCount(WordResponse unlearnedWord)
         {
             int trueAnswerCount = 0;
             foreach (var wordAnswer in unlearnedWord.WordAnswers)
