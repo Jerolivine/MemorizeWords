@@ -118,7 +118,7 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
             var success = int.TryParse(_configuration["SequentTrueAnswerCount"], out sequentTrueAnswerCount);
             if (!success)
             {
-                throw new Exception("SequentTrueAnswerCount is not an integer");
+                throw new BusinessException("SequentTrueAnswerCount is not an integer");
             }
 
             return sequentTrueAnswerCount;
