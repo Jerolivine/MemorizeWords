@@ -1,30 +1,6 @@
 version: '3.4'
 
 services:
-  memorizewords:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:443;http://+:80
-    ports:
-      - 8000:80
-    volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-    depends_on:
-      - memorizewords-db
-      
-  memorizewords-db:
-     container_name: memorizewords-db
-     image: "mcr.microsoft.com/mssql/server:2022-latest"
-     ports:
-       - "1433:1433"
-     environment:
-       SA_PASSWORD: "12345678A@"
-       ACCEPT_EULA: "Y"
-     volumes:
-       - ./volume/mssql/data:/var/opt/mssql/data
-
-#saa;#O0je~dyx9cNpZ40me
 
   sonarqube:
     image: sonarqube
