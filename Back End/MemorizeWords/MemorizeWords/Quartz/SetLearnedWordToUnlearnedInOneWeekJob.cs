@@ -27,9 +27,5 @@ namespace MemorizeWords.Quartz
             await _wordAnswerRepository.LeaveEnoughTrueAnswerToMemorize(wordIds);
         }
 
-        //public async Task Execute(IJobExecutionContext context)
-        //{
-        //    Console.WriteLine("");
-        //}
     }
 }
