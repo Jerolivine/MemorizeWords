@@ -1,4 +1,6 @@
-﻿using MemorizeWords.Infrastructure.Presentation;
+﻿using MemorizeWords.Infrastructure.Extensions;
+using MemorizeWords.Infrastructure.Presentation;
+using MemorizeWords.Presentation.Models.Response;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MemorizeWords.Presentation
@@ -13,17 +15,16 @@ namespace MemorizeWords.Presentation
         }
 
         [HttpGet("app-variables")]
-        public IActionResult GetApplicationVariables()
-        {            
-            // Get the value of "SequentTrueAnswerCount" from app.settings.json
-            int sequentTrueAnswerCount = _configuration.GetValue<int>("SequentTrueAnswerCount");
+        public IResult GetApplicationVariables()
+        {
+            int sequentTrueAnswerCount = _configuration.GetSequentTrueAnswerCount();
 
-            var applicationVariables = new
+            var applicationVariables = new ApplicationVariableResponse
             {
                 SequentTrueAnswerCount = sequentTrueAnswerCount
             };
 
-            return Ok(applicationVariables);
+            return Results.Ok(applicationVariables);
         }
     }
 }

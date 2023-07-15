@@ -1,4 +1,6 @@
 ﻿using MemorizeWords.Entity;
+using MemorizeWords.Infrastructure.Constants.AppSettings;
+using MemorizeWords.Infrastructure.Extensions;
 using MemorizeWords.Infrastructure.Persistance.Context.Repository;
 using MemorizeWords.Infrastructure.Persistance.FCore.Context;
 using MemorizeWords.Infrastructure.Persistance.Interfaces;
@@ -97,7 +99,7 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
         }
         private async Task<bool> IsAllAnswersTrue(int wordId)
         {
-            int sequentTrueAnswerCount = GetSequentTrueAnswerCount();
+            int sequentTrueAnswerCount = _configuration.GetSequentTrueAnswerCount();
             var answers = await Queryable().Where(x => x.WordId == wordId).OrderByDescending(x => x.AnswerDate).Take(sequentTrueAnswerCount).ToListAsync();
             if (answers?.Count != sequentTrueAnswerCount)
             {
@@ -112,18 +114,6 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
             return false;
 
         }
-        private int GetSequentTrueAnswerCount()
-        {
-            int sequentTrueAnswerCount;
-            var success = int.TryParse(_configuration["SequentTrueAnswerCount"], out sequentTrueAnswerCount);
-            if (!success)
-            {
-                throw new BusinessException("SequentTrueAnswerCount is not an integer");
-            }
-
-            return sequentTrueAnswerCount;
-        }
-
 
     }
 }
