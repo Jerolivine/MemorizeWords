@@ -16,7 +16,7 @@ SONARQUBE
 Prequisites
 - Docker Desktop
 
-1) Download latest java
+1) Download latest jdk
 2) Go to Folder MemorizeWords\DevOps\ymls\SonarQube
 3) Run sonarqube yml run command.bat
 4) redirect to http://127.0.0.1:9000
