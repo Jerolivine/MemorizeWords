@@ -129,11 +129,12 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
 
         public async Task<List<QuestionWordResponse>> GetQuestionWordsAsync()
         {
-            int randomNumber = new Random().Next(0, 21);
+            int questionWordCountPLtoTR = new Random().Next(0, 21);
+            int questionWordCountTRtoPL = 20 - questionWordCountPLtoTR;
 
             var randomWordsPLtoTR = await Queryable().Where(x => !x.IsLearned)
                                    .OrderBy(x => Guid.NewGuid())
-                                   .Take(randomNumber)
+                                   .Take(questionWordCountPLtoTR)
                                    .Select(x => new QuestionWordResponse()
                                    {
                                        Word = x.Word,
@@ -144,7 +145,7 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
             
             var randomWordsTRtoPL = await Queryable().Where(x => !x.IsLearned)
                 .OrderBy(x => Guid.NewGuid())
-                .Take(20-randomNumber)
+                .Take(questionWordCountTRtoPL)
                 .Select(x => new QuestionWordResponse()
                 {
                     Word = x.Meaning,
