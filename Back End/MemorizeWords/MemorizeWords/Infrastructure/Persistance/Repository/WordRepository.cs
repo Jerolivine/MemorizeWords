@@ -1,4 +1,6 @@
 ﻿using MemorizeWords.Entity;
+using MemorizeWords.Infrastructure.Constants.AppSettings;
+using MemorizeWords.Infrastructure.Extensions;
 using MemorizeWords.Infrastructure.Persistance.Context.Repository;
 using MemorizeWords.Infrastructure.Persistance.FCore.Context;
 using MemorizeWords.Infrastructure.Persistance.Interfaces;
@@ -66,7 +68,7 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
         public async Task<List<WordResponse>> UnLearnedWordsAsync()
         {
 
-            int sequentTrueAnswerCount = GetSequentTrueAnswerCount();
+            int sequentTrueAnswerCount = _configuration.GetSequentTrueAnswerCount();
             var unlearnedWords = await Queryable().Where(x => !x.IsLearned)
                         .Select(x => new
                         {
@@ -161,19 +163,6 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
         private static void ValidationupdateIsLearned(List<int> ids)
         {
             NotImplementedBusinessException.ThrowIfNull(ids, "ids Cannot Be Empty");
-        }
-
-        // TODO-Arda: move to extension method in configuration folder
-        private int GetSequentTrueAnswerCount()
-        {
-            int sequentTrueAnswerCount;
-            var success = int.TryParse(_configuration["SequentTrueAnswerCount"], out sequentTrueAnswerCount);
-            if (!success)
-            {
-                throw new BusinessException("SequentTrueAnswerCount is not an integer");
-            }
-
-            return sequentTrueAnswerCount;
         }
 
         private static int GetTrueAnswerCount(WordResponse unlearnedWord)
