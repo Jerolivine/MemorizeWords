@@ -129,32 +129,34 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
 
         public async Task<List<QuestionWordResponse>> GetQuestionWordsAsync()
         {
-            int questionWordCountPLtoTR = new Random().Next(0, 21);
-            int questionWordCountTRtoPL = 20 - questionWordCountPLtoTR;
+            var learningLanguageWordCount = new Random().Next(0, 21);
+            var userLanguageWordCount = 20 - learningLanguageWordCount;
 
-            var randomWordsPLtoTR = await Queryable().Where(x => !x.IsLearned)
-                                   .OrderBy(x => Guid.NewGuid())
-                                   .Take(questionWordCountPLtoTR)
-                                   .Select(x => new QuestionWordResponse()
-                                   {
-                                       Word = x.Word,
-                                       Id = x.Id,
-                                       WritingInLanguage = x.WritingInLanguage,
-                                       Meaning = x.Meaning
-                                   }).ToListAsync();
-            
-            var randomWordsTRtoPL = await Queryable().Where(x => !x.IsLearned)
-                .OrderBy(x => Guid.NewGuid())
-                .Take(questionWordCountTRtoPL)
+            var baseQuery = Queryable().Where(x => !x.IsLearned).OrderBy(x => Guid.NewGuid());
+
+            var learningLanguageWords = await baseQuery
+                .Take(learningLanguageWordCount)
+                .Select(x => new QuestionWordResponse()
+                {
+                    Word = x.Word,
+                    Id = x.Id,
+                    WritingInLanguage = x.WritingInLanguage,
+                    Meaning = x.Meaning,
+                    LanguageType = (int)LanguageType.UserLanguage
+                }).ToListAsync();
+
+            var userLanguageWords = await baseQuery
+                .Take(userLanguageWordCount)
                 .Select(x => new QuestionWordResponse()
                 {
                     Word = x.Meaning,
                     Id = x.Id,
-                    Meaning = x.Word
+                    Meaning = x.Word,
+                    LanguageType = (int)LanguageType.LearningLanguage
                 }).ToListAsync();
 
-            var randomWords = randomWordsPLtoTR.Concat(randomWordsTRtoPL).ToList();
-            
+            var randomWords = learningLanguageWords.Concat(userLanguageWords).ToList();
+
             return randomWords;
         }
 
