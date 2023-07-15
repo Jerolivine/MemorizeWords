@@ -16,10 +16,11 @@ SONARQUBE
 Prequisites
 - Docker Desktop
 
-1) Go to Folder MemorizeWords\DevOps\ymls\SonarQube
-2) Run sonarqube yml run command.bat
-3) redirect to http://127.0.0.1:9000
-4) Use admin admin for username and password.
-5) identify your new password
-6) Go to http://127.0.0.1:9000/account/security
-7) 
+1) Download latest java
+2) Go to Folder MemorizeWords\DevOps\ymls\SonarQube
+3) Run sonarqube yml run command.bat
+4) redirect to http://127.0.0.1:9000
+5) Use admin admin for username and password.
+6) identify your new password
+7) Go to http://127.0.0.1:9000/account/security
+8) 
