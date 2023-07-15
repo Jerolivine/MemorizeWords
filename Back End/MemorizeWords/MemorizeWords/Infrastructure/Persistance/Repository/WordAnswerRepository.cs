@@ -54,7 +54,7 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
 
         public async Task LeaveEnoughTrueAnswerToMemorize(List<int> wordIds)
         {
-            int enoughAnswerToMemorize = int.Parse(_configuration["EnoughAnswerToMemorize"]);
+            int enoughAnswerToMemorize = _configuration.GetEnoughAnswerToMemorize();
 
             await Queryable().Where(x => wordIds.Contains(x.WordId))
                .ExecuteDeleteAsync();
