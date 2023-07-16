@@ -1,5 +1,6 @@
 ﻿using MemorizeWords.Infrastructure.Constants.AppSettings;
 using MemorizeWords.Infrastructure.Transversal.Exception.Exceptions;
+using MemorizeWords.Infrastructure.Utilities;
 
 namespace MemorizeWords.Infrastructure.Extensions
 {
@@ -9,11 +10,13 @@ namespace MemorizeWords.Infrastructure.Extensions
         {
             var value = configuration.GetValue<T>(settingsName);
 
-            // TODO-Hamdi : utils
-            if (EqualityComparer<T>.Default.Equals(value, default(T)))
-            {
-                throw new BusinessException($"{settingsName} is not an integer");
-            }
+            
+            // if (EqualityComparer<T>.Default.Equals(value, default(T)))
+            // {
+            //     throw new BusinessException($"{settingsName} is not an integer");
+            // }
+            
+            ValidationTypeUtility.ThrowIfNullOrDefault(value, settingsName);
 
             return value;
         }

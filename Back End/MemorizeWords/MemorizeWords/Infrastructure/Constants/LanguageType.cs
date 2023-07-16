@@ -2,6 +2,6 @@
 
 public enum LanguageType
 {
-    LearningLanguage = 0,
-    UserLanguage = 1
+    LearningLanguage = 1,
+    UserLanguage = 2
 }

@@ -1,4 +1,5 @@
 ﻿using MemorizeWords.Entity;
+using MemorizeWords.Infrastructure.Constants;
 using MemorizeWords.Infrastructure.Constants.AppSettings;
 using MemorizeWords.Infrastructure.Extensions;
 using MemorizeWords.Infrastructure.Persistance.Context.Repository;
@@ -94,7 +95,18 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
         {
             wordEntity = _dbContext.Word.FirstOrDefault(x => x.Id == wordAnswerRequest.WordId) ?? throw new KeyNotFoundBusinessException($"wordId: {wordAnswerRequest.WordId} couldn't found");
 
-            bool answer = wordEntity.Meaning.ToUpperInvariant().Equals(wordAnswerRequest.GivenAnswerMeaning.ToUpperInvariant().ToUpper(), StringComparison.OrdinalIgnoreCase);
+            string targetLanguage = wordEntity.Meaning;
+            
+            if ((LanguageType)wordAnswerRequest.AnswerLanguageType == LanguageType.LearningLanguage)
+            {
+                targetLanguage = wordEntity.Word;
+
+            } else if ((LanguageType)wordAnswerRequest.AnswerLanguageType == LanguageType.UserLanguage)
+            {
+                targetLanguage = wordEntity.Meaning;
+
+            }
+            bool answer = targetLanguage.ToUpperInvariant().Equals(wordAnswerRequest.GivenAnswerMeaning.ToUpperInvariant().ToUpper(), StringComparison.OrdinalIgnoreCase);
             return answer;
         }
         private async Task<bool> IsAllAnswersTrue(int wordId)
