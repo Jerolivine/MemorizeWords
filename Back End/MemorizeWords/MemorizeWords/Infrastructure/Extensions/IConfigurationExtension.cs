@@ -18,7 +18,7 @@ namespace MemorizeWords.Infrastructure.Extensions
         }
 
         public static int GetSequentTrueAnswerCount(this IConfiguration configuration) => configuration.GetSettingsValue<int>(AppSettingsConstants.SEQUENT_TRUE_ANSWER_COUNT);
-        
-        public static int GetEnoughAnswerToMemorize(this IConfiguration configuration) => configuration.GetSettingsValue<int>(AppSettingsConstants);
+
+        public static int GetEnoughAnswerToMemorize(this IConfiguration configuration) => configuration.GetSettingsValue<int>(AppSettingsConstants.ENOUGH_ANSWER_TO_MEMORIZE);
     }
 }
