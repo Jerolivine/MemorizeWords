@@ -9,6 +9,7 @@ namespace MemorizeWords.Infrastructure.Extensions
         {
             var value = configuration.GetValue<T>(settingsName);
 
+            // TODO-Hamdi : utils
             if (EqualityComparer<T>.Default.Equals(value, default(T)))
             {
                 throw new BusinessException($"{settingsName} is not an integer");
