@@ -1,5 +1,7 @@
 using MemorizeWords.Entity;
 using MemorizeWords.Infrastructure.Persistance.FCore.Context;
+using MemorizeWords.Infrastructure.Transversal.Exception.Exceptions;
+using MemorizeWords.Infrastructure.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -82,8 +84,28 @@ namespace MemorizeWords_UnitTest
         private static DbContextOptions<EFCoreDbContext> GetDbContextOptions()
         {
             return new DbContextOptionsBuilder<EFCoreDbContext>()
-                            .UseInMemoryDatabase(databaseName: "TestDatabase")
-                            .Options;
+                .UseInMemoryDatabase(databaseName: "TestDatabase")
+                .Options;
+        }
+
+        [Fact]
+        public void IS_DEFAULT_TEST_SHOULD_DONE()
+        {
+            // Arrange
+            string settingsName = "SomeSetting";
+
+            // Act & Assert
+            Assert.Throws<BusinessException>(() =>
+                ValidationTypeUtility.ThrowIfNullOrDefault(default(int), settingsName));
+            Assert.Throws<BusinessException>(() =>
+                ValidationTypeUtility.ThrowIfNullOrDefault(default(string), settingsName));
+            Assert.Throws<BusinessException>(() =>
+                ValidationTypeUtility.ThrowIfNullOrDefault(default(object), settingsName));
+            Assert.Throws<BusinessException>(() =>
+                ValidationTypeUtility.ThrowIfNullOrDefault(default(decimal), settingsName));
+            Assert.Throws<BusinessException>(() =>
+                ValidationTypeUtility.ThrowIfNullOrDefault(default(bool), settingsName));
+            
         }
     }
 }
