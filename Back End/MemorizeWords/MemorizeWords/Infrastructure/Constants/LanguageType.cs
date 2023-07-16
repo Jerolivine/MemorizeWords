@@ -1,4 +1,4 @@
-﻿namespace MemorizeWords.Infrastructure.Constants.AppSettings;
+﻿namespace MemorizeWords.Infrastructure.Constants;
 
 public enum LanguageType
 {

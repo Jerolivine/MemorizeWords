@@ -1,5 +1,5 @@
 ﻿using MemorizeWords.Entity;
-using MemorizeWords.Infrastructure.Constants.AppSettings;
+using MemorizeWords.Infrastructure.Constants;
 using MemorizeWords.Infrastructure.Extensions;
 using MemorizeWords.Infrastructure.Persistance.Context.Repository;
 using MemorizeWords.Infrastructure.Persistance.FCore.Context;
@@ -92,8 +92,7 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
                             Meaning = p.Meaning,
                             Word = p.Word,
                             WordAnswers = p.WordAnswers,
-                            WritingInLanguage = p.WritingInLanguage,
-                            //Percentage = ((((double)p.WordAnswers.Where(x => x.Answer).Count() / sequentTrueAnswerCount)) * 100).ToString()
+                            WritingInLanguage = p.WritingInLanguage
                         })
                         .ToListAsync();
 
