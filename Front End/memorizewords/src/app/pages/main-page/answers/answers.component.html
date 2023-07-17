@@ -3,6 +3,7 @@
 
   <div class="bottom-divider">
     <button class="btn btn-info" (click)="onMoveToLearnedWordsClick()" [disabled]="!hasSelectedUnlearnedGridRows">Move to Learned Words</button>
+    <button class="btn btn-danger left-divider" (click)="onDeleteFromUnlearnedWords()" [disabled]="!hasSelectedUnlearnedGridRows">Delete</button>
   </div>
 
   <ag-grid-angular
@@ -22,6 +23,7 @@
 
   <div class="bottom-divider">
     <button class="btn btn-info" (click)="onMoveToUnLearnedWordsClick()" [disabled]="!hasSelectedLearnedGridRows">Move to UnLearned Words</button>
+    <button class="btn btn-danger left-divider" (click)="onDeleteFromLearnedWords()" [disabled]="!hasSelectedLearnedGridRows">Delete</button>
   </div>
 
   <ag-grid-angular

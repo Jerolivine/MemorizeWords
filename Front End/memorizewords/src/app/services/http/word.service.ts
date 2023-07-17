@@ -38,4 +38,8 @@ export class WordService extends BaseService {
         return this.post("update-is-learned", wordUpdateIsLearnedRequest);
     }
 
+    public deleteWords(ids:number[]) {
+        return this.delete("", ids);
+    }
+
 }

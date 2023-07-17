@@ -89,8 +89,7 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
                             Meaning = p.Meaning,
                             Word = p.Word,
                             WordAnswers = p.WordAnswers,
-                            WritingInLanguage = p.WritingInLanguage,
-                            //Percentage = ((((double)p.WordAnswers.Where(x => x.Answer).Count() / sequentTrueAnswerCount)) * 100).ToString()
+                            WritingInLanguage = p.WritingInLanguage
                         })
                         .ToListAsync();
 
@@ -158,6 +157,12 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
                 .SetProperty(n => n.LearnedDate, n => null));
 
             return learnedWordsSinceOneWeekIds;
+        }
+
+        public async Task DeleteAsync(List<int> ids)
+        {
+            await Queryable().Where(x => ids.Contains(x.Id))
+                .ExecuteDeleteAsync();
         }
 
         private static void ValidationupdateIsLearned(List<int> ids)

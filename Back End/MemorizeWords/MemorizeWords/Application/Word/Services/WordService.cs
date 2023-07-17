@@ -42,5 +42,10 @@ namespace MemorizeWords.Application.Word.Services
             return await _wordRepository.GetQuestionWordsAsync();
         }
 
+        public async Task DeleteAsync(List<int> ids)
+        {
+            await _wordRepository.DeleteAsync(ids);
+        }
+
     }
 }
