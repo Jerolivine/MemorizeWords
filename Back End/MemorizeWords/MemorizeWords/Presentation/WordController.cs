@@ -1,6 +1,7 @@
 ﻿using MemorizeWords.Application.Word.Interfaces;
 using MemorizeWords.Entity;
 using MemorizeWords.Infrastructure.Presentation;
+using MemorizeWords.Infrastructure.Transversal.AppLog.Interfaces;
 using MemorizeWords.Presentation.Models.Request;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,11 +11,15 @@ namespace MemorizeWords.Presentation
     {
         public IWordService _wordService { get; set; }
         public IWordAnswerService _wordAnswerService { get; set; }
+        public IApplicationLogger _logger { get; set; }
+
         public WordController(IWordService wordService,
-            IWordAnswerService wordAnswerService)
+            IWordAnswerService wordAnswerService,
+            IApplicationLogger logger)
         {
             _wordService = wordService;
             _wordAnswerService = wordAnswerService;
+            _logger = logger;
         }
 
         [HttpPost()]
@@ -27,6 +32,7 @@ namespace MemorizeWords.Presentation
         [HttpGet("question-words")]
         public async Task<IResult> GetQuestionWordsAsync()
         {
+            _logger.LogInformation("Test");
             var questionWords = await _wordService.GetQuestionWordsAsync();
             return Results.Ok(questionWords);
         }
