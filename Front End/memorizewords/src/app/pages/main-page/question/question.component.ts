@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { AlertifyService } from 'src/app/services/alertify-service.service';
+import { AlertifyService } from 'src/app/core/services/alertify-service.service';
 import { WordService } from 'src/app/services/http/word.service';
 import { Question } from './model/question';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AnswerResponse } from 'src/app/services/http/model/back/answer-response';
 import { StringCompare } from 'src/app/core/utility/string-utility';
 import { WordAnswerRequest } from 'src/app/services/http/model/call/WordAnswerRequest';
-import { TextToSpeechService } from 'src/app/services/text-to-speech.service';
+import { TextToSpeechService } from 'src/app/core/services/text-to-speech.service';
 import { WordAnswerService } from 'src/app/services/http/word-answer.service';
 
 @Component({

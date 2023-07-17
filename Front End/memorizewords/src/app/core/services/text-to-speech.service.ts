@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import { POLISH_LANGUAGE } from "../core/constants/languages";
-import { ApplicationVariablesService } from "./application-variables.service";
+import { POLISH_LANGUAGE } from "../constants/languages";
+import { ApplicationVariablesService } from "../../services/application-variables.service";
 
 @Injectable({
     providedIn: 'root'
