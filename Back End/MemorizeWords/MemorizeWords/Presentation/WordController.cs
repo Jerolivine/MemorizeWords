@@ -32,7 +32,6 @@ namespace MemorizeWords.Presentation
         [HttpGet("question-words")]
         public async Task<IResult> GetQuestionWordsAsync()
         {
-            _logger.LogInformation("Test");
             var questionWords = await _wordService.GetQuestionWordsAsync();
             return Results.Ok(questionWords);
         }
