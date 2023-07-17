@@ -1,7 +1,5 @@
 ﻿using MemorizeWords.Application.Word.Interfaces;
-using MemorizeWords.Entity;
 using MemorizeWords.Infrastructure.Presentation;
-using MemorizeWords.Infrastructure.Transversal.AppLog.Interfaces;
 using MemorizeWords.Presentation.Models.Request;
 using Microsoft.AspNetCore.Mvc;
 
