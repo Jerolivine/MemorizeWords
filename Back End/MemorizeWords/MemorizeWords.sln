@@ -9,6 +9,8 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MemorizeWords-UnitTest", "..\MemorizeWords-UnitTest\MemorizeWords-UnitTest.csproj", "{5C65D6EF-73D7-44AE-AE94-BD878788F997}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{A1D79678-B9A8-41BF-A5AF-C280520C003D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +32,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3BC2FCF6-CF39-4F30-93D3-3F051A881337} = {A1D79678-B9A8-41BF-A5AF-C280520C003D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {352D18F6-0164-4C43-8047-FFC27E41303A}
