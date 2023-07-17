@@ -11,15 +11,12 @@ namespace MemorizeWords.Presentation
     {
         public IWordService _wordService { get; set; }
         public IWordAnswerService _wordAnswerService { get; set; }
-        public IApplicationLogger _logger { get; set; }
 
         public WordController(IWordService wordService,
-            IWordAnswerService wordAnswerService,
-            IApplicationLogger logger)
+            IWordAnswerService wordAnswerService)
         {
             _wordService = wordService;
             _wordAnswerService = wordAnswerService;
-            _logger = logger;
         }
 
         [HttpPost()]
