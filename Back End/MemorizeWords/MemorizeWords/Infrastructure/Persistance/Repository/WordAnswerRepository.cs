@@ -95,24 +95,26 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
         {
             wordEntity = _dbContext.Word.FirstOrDefault(x => x.Id == wordAnswerRequest.WordId) ?? throw new KeyNotFoundBusinessException($"wordId: {wordAnswerRequest.WordId} couldn't found");
             
-            wordEntity = GetCrossCheckWord(wordAnswerRequest.AnswerLanguageType, wordEntity);
+            string targetLanguage = GetCrossCheckWord(wordAnswerRequest.AnswerLanguageType, wordEntity);
 
-            bool answer = wordEntity.Meaning.ToUpperInvariant().Equals(wordAnswerRequest.GivenAnswerMeaning.ToUpperInvariant().ToUpper(), StringComparison.OrdinalIgnoreCase);
+            bool answer = targetLanguage.ToUpperInvariant().Equals(wordAnswerRequest.GivenAnswerMeaning.ToUpperInvariant().ToUpper(), StringComparison.OrdinalIgnoreCase);
             return answer;
         }
 
-        private WordEntity GetCrossCheckWord(int answerLanguageType, WordEntity wordEntity)
+        private string GetCrossCheckWord(int answerLanguageType, WordEntity wordEntity)
         {
+            string targetLanguage=String.Empty;
+
             if ((LanguageType)answerLanguageType == LanguageType.LearningLanguage)
             {
-                wordEntity.Meaning = wordEntity.Word;
+                targetLanguage = wordEntity.Word;
             }
             else if ((LanguageType)answerLanguageType == LanguageType.UserLanguage)
             {
-                wordEntity.Word = wordEntity.Meaning;
+                targetLanguage = wordEntity.Meaning;
             }
 
-            return wordEntity;
+            return targetLanguage;
         }
         
         private async Task<bool> IsAllAnswersTrue(int wordId)
