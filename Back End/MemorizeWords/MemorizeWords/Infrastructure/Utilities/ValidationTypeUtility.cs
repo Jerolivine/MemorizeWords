@@ -4,9 +4,9 @@ namespace MemorizeWords.Infrastructure.Utilities;
 
 public class ValidationTypeUtility
 {
-    public static void ThrowIfNullOrDefault<T>(T value, string settingsName)
+    public static void ThrowIfNullOrDefault<T>(T value, string exceptionMessage)
     {
         if (EqualityComparer<T>.Default.Equals(value, default(T)))
-            throw new BusinessException($"{settingsName} is not a valid value");
+            throw new BusinessException(exceptionMessage);
     }
 }

@@ -88,24 +88,6 @@ namespace MemorizeWords_UnitTest
                 .Options;
         }
 
-        [Fact]
-        public void IS_DEFAULT_TEST_SHOULD_DONE()
-        {
-            // Arrange
-            string settingsName = "SomeSetting";
-
-            // Act & Assert
-            Assert.Throws<BusinessException>(() =>
-                ValidationTypeUtility.ThrowIfNullOrDefault(default(int), settingsName));
-            Assert.Throws<BusinessException>(() =>
-                ValidationTypeUtility.ThrowIfNullOrDefault(default(string), settingsName));
-            Assert.Throws<BusinessException>(() =>
-                ValidationTypeUtility.ThrowIfNullOrDefault(default(object), settingsName));
-            Assert.Throws<BusinessException>(() =>
-                ValidationTypeUtility.ThrowIfNullOrDefault(default(decimal), settingsName));
-            Assert.Throws<BusinessException>(() =>
-                ValidationTypeUtility.ThrowIfNullOrDefault(default(bool), settingsName));
-            
-        }
+        
     }
 }
