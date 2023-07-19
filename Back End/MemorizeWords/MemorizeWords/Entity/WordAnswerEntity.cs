@@ -7,6 +7,7 @@ namespace MemorizeWords.Entity
         public int Id { get; set; }
         public bool Answer { get; set; }
         public DateTime AnswerDate { get; set; }
+        public int UserId { get; set; }
 
         public int WordId { get; set; }
         public WordEntity Word { get; set; }
