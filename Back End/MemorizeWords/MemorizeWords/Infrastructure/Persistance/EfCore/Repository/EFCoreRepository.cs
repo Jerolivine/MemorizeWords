@@ -2,7 +2,6 @@
 using MemorizeWords.Infrastructure.Entity.Core.Interfaces.Repository;
 using MemorizeWords.Infrastructure.Persistance.FCore.Context;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 using System.Linq.Expressions;
 
 namespace MemorizeWords.Infrastructure.Persistance.Context.Repository

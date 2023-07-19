@@ -10,11 +10,14 @@ namespace MemorizeWords.Presentation
     {
         public IWordService _wordService { get; set; }
         public IWordAnswerService _wordAnswerService { get; set; }
+        public IUserGuessedWords _userGuessedWords { get; set; }
         public WordController(IWordService wordService,
-            IWordAnswerService wordAnswerService)
+            IWordAnswerService wordAnswerService,
+            IUserGuessedWords userGuessedWords)
         {
             _wordService = wordService;
             _wordAnswerService = wordAnswerService;
+            _userGuessedWords = userGuessedWords;
         }
 
         [HttpPost()]
@@ -56,6 +59,13 @@ namespace MemorizeWords.Presentation
             }
 
             return Results.Ok(wordUpdateIsLearnedRequest.Ids);
+        }
+
+        [HttpGet("Test")]
+        public async Task<IResult> Test()
+        {
+            await _userGuessedWords.PublishUserGuessedWords();
+            return Results.Ok();
         }
 
     }

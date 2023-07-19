@@ -4,7 +4,7 @@ using Quartz;
 namespace MemorizeWords.Quartz
 {
     [DisallowConcurrentExecution]
-    public class SetLearnedWordToUnlearnedInOneWeekJob : IJob
+    public class SetLearnedWordToUnlearnedInOneWeekJob : BaseJob
     {
         public IWordRepository _wordRepository { get; set; }
         public IWordAnswerRepository _wordAnswerRepository { get; set; }
@@ -15,17 +15,16 @@ namespace MemorizeWords.Quartz
             _wordAnswerRepository = wordAnswerRepository;
         }
 
-        public async Task Execute(IJobExecutionContext context)
+        protected override async Task ExecuteJob()
         {
             var wordIds = await _wordRepository.SetLearnedWordsSinceOneWeekAsUnlearnedAsync();
 
-            if (wordIds == null || wordIds.Count == 0)
+            if (wordIds is null || wordIds.Count == 0)
             {
                 return;
             }
 
             await _wordAnswerRepository.LeaveEnoughTrueAnswerToMemorize(wordIds);
         }
-
     }
 }

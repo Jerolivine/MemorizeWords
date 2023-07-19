@@ -30,7 +30,7 @@ namespace MemorizeWords_UnitTest
             {
                 WordEntity? wordEntity = AddWord(memorizeWordsDbContext);
 
-                Assert.True(wordEntity == null, "Word didnt added.");
+                Assert.True(wordEntity is null, "Word didnt added.");
             }
         }
 
