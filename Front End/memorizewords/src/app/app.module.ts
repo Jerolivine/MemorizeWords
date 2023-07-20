@@ -18,6 +18,7 @@ import { ProgressbarAgColumnComponent } from './core/components/ag-grid/column/p
 import { ErrorInterceptor } from './services/interceptor/error-interceptor';
 import { TextColumnComponent } from './core/components/ag-grid/column/text-column/text-column.component';
 import { HttpResponseInterceptor } from './services/interceptor/http-response-interceptor';
+import { TextComponent } from './core/components/custom/text/text.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { HttpResponseInterceptor } from './services/interceptor/http-response-in
     BooleanAgColumnComponent,
     QuestionComponent,
     ProgressbarAgColumnComponent,
-    TextColumnComponent
+    TextColumnComponent,
+    TextComponent
   ],
   imports: [
     BrowserModule,
