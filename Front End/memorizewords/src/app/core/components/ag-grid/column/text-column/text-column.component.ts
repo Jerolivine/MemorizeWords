@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { ICellRendererParams } from 'ag-grid-community';
-import { TextToSpeechService } from 'src/app/services/text-to-speech.service';
+import { TextToSpeechService } from 'src/app/core/services/text-to-speech.service';
 
 @Component({
   selector: 'ag-text-column',

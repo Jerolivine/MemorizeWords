@@ -8,7 +8,7 @@ import { AddNewWordComponent } from './pages/main-page/add-new-word/add-new-word
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularMaterialModule } from './modules/angular-material.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { AlertifyService } from './services/alertify-service.service';
+import { AlertifyService } from './core/services/alertify-service.service';
 import { AnswersComponent } from './pages/main-page/answers/answers.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { AngularGridModule } from './modules/angular-grid.module';

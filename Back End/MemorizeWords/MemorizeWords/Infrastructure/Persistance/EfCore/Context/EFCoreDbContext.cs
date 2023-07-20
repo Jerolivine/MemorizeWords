@@ -7,6 +7,7 @@ namespace MemorizeWords.Infrastructure.Persistance.FCore.Context
     {
         public DbSet<WordEntity> Word => Set<WordEntity>();
         public DbSet<WordAnswerEntity> WordAnswer => Set<WordAnswerEntity>();
+        public DbSet<UserHubEntity> UserHub => Set<UserHubEntity>();
 
         public IConfiguration Configuration { get; }
 
