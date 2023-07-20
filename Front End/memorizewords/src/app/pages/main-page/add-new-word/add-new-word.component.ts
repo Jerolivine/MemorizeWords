@@ -3,7 +3,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { WordService } from 'src/app/services/http/word.service';
 import { Word } from 'src/app/services/http/model/call/word'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AlertifyService } from 'src/app/services/alertify-service.service';
+import { AlertifyService } from 'src/app/core/services/alertify-service.service';
 import { WordResponse } from 'src/app/services/http/model/back/word-response';
 
 @Component({

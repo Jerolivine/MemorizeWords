@@ -8,7 +8,7 @@ import { AddNewWordComponent } from './pages/main-page/add-new-word/add-new-word
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularMaterialModule } from './modules/angular-material.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { AlertifyService } from './services/alertify-service.service';
+import { AlertifyService } from './core/services/alertify-service.service';
 import { AnswersComponent } from './pages/main-page/answers/answers.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { AngularGridModule } from './modules/angular-grid.module';
@@ -18,6 +18,7 @@ import { ProgressbarAgColumnComponent } from './core/components/ag-grid/column/p
 import { ErrorInterceptor } from './services/interceptor/error-interceptor';
 import { TextColumnComponent } from './core/components/ag-grid/column/text-column/text-column.component';
 import { HttpResponseInterceptor } from './services/interceptor/http-response-interceptor';
+import { TextComponent } from './core/components/custom/text/text.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { HttpResponseInterceptor } from './services/interceptor/http-response-in
     BooleanAgColumnComponent,
     QuestionComponent,
     ProgressbarAgColumnComponent,
-    TextColumnComponent
+    TextColumnComponent,
+    TextComponent
   ],
   imports: [
     BrowserModule,

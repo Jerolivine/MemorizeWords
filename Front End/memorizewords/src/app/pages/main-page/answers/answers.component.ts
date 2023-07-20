@@ -212,4 +212,28 @@ export class AnswersComponent implements OnInit {
 
   }
 
+  public onDeleteFromUnlearnedWords(){
+    const ids = this.selectedUnlearnedGridRows.map(row => {
+      return row["id"];
+    });
+
+    this.wordService.deleteWords(ids).pipe(
+      concatMap(response => {
+        this.refreshUnlearnedWords();
+        return of();
+      })).subscribe();
+  }
+
+  public onDeleteFromLearnedWords(){
+    const ids = this.selectedLearnedGridRows.map(row => {
+      return row["id"];
+    });
+
+    this.wordService.deleteWords(ids).pipe(
+      concatMap(response => {
+        this.refreshlearnedWords();
+        return of();
+      })).subscribe();
+  }
+
 }

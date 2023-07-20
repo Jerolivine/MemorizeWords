@@ -156,3 +156,6 @@ INSERT INTO dbo.WORD (WORD, MEANING, WRITING_IN_LANGUAGE) VALUES ('Koniec', 'Son
 INSERT INTO dbo.WORD (WORD, MEANING, WRITING_IN_LANGUAGE) VALUES ('X dni temu', 'X gün önce', 'X dni temu');
 INSERT INTO dbo.WORD (WORD, MEANING, WRITING_IN_LANGUAGE) VALUES ('x dni pozniej', 'X gün sonra', 'x dni pozniej');
 INSERT INTO dbo.WORD (WORD, MEANING, WRITING_IN_LANGUAGE) VALUES ('Test', 'Test', 'Test');
+
+Update dbo.WORD
+set LEARNED_DATE = GETDATE()

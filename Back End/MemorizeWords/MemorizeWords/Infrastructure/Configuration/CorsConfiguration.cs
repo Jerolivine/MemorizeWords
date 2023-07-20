@@ -11,11 +11,10 @@
                 options.AddPolicy(MEMORIZE_WORDS_ORIGIN,
                                       policy =>
                                       {
-                                          policy.AllowAnyOrigin()
+                                          policy.AllowAnyMethod()
                                                 .AllowAnyHeader()
-                                                .AllowAnyMethod()
-                                                //.AllowCredentials()
-                                                .SetIsOriginAllowed((host) => true);
+                                                .SetIsOriginAllowed((host) => true)
+                                                .AllowCredentials();
                                       });
             });
         }

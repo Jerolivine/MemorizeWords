@@ -65,6 +65,22 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
 
         }
 
+        public async Task<List<WordAnswerEntity>> GetWordAnswersHub(int? id)
+        {
+            return await Queryable().Where(x => x.Id >= (id ?? 0)).ToListAsync();
+        }
+
+        public async Task<List<WordAnswerEntity>> GetAnswersOfUserIdAsync(int wordId, int userId)
+        {
+            int sequentTrueAnswerCount = _configuration.GetSequentTrueAnswerCount();
+
+            return await Queryable()
+                        .Where(x => x.WordId == wordId && x.UserId == userId)
+                        .OrderByDescending(x => x.AnswerDate)
+                        .Take(sequentTrueAnswerCount)
+                        .ToListAsync();
+        }
+
         private async Task AddEnoughTruAnswer(List<int> wordIds, int enoughAnswerToMemorize)
         {
             foreach (var wordId in wordIds)
