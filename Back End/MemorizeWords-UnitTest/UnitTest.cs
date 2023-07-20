@@ -1,5 +1,7 @@
 using MemorizeWords.Entity;
 using MemorizeWords.Infrastructure.Persistance.FCore.Context;
+using MemorizeWords.Infrastructure.Transversal.Exception.Exceptions;
+using MemorizeWords.Infrastructure.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -82,8 +84,10 @@ namespace MemorizeWords_UnitTest
         private static DbContextOptions<EFCoreDbContext> GetDbContextOptions()
         {
             return new DbContextOptionsBuilder<EFCoreDbContext>()
-                            .UseInMemoryDatabase(databaseName: "TestDatabase")
-                            .Options;
+                .UseInMemoryDatabase(databaseName: "TestDatabase")
+                .Options;
         }
+
+        
     }
 }

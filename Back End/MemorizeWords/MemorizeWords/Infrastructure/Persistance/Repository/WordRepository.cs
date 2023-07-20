@@ -1,5 +1,5 @@
 ﻿using MemorizeWords.Entity;
-using MemorizeWords.Infrastructure.Constants.AppSettings;
+using MemorizeWords.Infrastructure.Constants;
 using MemorizeWords.Infrastructure.Extensions;
 using MemorizeWords.Infrastructure.Persistance.Context.Repository;
 using MemorizeWords.Infrastructure.Persistance.FCore.Context;
@@ -15,6 +15,9 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
 {
     public class WordRepository : EFCoreRepository<WordEntity, int>, IWordRepository, IBusinessRepository
     {
+
+        private const int QUESTION_WORD_COUNT = 20;
+
         private readonly IConfiguration _configuration;
 
         public WordRepository(EFCoreDbContext dbContext,
@@ -89,8 +92,7 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
                             Meaning = p.Meaning,
                             Word = p.Word,
                             WordAnswers = p.WordAnswers,
-                            WritingInLanguage = p.WritingInLanguage,
-                            //Percentage = ((((double)p.WordAnswers.Where(x => x.Answer).Count() / sequentTrueAnswerCount)) * 100).ToString()
+                            WritingInLanguage = p.WritingInLanguage
                         })
                         .ToListAsync();
 
@@ -129,18 +131,45 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
 
         public async Task<List<QuestionWordResponse>> GetQuestionWordsAsync()
         {
-            var randomWords = await Queryable().Where(x => !x.IsLearned)
-                                   .OrderBy(x => Guid.NewGuid())
-                                   .Take(20)
-                                   .Select(x => new QuestionWordResponse()
-                                   {
-                                       Word = x.Word,
-                                       Id = x.Id,
-                                       WritingInLanguage = x.WritingInLanguage,
-                                       Meaning = x.Meaning
-                                   }).ToListAsync();
+            int learningLanguageWordCount = GetLearningLanguageWordCount();
+            int userLanguageWordCount = GetUserLanguageWordCount(learningLanguageWordCount);
+
+            var unlearnedRandomWordBaseQuery = Queryable().Where(x => !x.IsLearned).OrderBy(x => Guid.NewGuid());
+
+            var learningLanguageWords = await unlearnedRandomWordBaseQuery
+                .Take(learningLanguageWordCount)
+                .Select(x => new QuestionWordResponse()
+                {
+                    Word = x.Word,
+                    Id = x.Id,
+                    WritingInLanguage = x.WritingInLanguage,
+                    Meaning = x.Meaning,
+                    AnswerLanguageType = (int)LanguageType.UserLanguage
+                }).ToListAsync();
+
+            var userLanguageWords = await unlearnedRandomWordBaseQuery
+                .Take(userLanguageWordCount)
+                .Select(x => new QuestionWordResponse()
+                {
+                    Word = x.Meaning,
+                    Id = x.Id,
+                    Meaning = x.Word,
+                    AnswerLanguageType = (int)LanguageType.LearningLanguage
+                }).ToListAsync();
+
+            var randomWords = learningLanguageWords.Concat(userLanguageWords).ToList();
 
             return randomWords;
+        }
+
+        private static int GetUserLanguageWordCount(int learningLanguageWordCount)
+        {
+            return QUESTION_WORD_COUNT - learningLanguageWordCount;
+        }
+
+        private static int GetLearningLanguageWordCount()
+        {
+            return new Random().Next(0, QUESTION_WORD_COUNT + 1);
         }
 
         public async Task<List<int>> SetLearnedWordsSinceOneWeekAsUnlearnedAsync()
