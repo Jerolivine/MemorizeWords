@@ -103,18 +103,9 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
 
         private string GetCrossCheckWord(int answerLanguageType, WordEntity wordEntity)
         {
-            string targetLanguage=String.Empty;
-
-            if ((LanguageType)answerLanguageType == LanguageType.LearningLanguage)
-            {
-                targetLanguage = wordEntity.Word;
-            }
-            else if ((LanguageType)answerLanguageType == LanguageType.UserLanguage)
-            {
-                targetLanguage = wordEntity.Meaning;
-            }
-
-            return targetLanguage;
+            return (LanguageType)answerLanguageType == LanguageType.LearningLanguage
+                ? wordEntity.Word
+                : wordEntity.Meaning;
         }
         
         private async Task<bool> IsAllAnswersTrue(int wordId)
