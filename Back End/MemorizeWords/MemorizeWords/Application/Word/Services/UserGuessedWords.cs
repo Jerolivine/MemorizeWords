@@ -2,11 +2,10 @@
 using MemorizeWords.Entity;
 using MemorizeWords.Infrastructure.Application.Interfaces;
 using MemorizeWords.Infrastructure.Extensions;
-using MemorizeWords.Infrastructure.Persistance.Repository.Interfaces;
+using MemorizeWords.Infrastructure.Persistence.Repository.Interfaces;
 using MemorizeWords.SignalR.Hubs;
 using MemorizeWords.SignalR.Interfaces;
 using Microsoft.AspNetCore.SignalR;
-using Quartz;
 
 namespace MemorizeWords.Application.Word.Services
 {

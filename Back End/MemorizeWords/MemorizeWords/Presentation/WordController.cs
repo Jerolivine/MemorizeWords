@@ -7,9 +7,9 @@ namespace MemorizeWords.Presentation
 {
     public class WordController : BaseController
     {
-        public IWordService _wordService { get; set; }
-        public IWordAnswerService _wordAnswerService { get; set; }
-        public IUserGuessedWords _userGuessedWords { get; set; }
+        private readonly IWordService _wordService;
+        private readonly IWordAnswerService _wordAnswerService;
+        private readonly IUserGuessedWords _userGuessedWords;
 
         public WordController(IWordService wordService,
             IWordAnswerService wordAnswerService,

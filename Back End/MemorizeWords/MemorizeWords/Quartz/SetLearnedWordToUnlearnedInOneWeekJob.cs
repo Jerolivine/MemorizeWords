@@ -1,4 +1,4 @@
-﻿using MemorizeWords.Infrastructure.Persistance.Repository.Interfaces;
+﻿using MemorizeWords.Infrastructure.Persistence.Repository.Interfaces;
 using Quartz;
 
 namespace MemorizeWords.Quartz

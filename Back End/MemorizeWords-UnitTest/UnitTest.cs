@@ -1,5 +1,5 @@
 using MemorizeWords.Entity;
-using MemorizeWords.Infrastructure.Persistance.FCore.Context;
+using MemorizeWords.Infrastructure.Persistence.EfCore.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 

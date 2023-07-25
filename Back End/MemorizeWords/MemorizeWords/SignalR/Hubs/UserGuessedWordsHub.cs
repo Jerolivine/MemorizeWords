@@ -1,6 +1,4 @@
-﻿using MemorizeWords.Entity;
-using MemorizeWords.Infrastructure.Extensions;
-using MemorizeWords.Infrastructure.Persistance.Repository.Interfaces;
+﻿using MemorizeWords.Infrastructure.Persistence.Repository.Interfaces;
 using MemorizeWords.SignalR.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 
@@ -22,9 +20,9 @@ namespace MemorizeWords.SignalR.Hubs
         {
 
             // TODO-Arda : Token Handler
-            var userId = Context.GetHttpContext().Request.Headers["UserId"].ToString();
+            var userId = Context?.GetHttpContext()?.Request.Headers["UserId"].ToString();
 
-            if(userId is null )
+            if(userId is null)
             {
                 return;
             }

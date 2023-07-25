@@ -1,6 +1,5 @@
 ﻿using MemorizeWords.Infrastructure.Configuration.MinimalAPI.Interfaces;
 using MemorizeWords.Infrastructure.Utilities;
-using System.Reflection;
 
 namespace MemorizeWords.Infrastructure.Configuration.MinimalAPI
 {
@@ -19,7 +18,7 @@ namespace MemorizeWords.Infrastructure.Configuration.MinimalAPI
                 IInitializer initializer = (IInitializer)Activator.CreateInstance(implementationType);
 
                 // Call the interface method
-                initializer.Initialize(app);
+                initializer?.Initialize(app);
             }
 
         }

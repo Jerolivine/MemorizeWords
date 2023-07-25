@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using MemorizeWords.Entity;
 using Microsoft.EntityFrameworkCore;
-using MemorizeWords.Entity;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace MemorizeWords.Infrastructure.Persistance.FCore.Context.Configurations
+namespace MemorizeWords.Infrastructure.Persistence.EfCore.Context.Configurations
 {
     public class WordAnswerEntityConfiguration : IEntityTypeConfiguration<WordAnswerEntity>
     {
