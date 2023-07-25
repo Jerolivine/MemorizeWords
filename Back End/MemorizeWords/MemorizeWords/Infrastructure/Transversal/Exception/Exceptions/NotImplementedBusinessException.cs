@@ -19,5 +19,16 @@ namespace MemorizeWords.Infrastructure.Transversal.Exception.Exceptions
                 throw new NotImplementedBusinessException(message);
             }
         }
+
+        [DoesNotReturn]
+        public static void ThrowIfNull<T>([NotNull] IEnumerable<T> argument, string message = null)
+        {
+            ThrowIfNull(argument, message);
+
+            if (!argument.Any())
+            {
+                throw new NotImplementedBusinessException(message);
+            }
+        }
     }
 }

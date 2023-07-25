@@ -1,4 +1,4 @@
-﻿using MemorizeWords.Application.Word.Interfaces;
+﻿using MemorizeWords.Application.UserGuessedWords.Interfaces;
 using Quartz;
 
 namespace MemorizeWords.Quartz
@@ -6,9 +6,9 @@ namespace MemorizeWords.Quartz
     [DisallowConcurrentExecution]
     public class UserGuessedWordsJob : BaseJob
     {
-        public IUserGuessedWords _userGuessedWords { get; set; }
+        public IUserGuessedWordsService _userGuessedWords { get; set; }
 
-        public UserGuessedWordsJob(IUserGuessedWords userGuessedWords)
+        public UserGuessedWordsJob(IUserGuessedWordsService userGuessedWords)
         {
             _userGuessedWords = userGuessedWords;
         }

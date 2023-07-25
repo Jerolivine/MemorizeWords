@@ -2,6 +2,6 @@
 {
     public interface IUserGuessedWordsHub
     {
-        Task ReceiveMessageAsync(string message);
+        Task ReceiveUserGuessedWords(string message);
     }
 }

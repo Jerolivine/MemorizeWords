@@ -1,4 +1,5 @@
-﻿using MemorizeWords.Application.Word.Interfaces;
+﻿using MemorizeWords.Application.UserGuessedWords.Interfaces;
+using MemorizeWords.Application.Word.Interfaces;
 using MemorizeWords.Entity;
 using MemorizeWords.Infrastructure.Presentation;
 using MemorizeWords.Presentation.Models.Request;
@@ -10,10 +11,10 @@ namespace MemorizeWords.Presentation
     {
         public IWordService _wordService { get; set; }
         public IWordAnswerService _wordAnswerService { get; set; }
-        public IUserGuessedWords _userGuessedWords { get; set; }
+        public IUserGuessedWordsService _userGuessedWords { get; set; }
         public WordController(IWordService wordService,
             IWordAnswerService wordAnswerService,
-            IUserGuessedWords userGuessedWords)
+            IUserGuessedWordsService userGuessedWords)
         {
             _wordService = wordService;
             _wordAnswerService = wordAnswerService;

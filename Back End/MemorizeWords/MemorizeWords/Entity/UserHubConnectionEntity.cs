@@ -2,9 +2,10 @@
 
 namespace MemorizeWords.Entity
 {
-    public class UserHubEntity : IEntity<int>
+    public class UserHubConnectionEntity : IEntity<int>
     {
         public int Id { get; set; }
-        public int WordAnswerId { get; set; }
+        public int UserId { get; set; }
+        public string HubContext { get; set; }
     }
 }

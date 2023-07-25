@@ -7,33 +7,33 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MemorizeWords.Infrastructure.Persistance.Repository
 {
-    public class UserHubRepository : EFCoreRepository<UserHubEntity, int>, IUserHubRepository, IBusinessRepository
+    public class UserHubRepository : EFCoreRepository<UserWordHubEntity, int>, IUserHubRepository, IBusinessRepository
     {
         public UserHubRepository(EFCoreDbContext dbContext) : base(dbContext)
         {
+
         }
 
-        public async Task UpdateUserHubAsnyc(int wordAnswerId)
+        public async Task<int?> GetLatestWordAnswerId()
         {
-            UserHubEntity entity = await GetUserHubAsync();
-            if (entity is null)
+            return await Queryable().OrderByDescending(x => x.WordAnswerId).Select(x => x.WordAnswerId).FirstOrDefaultAsync();
+        }
+
+        public async Task UpdateUserHubAsync(int wordAnswerId)
+        {
+            var userHub = await Queryable().FirstOrDefaultAsync();
+            if (userHub is null)
             {
-                await AddAsnyc(new UserHubEntity()
+                await AddAsnyc(new()
                 {
                     WordAnswerId = wordAnswerId
                 });
             }
             else
             {
-                entity.WordAnswerId = wordAnswerId;
+                userHub.WordAnswerId = wordAnswerId;
                 await _dbContext.SaveChangesAsync();
             }
         }
-
-        public async Task<UserHubEntity> GetUserHubAsync()
-        {
-            return await Queryable().FirstOrDefaultAsync();
-        }
-
     }
 }

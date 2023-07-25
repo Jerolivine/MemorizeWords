@@ -1,10 +1,8 @@
-﻿using MemorizeWords.Entity;
-
-namespace MemorizeWords.Infrastructure.Persistance.Repository.Interfaces
+﻿namespace MemorizeWords.Infrastructure.Persistance.Repository.Interfaces
 {
     public interface IUserHubRepository
     {
-        Task UpdateUserHubAsnyc(int wordAnswerId);
-        Task<UserHubEntity> GetUserHubAsync();
+        Task<int?> GetLatestWordAnswerId();
+        Task UpdateUserHubAsync(int wordAnswerId);
     }
 }

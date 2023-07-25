@@ -65,7 +65,7 @@ namespace MemorizeWords_UnitTest
 
                 bool answer = wordEntity.Meaning.ToUpper().Equals(MEANING.ToUpper());
 
-                memorizeWordsDbContext.WordAnswer.Add(new WordAnswerEntity()
+                memorizeWordsDbContext.WordAnswer.Add(new ()
                 {
                     WordId = wordEntity.Id,
                     Answer = answer,

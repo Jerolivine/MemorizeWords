@@ -9,17 +9,21 @@ using MemorizeWords.Presentation.Models.Dto;
 using MemorizeWords.Presentation.Models.Request;
 using MemorizeWords.Presentation.Models.Response;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace MemorizeWords.Infrastructure.Persistance.Repository
 {
     public class WordRepository : EFCoreRepository<WordEntity, int>, IWordRepository, IBusinessRepository
     {
         private readonly IConfiguration _configuration;
+        public IWordCommonRepository _wordCommonRepository { get; set; }
 
         public WordRepository(EFCoreDbContext dbContext,
-            IConfiguration configuration) : base(dbContext)
+            IConfiguration configuration,
+            IWordCommonRepository wordCommonRepository) : base(dbContext)
         {
             _configuration = configuration;
+            _wordCommonRepository = wordCommonRepository;
         }
 
         public async Task<WordEntity> AddWordAsync(WordAddRequest wordAddRequest)
@@ -31,6 +35,7 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
             {
                 wordEntity.Meaning = wordAddRequest.Meaning.TrimEnd();
                 wordEntity.WritingInLanguage = wordEntity.WritingInLanguage.TrimEnd();
+                await _dbContext.SaveChangesAsync();
             }
             else
             {
@@ -44,7 +49,12 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
         public async Task UpdateIsLearnedAsync(WordUpdateIsLearnedRequest wordUpdateIsLearnedRequest)
         {
             ValidationupdateIsLearned(wordUpdateIsLearnedRequest.Ids);
+            await SetWordIsLearnedInformation(wordUpdateIsLearnedRequest);
 
+        }
+
+        private async Task SetWordIsLearnedInformation(WordUpdateIsLearnedRequest wordUpdateIsLearnedRequest)
+        {
             if (wordUpdateIsLearnedRequest.IsLearned)
             {
                 await Queryable().Where(x => wordUpdateIsLearnedRequest.Ids.Contains(x.Id))
@@ -60,21 +70,21 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
                     s.SetProperty(n => n.IsLearned, n => wordUpdateIsLearnedRequest.IsLearned)
                 );
             }
-
-
         }
 
         public async Task<List<WordResponse>> UnLearnedWordsAsync()
-        {
+            => await GetWordDetail(x => !x.IsLearned);
 
+        private async Task<List<WordResponse>> GetWordDetail(Expression<Func<WordEntity, bool>> expression)
+        {
             int sequentTrueAnswerCount = _configuration.GetSequentTrueAnswerCount();
-            var unlearnedWords = await Queryable().Where(x => !x.IsLearned)
+            var words = await Queryable().Where(expression)
                         .Select(x => new
                         {
                             WordId = x.Id,
-                            Meaning = x.Meaning,
-                            Word = x.Word,
-                            WritingInLanguage = x.WritingInLanguage,
+                            x.Meaning,
+                            x.Word,
+                            x.WritingInLanguage,
                             WordAnswers = x.WordAnswers.OrderByDescending(x => x.AnswerDate).Take(sequentTrueAnswerCount).Select(x => new WordAnswerDto()
                             {
                                 Answer = x.Answer,
@@ -88,18 +98,17 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
                             Meaning = p.Meaning,
                             Word = p.Word,
                             WordAnswers = p.WordAnswers,
-                            WritingInLanguage = p.WritingInLanguage,
-                            //Percentage = ((((double)p.WordAnswers.Where(x => x.Answer).Count() / sequentTrueAnswerCount)) * 100).ToString()
+                            WritingInLanguage = p.WritingInLanguage
                         })
                         .ToListAsync();
 
-            foreach (var unlearnedWord in unlearnedWords)
+            foreach (var word in words)
             {
-                int trueAnswerCount = GetTrueAnswerCount(unlearnedWord);
-                unlearnedWord.Percentage = (((double)trueAnswerCount / sequentTrueAnswerCount) * 100).ToString();
+                int trueAnswerCount = _wordCommonRepository.GetTrueAnswerCount(word);
+                word.Percentage = ((double)trueAnswerCount / sequentTrueAnswerCount * 100).ToString();
             }
 
-            return unlearnedWords;
+            return words;
         }
 
         public async Task<List<WordResponse>> LearnedWordsAsync()
@@ -152,9 +161,9 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
             }
 
             await Queryable().Where(x => learnedWordsSinceOneWeekIds.Contains(x.Id))
-            .ExecuteUpdateAsync(s =>
-                s.SetProperty(n => n.IsLearned, n => false)
-                .SetProperty(n => n.LearnedDate, n => null));
+                  .ExecuteUpdateAsync(s =>
+                      s.SetProperty(n => n.IsLearned, n => false)
+                       .SetProperty(n => n.LearnedDate, n => null));
 
             return learnedWordsSinceOneWeekIds;
         }
@@ -164,22 +173,14 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
             NotImplementedBusinessException.ThrowIfNull(ids, "ids Cannot Be Empty");
         }
 
-        private static int GetTrueAnswerCount(WordResponse unlearnedWord)
+        public async Task<List<WordResponse>> GetWordAnswersHub(List<int> wordIds)
         {
-            int trueAnswerCount = 0;
-            foreach (var wordAnswer in unlearnedWord.WordAnswers)
+            if(wordIds?.Count == 0)
             {
-                if (wordAnswer.Answer)
-                {
-                    trueAnswerCount++;
-                }
-                else
-                {
-                    break;
-                }
+                return null;
             }
 
-            return trueAnswerCount;
+            return await GetWordDetail(x => wordIds.Contains(x.Id));
         }
 
     }
