@@ -7,14 +7,11 @@ import { SignalRService } from './core/services/hub/signalr/signalr.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
 
   constructor() {
     console.info("environment: " + environment.environmentName);
   }
 
-  ngOnInit(): void {
-
-  }
 }
 
