@@ -1,6 +1,6 @@
 ﻿using MemorizeWords.Entity;
 
-namespace MemorizeWords.Infrastructure.Persistance.Repository.Interfaces
+namespace MemorizeWords.Infrastructure.Persistence.Repository.Interfaces
 {
     public interface IUserHubRepository
     {

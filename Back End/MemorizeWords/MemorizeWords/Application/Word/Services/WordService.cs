@@ -1,7 +1,7 @@
 ﻿using MemorizeWords.Application.Word.Interfaces;
 using MemorizeWords.Entity;
 using MemorizeWords.Infrastructure.Application.Interfaces;
-using MemorizeWords.Infrastructure.Persistance.Repository.Interfaces;
+using MemorizeWords.Infrastructure.Persistence.Repository.Interfaces;
 using MemorizeWords.Presentation.Models.Request;
 using MemorizeWords.Presentation.Models.Response;
 

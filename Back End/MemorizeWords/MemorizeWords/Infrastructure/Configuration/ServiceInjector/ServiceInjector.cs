@@ -1,5 +1,5 @@
 ﻿using MemorizeWords.Infrastructure.Application.Interfaces;
-using MemorizeWords.Infrastructure.Persistance.Interfaces;
+using MemorizeWords.Infrastructure.Persistence.Interfaces;
 
 namespace MemorizeWords.Infrastructure.Configuration.ServiceInjector
 {

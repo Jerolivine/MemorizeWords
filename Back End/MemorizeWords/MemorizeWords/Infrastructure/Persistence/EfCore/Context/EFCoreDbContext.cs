@@ -1,7 +1,7 @@
 ﻿using MemorizeWords.Entity;
 using Microsoft.EntityFrameworkCore;
 
-namespace MemorizeWords.Infrastructure.Persistance.FCore.Context
+namespace MemorizeWords.Infrastructure.Persistence.EfCore.Context
 {
     public class EFCoreDbContext : DbContext
     {
