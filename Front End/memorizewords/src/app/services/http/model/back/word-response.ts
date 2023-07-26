@@ -6,5 +6,6 @@ export interface WordResponse {
     meaning: string;
     percentage:string;
     writingInLanguage:string;
+    isLearned:boolean;
     wordAnswers: WordAnswer[];
 }

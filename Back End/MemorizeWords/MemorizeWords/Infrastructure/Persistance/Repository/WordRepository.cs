@@ -85,6 +85,7 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
                             x.Meaning,
                             x.Word,
                             x.WritingInLanguage,
+                            x.IsLearned,
                             WordAnswers = x.WordAnswers.OrderByDescending(x => x.AnswerDate).Take(sequentTrueAnswerCount).Select(x => new WordAnswerDto()
                             {
                                 Answer = x.Answer,
@@ -97,8 +98,9 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
                             WordId = p.WordId,
                             Meaning = p.Meaning,
                             Word = p.Word,
+                            WritingInLanguage = p.WritingInLanguage,
+                            IsLearned = p.IsLearned,
                             WordAnswers = p.WordAnswers,
-                            WritingInLanguage = p.WritingInLanguage
                         })
                         .ToListAsync();
 

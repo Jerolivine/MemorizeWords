@@ -134,7 +134,7 @@ namespace MemorizeWords.Application.UserGuessedWords.Services
                 return;
             }
 
-            await _userGuessedWordsHub.Clients.Group(userId).ReceiveUserGuessedWords(userAnswers.ToJson());
+            await _userGuessedWordsHub.Clients.Group(userId).ReceiveUserGuessedWords(userAnswers.ToCamelCaseJson());
         }
 
         private static int GetLatestWordAnswerId(List<WordAnswerEntity> wordAnswerUserHub)

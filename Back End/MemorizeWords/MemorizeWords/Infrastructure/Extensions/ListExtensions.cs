@@ -15,5 +15,17 @@ namespace MemorizeWords.Infrastructure.Extensions
             };
             return JsonSerializer.Serialize(list, options);
         }
+
+        public static string ToCamelCaseJson<T>(this List<T> list)
+        {
+            var options = new JsonSerializerOptions
+            {
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
+                WriteIndented = true,
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+            return JsonSerializer.Serialize(list, options);
+        }
+
     }
 }

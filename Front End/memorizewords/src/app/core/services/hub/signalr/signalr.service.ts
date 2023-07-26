@@ -2,7 +2,7 @@ import { HubConnectionBuilder, HubConnection, IHttpConnectionOptions } from '@mi
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import * as signalR from '@microsoft/signalr';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import {  Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -17,32 +17,21 @@ export class SignalRService {
 
   }
 
-  private get headers(): signalR.MessageHeaders {
-
-    // TODO-Arda : Token Handler
-    const headers: signalR.MessageHeaders = {
-      'UserId': '0'
-    }
-
-    return headers;
-
-  }
-
   startEvent(hubName: string, eventName: string): Observable<any> {
     const eventSubject = new Subject<any>();
     this.eventDictionary.set(eventName, eventSubject);
 
     var hubConnection = this.createHubConnection(hubName);
     hubConnection.start().then(() => {
-      console.log('SignalR connection started.');
+      // console.log('SignalR connection started.');
     })
       .catch(err => {
-        console.error('Error starting SignalR connection:', err);
+        // console.error('Error starting SignalR connection:', err);
       });
 
     hubConnection.on(eventName, (data) => {
-      // Handle the received event data
-      eventSubject.next(data);
+      var obj = JSON.parse(data);
+      eventSubject.next(obj);
       // console.log('Event received:', data);
     });
 
@@ -66,7 +55,6 @@ export class SignalRService {
           skipNegotiation: true,
           withCredentials: true,
           transport: signalR.HttpTransportType.WebSockets,
-          // headers: this.headers,
           accessTokenFactory() {
             // TODO-Arda : Token Handler
             return "0";

@@ -10,6 +10,7 @@ import { BehaviorSubject, Observable, concatMap, of } from 'rxjs';
 import { ProgressbarAgColumnComponent } from 'src/app/core/components/ag-grid/column/progressbar-ag-column/progressbar-ag-column.component';
 import { TextColumnComponent } from 'src/app/core/components/ag-grid/column/text-column/text-column.component';
 import { WordUpdateIsLearnedRequest } from 'src/app/services/http/model/call/WordUpdateIsLearnedRequest';
+import { WordAnswer } from 'src/app/services/http/model/dto/word-answer';
 
 @Component({
   selector: 'answers',
@@ -35,6 +36,7 @@ export class AnswersComponent implements OnInit {
   }
 
   @Input() public refreshData$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  @Input() userGuessedWordsHub$: BehaviorSubject<WordResponse[]> = new BehaviorSubject<WordResponse[]>([]);
 
   @ViewChild('gridUnlearned') gridUnlearned: AgGridAngular;
 
@@ -70,12 +72,35 @@ export class AnswersComponent implements OnInit {
   ngOnInit() {
     this.setGridDefaultColDef();
     this.refreshGrids();
+    this.listenUserGuessedWordsHub();
 
     this.refreshData$.subscribe(response => {
       if (!response) {
         return;
       }
       this.refreshGrids();
+    });
+  }
+
+  private listenUserGuessedWordsHub() {
+    this.userGuessedWordsHub$.subscribe(datas => {
+
+      const unLearnedWordsHub = datas.filter(x => !x.isLearned);
+      const learnedWordsHub = datas.filter(x => x.isLearned);
+
+      if (unLearnedWordsHub?.length > 0) {
+        unLearnedWordsHub.forEach(unlearnedWord => {
+          const unlearnedWordAnswers: WordAnswer[] = unlearnedWord.wordAnswers;
+
+          const unlearnedWordDataSource = this.unlearnedWords.find(x => x["id"] == unlearnedWord.wordId);
+          unlearnedWordDataSource
+
+        });
+      }
+
+      console.log("listened Data :" + JSON.stringify(datas));
+      debugger;
+
     });
   }
 
@@ -112,23 +137,42 @@ export class AnswersComponent implements OnInit {
             hasTextToSpeech: true
           }
 
-          for (let index = 0; index < this.SEQUENT_TRUE_ANSWER_COUNT; index++) {
-            const answerProperty = 'answer' + (index + 1).toString();
-            answerObj[answerProperty] = null;
-          }
+          // for (let index = 0; index < this.SEQUENT_TRUE_ANSWER_COUNT; index++) {
+          //   const answerProperty = 'answer' + (index + 1).toString();
+          //   answerObj[answerProperty] = null;
+          // }
 
-          let lastIndex = 0;
-          wordAnswer.wordAnswers.forEach((wordAnswer, index) => {
-            lastIndex++;
-            const answerProperty = 'answer' + (index + 1);
-            answerObj[answerProperty] = wordAnswer.answer;
-          });
+          // let lastIndex = 0;
+          // wordAnswer.wordAnswers.forEach((wordAnswer, index) => {
+          //   lastIndex++;
+          //   const answerProperty = 'answer' + (index + 1);
+          //   answerObj[answerProperty] = wordAnswer.answer;
+          // });
 
-          this.unlearnedWords.push(answerObj);
+          // this.unlearnedWords.push(answerObj);
         });
       }
 
     });
+  }
+
+  private setAnswers() {
+
+    const answers = {};
+
+    for (let index = 0; index < this.SEQUENT_TRUE_ANSWER_COUNT; index++) {
+      const answerProperty = 'answer' + (index + 1).toString();
+      answerObj[answerProperty] = null;
+    }
+
+    let lastIndex = 0;
+    wordAnswer.wordAnswers.forEach((wordAnswer, index) => {
+      lastIndex++;
+      const answerProperty = 'answer' + (index + 1);
+      answerObj[answerProperty] = wordAnswer.answer;
+    });
+
+    this.unlearnedWords.push(answerObj);
   }
 
   private refreshlearnedWords() {
@@ -173,7 +217,7 @@ export class AnswersComponent implements OnInit {
     this.selectedLearnedGridRows = this.getSelectedRows(event);
   }
 
-  private getSelectedRows(event:any){
+  private getSelectedRows(event: any) {
     const selectedRows: RowNode[] = event.api.getSelectedNodes();
     const selectedRowData = selectedRows.map(node => node.data);
 
