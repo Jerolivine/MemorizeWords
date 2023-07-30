@@ -1,6 +1,5 @@
 ﻿using MemorizeWords.Application.UserGuessedWords.Interfaces;
 using MemorizeWords.Application.Word.Interfaces;
-using MemorizeWords.Entity;
 using MemorizeWords.Infrastructure.Presentation;
 using MemorizeWords.Presentation.Models.Request;
 using Microsoft.AspNetCore.Mvc;

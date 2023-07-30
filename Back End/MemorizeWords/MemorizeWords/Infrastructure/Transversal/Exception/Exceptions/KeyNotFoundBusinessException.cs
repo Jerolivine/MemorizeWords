@@ -1,7 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
-
-namespace MemorizeWords.Infrastructure.Transversal.Exception.Exceptions
+﻿namespace MemorizeWords.Infrastructure.Transversal.Exception.Exceptions
 {
     [Serializable]
     public class KeyNotFoundBusinessException : BusinessException

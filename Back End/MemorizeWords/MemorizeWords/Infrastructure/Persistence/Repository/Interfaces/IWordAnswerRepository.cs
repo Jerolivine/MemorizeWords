@@ -2,7 +2,7 @@
 using MemorizeWords.Presentation.Models.Request;
 using MemorizeWords.Presentation.Models.Response;
 
-namespace MemorizeWords.Infrastructure.Persistance.Repository.Interfaces
+namespace MemorizeWords.Infrastructure.Persistence.Repository.Interfaces
 {
     public interface IWordAnswerRepository
     {

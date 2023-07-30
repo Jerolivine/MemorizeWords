@@ -12,6 +12,7 @@ builder.ConfigureCORS();
 builder.ConfigureEfCore();
 builder.InjectServices();
 builder.ConfigureJobs();
+builder.ConfigureLog();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -21,6 +22,7 @@ builder.Services.AddSignalR();
 var app = builder.Build();
 
 app.MapControllers();
+app.ConfigureLog(builder.Configuration);
 
 app.AddExceptionMiddieware();
 app.ConfigureSwagger();

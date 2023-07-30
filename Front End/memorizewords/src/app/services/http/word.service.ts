@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BaseService } from './base-service';
+import { BaseService } from '../../core/services/http/base-service';
 import { Word } from './model/call/word';
 import { WordResponse } from './model/back/word-response';
 import { Observable } from 'rxjs';
 import { QuestionWordResponse } from './model/back/question-word-response';
-import { WordAnswerRequest } from './model/call/WordAnswerRequest';
 import { WordUpdateIsLearnedRequest } from './model/call/WordUpdateIsLearnedRequest';
 
 @Injectable({
@@ -37,6 +36,10 @@ export class WordService extends BaseService {
 
     public updateIsLearned(wordUpdateIsLearnedRequest: WordUpdateIsLearnedRequest) {
         return this.post("update-is-learned", wordUpdateIsLearnedRequest);
+    }
+
+    public deleteWords(ids:number[]) {
+        return this.delete("", ids);
     }
 
 }

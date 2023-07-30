@@ -1,15 +1,13 @@
 ﻿using MemorizeWords.Application.UserGuessedWords.Interfaces;
-using MemorizeWords.Application.UserHubConnection.Interfaces;
 using MemorizeWords.Entity;
 using MemorizeWords.Infrastructure.Application.Interfaces;
 using MemorizeWords.Infrastructure.Extensions;
-using MemorizeWords.Infrastructure.Persistance.Repository;
 using MemorizeWords.Infrastructure.Persistance.Repository.Interfaces;
+using MemorizeWords.Infrastructure.Persistence.Repository.Interfaces;
 using MemorizeWords.Presentation.Models.Response;
 using MemorizeWords.SignalR.Hubs;
 using MemorizeWords.SignalR.Interfaces;
 using Microsoft.AspNetCore.SignalR;
-using Quartz;
 
 namespace MemorizeWords.Application.UserGuessedWords.Services
 {
@@ -66,7 +64,7 @@ namespace MemorizeWords.Application.UserGuessedWords.Services
             bool hasNewAnswers = HasNewAnswers(wordAnswers);
             if (!hasNewAnswers)
             {
-                return(false,null);
+                return (false, null);
             }
 
             return (true, wordAnswers);

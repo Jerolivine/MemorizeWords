@@ -1,7 +1,5 @@
 ﻿using MemorizeWords.Application.UserHubConnection.Interfaces;
-using MemorizeWords.Entity;
-using MemorizeWords.Infrastructure.Extensions;
-using MemorizeWords.Infrastructure.Persistance.Repository.Interfaces;
+using MemorizeWords.Infrastructure.Persistence.Repository.Interfaces;
 using MemorizeWords.SignalR.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 using System.Collections.Concurrent;
@@ -10,7 +8,7 @@ namespace MemorizeWords.SignalR.Hubs
 {
     public class UserGuessedWordsHub : Hub<IUserGuessedWordsHub>
     {
-        private static readonly ConcurrentDictionary<string, string> activeGroups = new ();
+        private static readonly ConcurrentDictionary<string, string> activeGroups = new();
         public IWordAnswerRepository _wordAnswerRepository { get; set; }
         public IUserHubConnectionService _userHubConnectionService { get; set; }
 
@@ -84,7 +82,7 @@ namespace MemorizeWords.SignalR.Hubs
                 await _userHubConnectionService.DeleteUser(int.Parse(userId));
                 await SendClientDisconnectedMessage(userId);
             }
-            
+
         }
 
         private async Task SendClientDisconnectedMessage(string userId)

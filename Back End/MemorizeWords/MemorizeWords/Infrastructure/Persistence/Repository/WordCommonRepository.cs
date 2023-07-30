@@ -1,5 +1,5 @@
-﻿using MemorizeWords.Infrastructure.Persistance.Interfaces;
-using MemorizeWords.Infrastructure.Persistance.Repository.Interfaces;
+﻿using MemorizeWords.Infrastructure.Persistance.Repository.Interfaces;
+using MemorizeWords.Infrastructure.Persistence.Interfaces;
 using MemorizeWords.Presentation.Models.Response;
 
 namespace MemorizeWords.Infrastructure.Persistance.Repository

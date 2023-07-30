@@ -1,6 +1,6 @@
 ﻿using MemorizeWords.Infrastructure.Entity.Core.Interfaces.Repository;
-using MemorizeWords.Infrastructure.Persistance.Context.Repository;
-using MemorizeWords.Infrastructure.Persistance.FCore.Context;
+using MemorizeWords.Infrastructure.Persistence.EfCore.Context;
+using MemorizeWords.Infrastructure.Persistence.EfCore.Repository;
 
 namespace MemorizeWords.Infrastructure.Configuration.DbConfiguration.EfCore
 {

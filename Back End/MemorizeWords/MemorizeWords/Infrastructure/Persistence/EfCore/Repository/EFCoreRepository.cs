@@ -1,10 +1,11 @@
-﻿using MemorizeWords.Infrastructure.Entity.Core.Interfaces;
+﻿using System.Linq.Expressions;
+using MemorizeWords.Infrastructure.Entity.Core.Interfaces;
 using MemorizeWords.Infrastructure.Entity.Core.Interfaces.Repository;
-using MemorizeWords.Infrastructure.Persistance.FCore.Context;
+using MemorizeWords.Infrastructure.Persistence.EfCore.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace MemorizeWords.Infrastructure.Persistance.Context.Repository
+namespace MemorizeWords.Infrastructure.Persistence.EfCore.Repository
 {
     public class EFCoreRepository<TEntity, TPrimaryKey> : IRepository<TEntity, TPrimaryKey> where TEntity : class, IEntity<TPrimaryKey>, new() where TPrimaryKey : struct
     {

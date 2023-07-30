@@ -1,4 +1,1 @@
-<i *ngIf="value.hasTextToSpeech" class="fa-solid fa-volume-high pointer" (click)="onSpeechClick()"></i>
-<span>
-    {{value.value}}
-</span>
+<app-text [Text]="value.value" HasTextToSpeech="value.hasTextToSpeech"></app-text>

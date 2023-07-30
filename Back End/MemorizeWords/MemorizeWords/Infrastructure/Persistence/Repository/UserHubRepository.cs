@@ -1,8 +1,8 @@
 ﻿using MemorizeWords.Entity;
-using MemorizeWords.Infrastructure.Persistance.Context.Repository;
-using MemorizeWords.Infrastructure.Persistance.FCore.Context;
-using MemorizeWords.Infrastructure.Persistance.Interfaces;
 using MemorizeWords.Infrastructure.Persistance.Repository.Interfaces;
+using MemorizeWords.Infrastructure.Persistence.EfCore.Context;
+using MemorizeWords.Infrastructure.Persistence.EfCore.Repository;
+using MemorizeWords.Infrastructure.Persistence.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace MemorizeWords.Infrastructure.Persistance.Repository

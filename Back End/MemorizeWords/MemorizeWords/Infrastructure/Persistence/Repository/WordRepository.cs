@@ -1,9 +1,10 @@
 ﻿using MemorizeWords.Entity;
 using MemorizeWords.Infrastructure.Extensions;
-using MemorizeWords.Infrastructure.Persistance.Context.Repository;
-using MemorizeWords.Infrastructure.Persistance.FCore.Context;
-using MemorizeWords.Infrastructure.Persistance.Interfaces;
 using MemorizeWords.Infrastructure.Persistance.Repository.Interfaces;
+using MemorizeWords.Infrastructure.Persistence.EfCore.Context;
+using MemorizeWords.Infrastructure.Persistence.EfCore.Repository;
+using MemorizeWords.Infrastructure.Persistence.Interfaces;
+using MemorizeWords.Infrastructure.Persistence.Repository.Interfaces;
 using MemorizeWords.Infrastructure.Transversal.Exception.Exceptions;
 using MemorizeWords.Presentation.Models.Dto;
 using MemorizeWords.Presentation.Models.Request;
@@ -11,7 +12,7 @@ using MemorizeWords.Presentation.Models.Response;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace MemorizeWords.Infrastructure.Persistance.Repository
+namespace MemorizeWords.Infrastructure.Persistence.Repository
 {
     public class WordRepository : EFCoreRepository<WordEntity, int>, IWordRepository, IBusinessRepository
     {
@@ -168,6 +169,12 @@ namespace MemorizeWords.Infrastructure.Persistance.Repository
                        .SetProperty(n => n.LearnedDate, n => null));
 
             return learnedWordsSinceOneWeekIds;
+        }
+
+        public async Task DeleteAsync(List<int> ids)
+        {
+            await Queryable().Where(x => ids.Contains(x.Id))
+                .ExecuteDeleteAsync();
         }
 
         private static void ValidationupdateIsLearned(List<int> ids)

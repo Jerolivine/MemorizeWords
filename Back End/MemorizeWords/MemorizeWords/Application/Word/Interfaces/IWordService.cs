@@ -11,5 +11,6 @@ namespace MemorizeWords.Application.Word.Interfaces
         Task<List<WordResponse>> UnLearnedWordsAsync();
         Task<List<WordResponse>> LearnedWordsAsync();
         Task<List<QuestionWordResponse>> GetQuestionWordsAsync();
+        Task DeleteAsync(List<int> ids);
     }
 }
