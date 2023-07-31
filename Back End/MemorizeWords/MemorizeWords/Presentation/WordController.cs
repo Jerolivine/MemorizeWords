@@ -61,10 +61,10 @@ namespace MemorizeWords.Presentation
             return Results.Ok(wordUpdateIsLearnedRequest.Ids);
         }
 
-        [HttpGet("Test")]
-        public async Task<IResult> Test()
+        [HttpDelete]
+        public async Task<IResult> DeleteAsync([FromBody] List<int> ids)
         {
-            await _userGuessedWords.PublishUserGuessedWords();
+            await _wordService.DeleteAsync(ids);
             return Results.Ok();
         }
 

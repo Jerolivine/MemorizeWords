@@ -31,6 +31,7 @@ namespace MemorizeWords.Quartz
                 .WithIdentity("UserGuessedWordsJob-trigger")
                 //.WithCronSchedule("0/5 * * ? * * *")); // 5 seconds
                 .WithCronSchedule("* * * * * ?"));
+                //.WithCronSchedule("0/30 * * ? * * *"));
         }
 
         private static void SetLearnedWordToUnlearnedInOneWeekJob(IServiceCollectionQuartzConfigurator q)

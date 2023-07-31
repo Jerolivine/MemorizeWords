@@ -78,7 +78,7 @@ namespace MemorizeWords.Infrastructure.Persistence.Repository
 
         public Task<List<WordAnswerEntity>> GetNewGivenAnswers(int? wordAnswerId)
         {
-            return Queryable().Where(x => x.Id >= (wordAnswerId ?? 0)).ToListAsync();
+            return Queryable().Where(x => x.Id > (wordAnswerId ?? 0)).ToListAsync();
         }
 
         private async Task AddEnoughTruAnswer(List<int> wordIds, int enoughAnswerToMemorize)

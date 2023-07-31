@@ -11,6 +11,7 @@ import { ProgressbarAgColumnComponent } from 'src/app/core/components/ag-grid/co
 import { TextColumnComponent } from 'src/app/core/components/ag-grid/column/text-column/text-column.component';
 import { WordUpdateIsLearnedRequest } from 'src/app/services/http/model/call/WordUpdateIsLearnedRequest';
 import { WordAnswer } from 'src/app/services/http/model/dto/word-answer';
+import { ListUtility } from 'src/app/core/utility/list-utility';
 
 @Component({
   selector: 'answers',
@@ -61,7 +62,9 @@ export class AnswersComponent implements OnInit {
   ];
 
   unlearnedWords: Answer[] = [];
+  listenedUnlearnedWords: Answer[] = [];
   learnedWords: Answer[] = [];
+  listenedLearnedWords: Answer[] = [];
 
   defaultColDef: any;
 
@@ -72,12 +75,21 @@ export class AnswersComponent implements OnInit {
   ngOnInit() {
     this.setGridDefaultColDef();
     this.refreshGrids();
-    this.listenUserGuessedWordsHub();
+    // this.listenUserGuessedWordsHub();
 
     this.refreshData$.subscribe(response => {
       if (!response) {
         return;
       }
+      // this.unlearnedWords = [...this.listenedUnlearnedWords];
+      // this.listenedUnlearnedWords = [];
+ 
+
+      // if (this.listenedLearnedWords?.length !== 0) {
+      //   this.learnedWords = [...this.listenedLearnedWords];
+      //   this.listenedLearnedWords = [];
+      // }
+
       this.refreshGrids();
     });
   }
@@ -85,23 +97,60 @@ export class AnswersComponent implements OnInit {
   private listenUserGuessedWordsHub() {
     this.userGuessedWordsHub$.subscribe(datas => {
 
+      this.listenedUnlearnedWords = [...this.unlearnedWords];
+
       const unLearnedWordsHub = datas.filter(x => !x.isLearned);
       const learnedWordsHub = datas.filter(x => x.isLearned);
 
       if (unLearnedWordsHub?.length > 0) {
-        unLearnedWordsHub.forEach(unlearnedWord => {
-          const unlearnedWordAnswers: WordAnswer[] = unlearnedWord.wordAnswers;
+        unLearnedWordsHub.forEach(unLearnedWordHub => {
 
-          const unlearnedWordDataSource = this.unlearnedWords.find(x => x["id"] == unlearnedWord.wordId);
-          unlearnedWordDataSource
+          debugger;
+          let index = this.listenedUnlearnedWords.findIndex(x => x["id"] == unLearnedWordHub.wordId);
+          this.listenedUnlearnedWords[index] = { ...this.listenedUnlearnedWords[index], ...this.createAnswers(unLearnedWordHub) }
 
         });
+
+        debugger;
+        const learnedWordIds = this.getListenedLearnedWordIds();
+
+        if (learnedWordIds?.length !== 0) {
+          this.addLearnedWordsToListenedWordList(learnedWordIds);
+          this.listenedUnlearnedWords = ListUtility.removeItemsByIndices(this.listenedUnlearnedWords, learnedWordIds);
+        }
+
+      }
+    });
+  }
+
+  private addLearnedWordsToListenedWordList(learnedWordIds: number[]) {
+    this.listenedLearnedWords = [...this.learnedWords];
+    const learnedWords = ListUtility.findItemsFromIndices(this.listenedUnlearnedWords, learnedWordIds, "id");
+    learnedWords.forEach(learnedWord => {
+      const newLearnedWord = { learnedWord, ...this.createAnswers(undefined, true) }
+      this.listenedLearnedWords.push(newLearnedWord)
+    });
+  }
+
+  private getListenedLearnedWordIds(): number[] {
+    let learnedWordIds: number[] = [];
+    this.listenedUnlearnedWords?.forEach(listenedUnlearnedWord => {
+      let learned = true;
+      for (let index = 0; index < this.SEQUENT_TRUE_ANSWER_COUNT; index++) {
+        const answerProperty = 'answer' + (index + 1).toString();
+        const answer = listenedUnlearnedWord[answerProperty] as boolean | null;
+        if (!answer) {
+          learned = false;
+          break;
+        }
       }
 
-      console.log("listened Data :" + JSON.stringify(datas));
-      debugger;
-
+      if (learned) {
+        learnedWordIds.push(listenedUnlearnedWord["id"]);
+      }
     });
+
+    return learnedWordIds;
   }
 
   private setGridDefaultColDef() {
@@ -126,7 +175,7 @@ export class AnswersComponent implements OnInit {
       if (wordAnswers) {
         wordAnswers.map((wordAnswer) => {
 
-          const answerObj: Answer = {} as Answer;
+          let answerObj: Answer = {} as Answer;
 
           answerObj["id"] = wordAnswer.wordId;
           answerObj["word"] = wordAnswer.word;
@@ -137,42 +186,37 @@ export class AnswersComponent implements OnInit {
             hasTextToSpeech: true
           }
 
-          // for (let index = 0; index < this.SEQUENT_TRUE_ANSWER_COUNT; index++) {
-          //   const answerProperty = 'answer' + (index + 1).toString();
-          //   answerObj[answerProperty] = null;
-          // }
+          answerObj = { ...answerObj, ...this.createAnswers(wordAnswer) }
 
-          // let lastIndex = 0;
-          // wordAnswer.wordAnswers.forEach((wordAnswer, index) => {
-          //   lastIndex++;
-          //   const answerProperty = 'answer' + (index + 1);
-          //   answerObj[answerProperty] = wordAnswer.answer;
-          // });
-
-          // this.unlearnedWords.push(answerObj);
+          this.unlearnedWords.push(answerObj);
         });
       }
 
     });
   }
 
-  private setAnswers() {
+  private createAnswers(wordAnswer?: WordResponse, defaultAnswer?: boolean) {
 
-    const answers = {};
+    const answers: { [key: string]: any } = {};
 
     for (let index = 0; index < this.SEQUENT_TRUE_ANSWER_COUNT; index++) {
       const answerProperty = 'answer' + (index + 1).toString();
-      answerObj[answerProperty] = null;
+      answers[answerProperty] = defaultAnswer;
+    }
+
+    if (wordAnswer === undefined) {
+      return answers;
     }
 
     let lastIndex = 0;
-    wordAnswer.wordAnswers.forEach((wordAnswer, index) => {
+    wordAnswer!.wordAnswers.forEach((wordAnswer, index) => {
       lastIndex++;
       const answerProperty = 'answer' + (index + 1);
-      answerObj[answerProperty] = wordAnswer.answer;
+      answers[answerProperty] = wordAnswer.answer;
     });
 
-    this.unlearnedWords.push(answerObj);
+
+    return answers;
   }
 
   private refreshlearnedWords() {
@@ -225,6 +269,7 @@ export class AnswersComponent implements OnInit {
   }
 
   public onMoveToLearnedWordsClick() {
+    debugger;
     const ids: number[] = this.selectedUnlearnedGridRows.map(x => x.id);
     const wordUpdateIsLearnedRequest: WordUpdateIsLearnedRequest = {
       ids: ids,
@@ -256,7 +301,7 @@ export class AnswersComponent implements OnInit {
 
   }
 
-  public onDeleteFromUnlearnedWords(){
+  public onDeleteFromUnlearnedWords() {
     const ids = this.selectedUnlearnedGridRows.map(row => {
       return row["id"];
     });
@@ -268,7 +313,7 @@ export class AnswersComponent implements OnInit {
       })).subscribe();
   }
 
-  public onDeleteFromLearnedWords(){
+  public onDeleteFromLearnedWords() {
     const ids = this.selectedLearnedGridRows.map(row => {
       return row["id"];
     });

@@ -22,7 +22,7 @@ namespace MemorizeWords.Infrastructure.Transversal.Exception.Exceptions
         [DoesNotReturn]
         public static void ThrowIfNull<T>([NotNull] IEnumerable<T> argument, string message = null)
         {
-            ThrowIfNull(argument, message);
+            ThrowIfNull((object)argument, message);
 
             if (!argument.Any())
             {
