@@ -97,9 +97,11 @@ export class AnswersComponent implements OnInit {
   }
 
   private refreshDataWithSocket() {
-    this.unlearnedWords = [...this.listenedUnlearnedWords];
-    this.listenedUnlearnedWords = [];
 
+    if(this.listenedUnlearnedWords.length !==0 ){
+      this.unlearnedWords = [...this.listenedUnlearnedWords];
+      this.listenedUnlearnedWords = [];
+    }
 
     if (this.listenedLearnedWords?.length !== 0) {
       this.learnedWords = [...this.listenedLearnedWords];
