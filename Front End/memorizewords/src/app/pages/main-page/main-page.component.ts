@@ -6,6 +6,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { WordResponse } from 'src/app/services/http/model/back/word-response';
 import { SignalRService } from 'src/app/core/services/hub/signalr/signalr.service';
 import { USER_GUESSED_WORDS_HUB, USER_GUESSED_WORDS_HUB_EVENT } from 'src/app/constants/hub-constants';
+import { RefreshType } from 'src/app/enums/refresh-type.enum';
 
 @Component({
   selector: 'app-main-page',
@@ -14,7 +15,7 @@ import { USER_GUESSED_WORDS_HUB, USER_GUESSED_WORDS_HUB_EVENT } from 'src/app/co
 })
 export class MainPageComponent {
 
-  @Input() refreshAnswers$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  @Input() refreshAnswers$: BehaviorSubject<RefreshType> = new BehaviorSubject<RefreshType>(RefreshType.RefreshGrid);
   @Input() userGuessedWordsHub$: BehaviorSubject<WordResponse[]> = new BehaviorSubject<WordResponse[]>([]);
   private userGuessedWordsHubObservable:Observable<any>;
 
@@ -25,7 +26,7 @@ export class MainPageComponent {
     const dialogRef = this.dialog.open(AddNewWordComponent);
 
     dialogRef.afterClosed().subscribe(result => {
-      this.refreshAnswers();
+      this.refreshAnswers(RefreshType.RefreshGrid);
     });
   }
 
@@ -35,12 +36,12 @@ export class MainPageComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       this.stopUserGuessedWordsHub();
-      this.refreshAnswers();
+      this.refreshAnswers(RefreshType.Socket);
     });
   }
 
-  private refreshAnswers() {
-    this.refreshAnswers$.next(true);
+  private refreshAnswers(refreshType:RefreshType) {
+    this.refreshAnswers$.next(refreshType);
   }
 
   private startUserGuessedWordsHub(){
