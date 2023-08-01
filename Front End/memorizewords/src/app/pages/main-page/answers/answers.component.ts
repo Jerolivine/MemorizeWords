@@ -105,13 +105,11 @@ export class AnswersComponent implements OnInit {
       if (unLearnedWordsHub?.length > 0) {
         unLearnedWordsHub.forEach(unLearnedWordHub => {
 
-          debugger;
           let index = this.listenedUnlearnedWords.findIndex(x => x["id"] == unLearnedWordHub.wordId);
           this.listenedUnlearnedWords[index] = { ...this.listenedUnlearnedWords[index], ...this.createAnswers(unLearnedWordHub) }
 
         });
 
-        debugger;
         const learnedWordIds = this.getListenedLearnedWordIds();
 
         if (learnedWordIds?.length !== 0) {
@@ -269,7 +267,6 @@ export class AnswersComponent implements OnInit {
   }
 
   public onMoveToLearnedWordsClick() {
-    debugger;
     const ids: number[] = this.selectedUnlearnedGridRows.map(x => x.id);
     const wordUpdateIsLearnedRequest: WordUpdateIsLearnedRequest = {
       ids: ids,
