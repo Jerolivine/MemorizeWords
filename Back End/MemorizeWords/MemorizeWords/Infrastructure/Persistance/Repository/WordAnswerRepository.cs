@@ -33,12 +33,6 @@ namespace MemorizeWords.Infrastructure.Persistence.Repository
                 AnswerDate = DateTime.Now,
             });
 
-
-            if (isAnswerTrue)
-            {
-                await IsAllAnswersTrue(wordAnswerRequest.WordId);
-            }
-
             return new AnswerResponse()
             {
                 IsAnswerTrue = isAnswerTrue,
@@ -113,7 +107,7 @@ namespace MemorizeWords.Infrastructure.Persistence.Repository
             bool answer = wordEntity.Meaning.ToUpperInvariant().Equals(wordAnswerRequest.GivenAnswerMeaning.ToUpperInvariant().ToUpper(), StringComparison.OrdinalIgnoreCase);
             return answer;
         }
-        private async Task<bool> IsAllAnswersTrue(int wordId)
+        public async Task<bool> IsAllAnswersTrue(int wordId)
         {
             int sequentTrueAnswerCount = _configuration.GetSequentTrueAnswerCount();
             var answers = await Queryable().Where(x => x.WordId == wordId).OrderByDescending(x => x.AnswerDate).Take(sequentTrueAnswerCount).ToListAsync();
@@ -122,7 +116,7 @@ namespace MemorizeWords.Infrastructure.Persistence.Repository
                 return false;
             }
 
-            if (answers.Exists(x => !x.Answer))
+            if (!answers.Any(x => !x.Answer))
             {
                 return true;
             }

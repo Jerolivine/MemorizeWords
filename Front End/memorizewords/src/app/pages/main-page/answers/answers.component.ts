@@ -83,7 +83,7 @@ export class AnswersComponent implements OnInit {
       }
       // this.unlearnedWords = [...this.listenedUnlearnedWords];
       // this.listenedUnlearnedWords = [];
- 
+
 
       // if (this.listenedLearnedWords?.length !== 0) {
       //   this.learnedWords = [...this.listenedLearnedWords];
@@ -94,32 +94,31 @@ export class AnswersComponent implements OnInit {
     });
   }
 
-  private listenUserGuessedWordsHub() {
-    this.userGuessedWordsHub$.subscribe(datas => {
+  // private listenUserGuessedWordsHub() {
+  //   this.userGuessedWordsHub$.subscribe(datas => {
 
-      this.listenedUnlearnedWords = [...this.unlearnedWords];
+  //     this.listenedUnlearnedWords = [...this.unlearnedWords];
 
-      const unLearnedWordsHub = datas.filter(x => !x.isLearned);
-      const learnedWordsHub = datas.filter(x => x.isLearned);
+  //     const unLearnedWordsHub = datas.filter(x => !x.isLearned);
 
-      if (unLearnedWordsHub?.length > 0) {
-        unLearnedWordsHub.forEach(unLearnedWordHub => {
+  //     if (unLearnedWordsHub?.length > 0) {
+  //       unLearnedWordsHub.forEach(unLearnedWordHub => {
 
-          let index = this.listenedUnlearnedWords.findIndex(x => x["id"] == unLearnedWordHub.wordId);
-          this.listenedUnlearnedWords[index] = { ...this.listenedUnlearnedWords[index], ...this.createAnswers(unLearnedWordHub) }
+  //         let index = this.listenedUnlearnedWords.findIndex(x => x["id"] == unLearnedWordHub.wordId);
+  //         this.listenedUnlearnedWords[index] = { ...this.listenedUnlearnedWords[index], ...this.createAnswers(unLearnedWordHub) }
 
-        });
+  //       });
 
-        const learnedWordIds = this.getListenedLearnedWordIds();
+  //       const learnedWordIds = this.getListenedLearnedWordIds();
 
-        if (learnedWordIds?.length !== 0) {
-          this.addLearnedWordsToListenedWordList(learnedWordIds);
-          this.listenedUnlearnedWords = ListUtility.removeItemsByIndices(this.listenedUnlearnedWords, learnedWordIds);
-        }
+  //       if (learnedWordIds?.length !== 0) {
+  //         this.addLearnedWordsToListenedWordList(learnedWordIds);
+  //         this.listenedUnlearnedWords = ListUtility.removeItemsByIndices(this.listenedUnlearnedWords, learnedWordIds);
+  //       }
 
-      }
-    });
-  }
+  //     }
+  //   });
+  // }
 
   private addLearnedWordsToListenedWordList(learnedWordIds: number[]) {
     this.listenedLearnedWords = [...this.learnedWords];
