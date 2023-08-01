@@ -12,6 +12,7 @@ How to run application
 
 
 SONARQUBE
+https://sonarcloud.io/project/overview?id=Jerolivine_MemorizeWords
 
 Prequisites
 - Docker Desktop
