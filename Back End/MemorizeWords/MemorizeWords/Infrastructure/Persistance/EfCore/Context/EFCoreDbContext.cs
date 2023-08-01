@@ -7,7 +7,7 @@ namespace MemorizeWords.Infrastructure.Persistence.EfCore.Context
     {
         public DbSet<WordEntity> Word => Set<WordEntity>();
         public DbSet<WordAnswerEntity> WordAnswer => Set<WordAnswerEntity>();
-        public DbSet<UserHubEntity> UserHub => Set<UserHubEntity>();
+        public DbSet<UserWordHubEntity> UserHub => Set<UserWordHubEntity>();
 
         public IConfiguration Configuration { get; }
 

@@ -14,7 +14,8 @@ namespace MemorizeWords.Infrastructure.Persistence.Repository
     public class WordAnswerRepository : EFCoreRepository<WordAnswerEntity, int>, IWordAnswerRepository, IBusinessRepository
     {
         private readonly IConfiguration _configuration;
-        public WordAnswerRepository(EFCoreDbContext dbContext, IConfiguration configuration) : base(dbContext)
+        public WordAnswerRepository(EFCoreDbContext dbContext, 
+            IConfiguration configuration) : base(dbContext)
         {
             _configuration = configuration;
         }
@@ -25,7 +26,7 @@ namespace MemorizeWords.Infrastructure.Persistence.Repository
             WordEntity wordEntity;
             bool isAnswerTrue = GetGivenAnswer(wordAnswerRequest, out wordEntity);
 
-            await AddAsnyc(new WordAnswerEntity()
+            await AddAsnyc(new ()
             {
                 WordId = wordAnswerRequest.WordId,
                 Answer = isAnswerTrue,
@@ -64,11 +65,6 @@ namespace MemorizeWords.Infrastructure.Persistence.Repository
 
         }
 
-        public async Task<List<WordAnswerEntity>> GetWordAnswersHub(int? id)
-        {
-            return await Queryable().Where(x => x.Id >= (id ?? 0)).ToListAsync();
-        }
-
         public async Task<List<WordAnswerEntity>> GetAnswersOfUserIdAsync(int wordId, int userId)
         {
             int sequentTrueAnswerCount = _configuration.GetSequentTrueAnswerCount();
@@ -80,13 +76,18 @@ namespace MemorizeWords.Infrastructure.Persistence.Repository
                         .ToListAsync();
         }
 
+        public Task<List<WordAnswerEntity>> GetNewGivenAnswers(int? wordAnswerId)
+        {
+            return Queryable().Where(x => x.Id > (wordAnswerId ?? 0)).ToListAsync();
+        }
+
         private async Task AddEnoughTruAnswer(List<int> wordIds, int enoughAnswerToMemorize)
         {
             foreach (var wordId in wordIds)
             {
                 for (int i = 0; i < enoughAnswerToMemorize; i++)
                 {
-                    await _dbContext.WordAnswer.AddAsync(new WordAnswerEntity()
+                    await _dbContext.WordAnswer.AddAsync(new ()
                     {
                         WordId = wordId,
                         Answer = true,

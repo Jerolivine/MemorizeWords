@@ -9,6 +9,7 @@ namespace MemorizeWords.Presentation.Models.Response
         public string Meaning { get; set; }
         public string WritingInLanguage { get; set; }
         public string Percentage { get; set; }
+        public bool IsLearned { get; set; }
         public List<WordAnswerDto> WordAnswers { get; set; }
     }
 }

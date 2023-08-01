@@ -3,6 +3,7 @@ using MemorizeWords.Infrastructure.Entity.Core.Interfaces;
 using MemorizeWords.Infrastructure.Entity.Core.Interfaces.Repository;
 using MemorizeWords.Infrastructure.Persistence.EfCore.Context;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace MemorizeWords.Infrastructure.Persistence.EfCore.Repository
 {

@@ -2,9 +2,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 
 export abstract class BaseService {
-    
+
     apiURL = environment.apiURL;
-    protected abstract baseApiName:string; 
+    protected abstract baseApiName: string;
 
     constructor(private http: HttpClient) {
 
@@ -23,14 +23,14 @@ export abstract class BaseService {
     }
 
     protected delete<T>(url: string, model: any) {
-        return this.http.delete<T>(this.getUrl(url), {body:model, headers:this.headers});
+        return this.http.delete<T>(this.getUrl(url), { body: model, headers: this.headers });
     }
 
     private getUrl(url: string): string {
         return `${this.apiURL}/${this.baseApiName}/${url}`;
     }
 
-    private get headers(){
+    private get headers() {
         const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
         return headers;

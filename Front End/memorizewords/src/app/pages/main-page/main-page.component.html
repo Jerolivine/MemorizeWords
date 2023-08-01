@@ -10,7 +10,7 @@
             <button type="button" class="btn btn-success width-full" (click)="openQuestion()">Memorize Words</button>
         </div>
 
-        <answers [refreshData$]="refreshAnswers$"></answers>
+        <answers [refreshData$]="refreshAnswers$" [userGuessedWordsHub$]="userGuessedWordsHub$"></answers>
     </div>
     <div class="empty-column"></div>
 </div>

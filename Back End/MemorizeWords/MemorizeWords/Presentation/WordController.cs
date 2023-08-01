@@ -1,4 +1,5 @@
-﻿using MemorizeWords.Application.Word.Interfaces;
+﻿using MemorizeWords.Application.UserGuessedWords.Interfaces;
+using MemorizeWords.Application.Word.Interfaces;
 using MemorizeWords.Infrastructure.Presentation;
 using MemorizeWords.Presentation.Models.Request;
 using Microsoft.AspNetCore.Mvc;
@@ -7,13 +8,12 @@ namespace MemorizeWords.Presentation
 {
     public class WordController : BaseController
     {
-        private readonly IWordService _wordService;
-        private readonly IWordAnswerService _wordAnswerService;
-        private readonly IUserGuessedWords _userGuessedWords;
-
+        public IWordService _wordService { get; set; }
+        public IWordAnswerService _wordAnswerService { get; set; }
+        public IUserGuessedWordsService _userGuessedWords { get; set; }
         public WordController(IWordService wordService,
             IWordAnswerService wordAnswerService,
-            IUserGuessedWords userGuessedWords)
+            IUserGuessedWordsService userGuessedWords)
         {
             _wordService = wordService;
             _wordAnswerService = wordAnswerService;
@@ -65,13 +65,6 @@ namespace MemorizeWords.Presentation
         public async Task<IResult> DeleteAsync([FromBody] List<int> ids)
         {
             await _wordService.DeleteAsync(ids);
-            return Results.Ok();
-        }
-
-        [HttpGet("Test")]
-        public async Task<IResult> Test()
-        {
-            await _userGuessedWords.PublishUserGuessedWords();
             return Results.Ok();
         }
 

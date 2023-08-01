@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { TextToSpeechService } from 'src/app/services/text-to-speech.service';
+import { TextToSpeechService } from 'src/app/core/services/text-to-speech.service';
 
 @Component({
   selector: 'app-text',
