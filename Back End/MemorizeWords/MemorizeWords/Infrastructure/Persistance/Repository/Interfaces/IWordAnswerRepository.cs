@@ -12,5 +12,6 @@ namespace MemorizeWords.Infrastructure.Persistence.Repository.Interfaces
         Task<List<WordAnswerEntity>> GetAnswersOfUserIdAsync(int wordId, int userId);
         Task<List<WordAnswerEntity>> GetNewGivenAnswers(int? wordAnswerId);
         Task<bool> IsAllAnswersTrue(int wordId);
+        Task AddFakeAnswers(List<int> wordIds);
     }
 }
