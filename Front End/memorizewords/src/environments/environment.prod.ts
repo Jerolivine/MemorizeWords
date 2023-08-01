@@ -3,5 +3,6 @@ export const environment = {
     title: 'Prod Environment Heading',
     apiURL: 'http://api.memorizewords.com.tr/api',
     hubUrl : 'ws://api.memorizewords.com.tr',
-    environmentName: "Prod"
+    environmentName: "Prod",
+    version:"1.0.1"
 };

@@ -9,8 +9,9 @@ import { SignalRService } from './core/services/hub/signalr/signalr.service';
 })
 export class AppComponent implements OnInit {
 
-  constructor(private signalRService: SignalRService) {
+  constructor() {
     console.info("environment: " + environment.environmentName);
+    console.info("version" + environment.version);
   }
 
   ngOnInit(): void {
