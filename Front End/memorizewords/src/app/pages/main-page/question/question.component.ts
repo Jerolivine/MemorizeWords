@@ -50,6 +50,7 @@ export class QuestionComponent implements OnInit {
   private getQuestionWords() {
     this.wordService.getQuestionWords().subscribe(response => {
 
+      this.question = undefined;
       if (response?.length === 0) {
         return;
       }

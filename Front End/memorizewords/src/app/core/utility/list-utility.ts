@@ -1,6 +1,11 @@
 export class ListUtility {
 
-    public static findItemsFromIndices<T>(array: T[], values: number[], property: string): T[] {
+    public static findItemsFromPropertyValues<T>(array: T[], values: any[], property: string): T[] {
+
+        if(!values){
+            return array;
+        }
+
         const foundItems: T[] = [];
 
         for (const value of values) {
@@ -13,7 +18,12 @@ export class ListUtility {
         return foundItems;
     }
 
-    public static removeItemsByIndices<T>(array: T[], indicesToRemove: number[]): T[] {
-        return array.filter((_, index) => !indicesToRemove.includes(index));
+    public static removeItemsByPropertyValues<T>(array: T[], values: number[], property: string): T[] {
+        if(!values){
+            return array;
+        }
+        
+        return array.filter((x) => !values.includes((x as any)[property]));
     }
+
 }
