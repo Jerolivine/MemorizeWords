@@ -89,7 +89,6 @@ export class AnswersComponent implements OnInit {
   }
 
   private refreshData(refreshType: RefreshType) {
-    debugger;
     if (refreshType === RefreshType.RefreshGrid) {
       this.refreshGrids();
     }
@@ -100,15 +99,12 @@ export class AnswersComponent implements OnInit {
 
   private refreshGridWithListenedData() {
 
-    if (this.listenedUnlearnedWords.length !== 0) {
-      this.unlearnedWords = [...this.listenedUnlearnedWords];
-      this.listenedUnlearnedWords = [];
-    }
+    this.unlearnedWords = [...this.listenedUnlearnedWords];
+    this.listenedUnlearnedWords = [];
 
-    if (this.listenedLearnedWords?.length !== 0) {
-      this.learnedWords = [...this.listenedLearnedWords];
-      this.listenedLearnedWords = [];
-    }
+    this.learnedWords = [...this.listenedLearnedWords];
+    this.listenedLearnedWords = [];
+
   }
 
   private listenUserGuessedWordsHub() {
@@ -146,7 +142,8 @@ export class AnswersComponent implements OnInit {
     if (unLearnedWordsHub?.length > 0) {
       unLearnedWordsHub.forEach(unLearnedWordHub => {
         let index = this.listenedUnlearnedWords.findIndex(x => x["id"] == unLearnedWordHub.wordId);
-        this.listenedUnlearnedWords[index] = { ...this.listenedUnlearnedWords[index], ...this.createAnswers(unLearnedWordHub) }
+        this.listenedUnlearnedWords[index] = { ...this.listenedUnlearnedWords[index], ...this.createAnswers(unLearnedWordHub) };
+        this.listenedUnlearnedWords[index]["percentage"] = unLearnedWordHub.percentage;
       });
     }
   }
@@ -203,26 +200,26 @@ export class AnswersComponent implements OnInit {
     });
   }
 
-  private mapWordResponseToAnswer(wordAnswers: WordResponse[], defaultAnswer?: boolean): Answer[] {
+  private mapWordResponseToAnswer(wordResponse: WordResponse[], defaultAnswer?: boolean): Answer[] {
 
-    if (wordAnswers?.length === 0) {
+    if (wordResponse?.length === 0) {
       return [];
     }
 
-    return wordAnswers.map((wordAnswer) => {
+    return wordResponse.map((wordResponse) => {
 
       let answerObj: Answer = {} as Answer;
 
-      answerObj["id"] = wordAnswer.wordId;
-      answerObj["word"] = wordAnswer.word;
-      answerObj["meaning"] = wordAnswer.meaning;
-      answerObj["percentage"] = wordAnswer.percentage;
+      answerObj["id"] = wordResponse.wordId;
+      answerObj["word"] = wordResponse.word;
+      answerObj["meaning"] = wordResponse.meaning;
+      answerObj["percentage"] = wordResponse.percentage;
       answerObj["writingInLanguage"] = {
-        value: wordAnswer.writingInLanguage,
+        value: wordResponse.writingInLanguage,
         hasTextToSpeech: true
       }
 
-      return answerObj = { ...answerObj, ...this.createAnswers(wordAnswer, defaultAnswer) }
+      return answerObj = { ...answerObj, ...this.createAnswers(wordResponse, defaultAnswer) }
     });
 
   }
