@@ -21,7 +21,7 @@ namespace MemorizeWords.Presentation
         }
 
         [HttpPost()]
-        public async Task<IResult> AddWordAsync([FromBody]WordAddRequest wordAddRequest)
+        public async Task<IResult> AddWordAsync([FromBody] WordAddRequest wordAddRequest)
         {
             var wordEntity = await _wordService.AddWordAsync(wordAddRequest);
             return Results.Created($"/word/{wordEntity.Id}", wordEntity);
@@ -52,11 +52,7 @@ namespace MemorizeWords.Presentation
         public async Task<IResult> UpdateIsLearnedAsync([FromBody] WordUpdateIsLearnedRequest wordUpdateIsLearnedRequest)
         {
             await _wordService.UpdateIsLearnedAsync(wordUpdateIsLearnedRequest);
-
-            if (wordUpdateIsLearnedRequest.IsLearned)
-            {
-                await _wordAnswerService.DeleteAllAnswersAsync(wordUpdateIsLearnedRequest.Ids);
-            }
+            await _wordAnswerService.DeleteAllAnswersAsync(wordUpdateIsLearnedRequest.Ids);
 
             return Results.Ok(wordUpdateIsLearnedRequest.Ids);
         }

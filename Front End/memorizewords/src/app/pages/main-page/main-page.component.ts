@@ -44,12 +44,6 @@ export class MainPageComponent {
   }
 
   private startUserGuessedWordsHub(){
-    // this.userGuessedWordsHubObservable = this.signalRService.startEvent(USER_GUESSED_WORDS_HUB, USER_GUESSED_WORDS_HUB_EVENT);
-    // this.userGuessedWordsHubObservable.subscribe(data =>{
-    //   debugger;
-    //   console.log("Next Data :" + JSON.stringify(data));
-    // });
-
     this.userGuessedWordsHubObservable = this.signalRService.startEvent(USER_GUESSED_WORDS_HUB, USER_GUESSED_WORDS_HUB_EVENT);
     this.userGuessedWordsHubObservable.subscribe(data =>{
       this.userGuessedWordsHub$.next(data);
