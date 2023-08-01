@@ -92,11 +92,11 @@ export class AnswersComponent implements OnInit {
       this.refreshGrids();
     }
     else {
-      this.refreshDataWithSocket();
+      this.refreshGridWithSocket();
     }
   }
 
-  private refreshDataWithSocket() {
+  private refreshGridWithSocket() {
 
     if(this.listenedUnlearnedWords.length !==0 ){
       this.unlearnedWords = [...this.listenedUnlearnedWords];
