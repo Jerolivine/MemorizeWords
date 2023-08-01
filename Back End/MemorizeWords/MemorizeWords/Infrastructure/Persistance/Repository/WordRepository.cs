@@ -156,7 +156,7 @@ namespace MemorizeWords.Infrastructure.Persistence.Repository
 
         public async Task<List<int>> SetLearnedWordsSinceOneWeekAsUnlearnedAsync()
         {
-            List<int> learnedWordsSinceOneWeekIds = await Queryable().Where(x => x.IsLearned && x.LearnedDate < DateTime.Now.AddDays(-7).Date).Select(x => x.Id).ToListAsync();
+            List<int> learnedWordsSinceOneWeekIds = await Queryable().Where(x => x.IsLearned && x.LearnedDate <= DateTime.Now.AddDays(-7).Date).Select(x => x.Id).ToListAsync();
 
             if (learnedWordsSinceOneWeekIds is null || learnedWordsSinceOneWeekIds.Count == 0)
             {
