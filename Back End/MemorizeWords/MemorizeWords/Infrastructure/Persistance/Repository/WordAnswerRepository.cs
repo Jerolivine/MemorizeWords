@@ -48,12 +48,11 @@ namespace MemorizeWords.Infrastructure.Persistence.Repository
 
         public async Task LeaveEnoughTrueAnswerToMemorize(List<int> wordIds)
         {
-            int enoughAnswerToMemorize = _configuration.GetEnoughAnswerToMemorize();
 
             await Queryable().Where(x => wordIds.Contains(x.WordId))
                .ExecuteDeleteAsync();
 
-            await AddEnoughTruAnswer(wordIds, enoughAnswerToMemorize);
+            await AddEnoughTrueAnswer(wordIds);
 
             await _dbContext.SaveChangesAsync();
 
@@ -75,8 +74,10 @@ namespace MemorizeWords.Infrastructure.Persistence.Repository
             return Queryable().Where(x => x.Id > (wordAnswerId ?? 0)).ToListAsync();
         }
 
-        private async Task AddEnoughTruAnswer(List<int> wordIds, int enoughAnswerToMemorize)
+        public async Task AddEnoughTrueAnswer(List<int> wordIds)
         {
+            int enoughAnswerToMemorize = _configuration.GetEnoughAnswerToMemorize();
+
             foreach (var wordId in wordIds)
             {
                 for (int i = 0; i < enoughAnswerToMemorize; i++)
@@ -87,8 +88,11 @@ namespace MemorizeWords.Infrastructure.Persistence.Repository
                         Answer = true,
                         AnswerDate = DateTime.Now
                     });
+
                 }
             }
+
+            await _dbContext.SaveChangesAsync();
         }
 
         private void ValidationAnswer(WordAnswerRequest wordAnswerRequest)
@@ -107,6 +111,7 @@ namespace MemorizeWords.Infrastructure.Persistence.Repository
             bool answer = wordEntity.Meaning.ToUpperInvariant().Equals(wordAnswerRequest.GivenAnswerMeaning.ToUpperInvariant().ToUpper(), StringComparison.OrdinalIgnoreCase);
             return answer;
         }
+
         public async Task<bool> IsAllAnswersTrue(int wordId)
         {
             int sequentTrueAnswerCount = _configuration.GetSequentTrueAnswerCount();
@@ -123,6 +128,28 @@ namespace MemorizeWords.Infrastructure.Persistence.Repository
 
             return false;
 
+        }
+
+        public async Task AddFakeAnswers(List<int> wordIds)
+        {
+            int sequentTrueAnswerCount = _configuration.GetSequentTrueAnswerCount();
+
+            foreach (var wordId in wordIds)
+            {
+                for (int i = 0; i < sequentTrueAnswerCount; i++)
+                {
+                    await _dbContext.WordAnswer.AddAsync(new()
+                    {
+                        WordId = wordId,
+                        Answer = true,
+                        AnswerDate = DateTime.Now
+                    });
+
+                  
+                }
+            }
+
+            await _dbContext.SaveChangesAsync();
         }
 
     }

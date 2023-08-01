@@ -9,14 +9,11 @@ namespace MemorizeWords.Presentation
     public class WordController : BaseController
     {
         public IWordService _wordService { get; set; }
-        public IWordAnswerService _wordAnswerService { get; set; }
         public IUserGuessedWordsService _userGuessedWords { get; set; }
         public WordController(IWordService wordService,
-            IWordAnswerService wordAnswerService,
             IUserGuessedWordsService userGuessedWords)
         {
             _wordService = wordService;
-            _wordAnswerService = wordAnswerService;
             _userGuessedWords = userGuessedWords;
         }
 
@@ -52,7 +49,6 @@ namespace MemorizeWords.Presentation
         public async Task<IResult> UpdateIsLearnedAsync([FromBody] WordUpdateIsLearnedRequest wordUpdateIsLearnedRequest)
         {
             await _wordService.UpdateIsLearnedAsync(wordUpdateIsLearnedRequest);
-            await _wordAnswerService.DeleteAllAnswersAsync(wordUpdateIsLearnedRequest.Ids);
 
             return Results.Ok(wordUpdateIsLearnedRequest.Ids);
         }

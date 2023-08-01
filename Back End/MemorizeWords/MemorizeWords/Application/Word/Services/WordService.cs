@@ -10,10 +10,12 @@ namespace MemorizeWords.Application.Word.Services
     public class WordService : IWordService, IBusinessService
     {
         private IWordRepository _wordRepository { get; set; }
+        private IWordAnswerRepository _wordAnswerRepository { get; set; }
 
-        public WordService(IWordRepository wordRepository)
+        public WordService(IWordRepository wordRepository, IWordAnswerRepository wordAnswerRepository)
         {
             _wordRepository = wordRepository;
+            _wordAnswerRepository = wordAnswerRepository;
         }
 
         public async Task<WordEntity> AddWordAsync(WordAddRequest wordAddRequest)
@@ -25,6 +27,12 @@ namespace MemorizeWords.Application.Word.Services
         public async Task UpdateIsLearnedAsync(WordUpdateIsLearnedRequest wordUpdateIsLearnedRequest)
         {
             await _wordRepository.UpdateIsLearnedAsync(wordUpdateIsLearnedRequest);
+            await _wordAnswerRepository.DeleteAllAnswersAsync(wordUpdateIsLearnedRequest.Ids);
+
+            if (wordUpdateIsLearnedRequest.IsLearned)
+            {
+                await _wordAnswerRepository.AddFakeAnswers(wordUpdateIsLearnedRequest.Ids);
+            }
         }
 
         public async Task<List<WordResponse>> UnLearnedWordsAsync()
@@ -45,6 +53,7 @@ namespace MemorizeWords.Application.Word.Services
         public async Task DeleteAsync(List<int> ids)
         {
             await _wordRepository.DeleteAsync(ids);
+            await _wordAnswerRepository.DeleteAllAnswersAsync(ids);
         }
 
     }

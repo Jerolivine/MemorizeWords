@@ -5,7 +5,7 @@ import { WordResponse } from 'src/app/services/http/model/back/word-response';
 import { WordService } from 'src/app/services/http/word.service';
 import { Answer } from './model/answer';
 import { BooleanAgColumnComponent } from 'src/app/core/components/ag-grid/column/boolean-ag-column/boolean-ag-column.component';
-import { BehaviorSubject, concatMap, of } from 'rxjs';
+import { BehaviorSubject, concatMap, delay, exhaustMap, of } from 'rxjs';
 import { ProgressbarAgColumnComponent } from 'src/app/core/components/ag-grid/column/progressbar-ag-column/progressbar-ag-column.component';
 import { TextColumnComponent } from 'src/app/core/components/ag-grid/column/text-column/text-column.component';
 import { WordUpdateIsLearnedRequest } from 'src/app/services/http/model/call/WordUpdateIsLearnedRequest';
@@ -74,8 +74,9 @@ export class AnswersComponent implements OnInit {
   ngOnInit() {
     this.setGridDefaultColDef();
     this.refreshData(RefreshType.RefreshGrid);
-    this.listenUserGuessedWordsHub();
 
+    // TODO-Arda :Question open dialog call with RefreshData
+    this.listenUserGuessedWordsHub();
     this.refreshData$.subscribe(refreshType => {
 
       if (!refreshType) {
@@ -88,17 +89,18 @@ export class AnswersComponent implements OnInit {
   }
 
   private refreshData(refreshType: RefreshType) {
+    debugger;
     if (refreshType === RefreshType.RefreshGrid) {
       this.refreshGrids();
     }
     else {
-      this.refreshGridWithSocket();
+      // this.listenUserGuessedWordsHub();
     }
   }
 
-  private refreshGridWithSocket() {
+  private refreshGridWithListenedData() {
 
-    if(this.listenedUnlearnedWords.length !==0 ){
+    if (this.listenedUnlearnedWords.length !== 0) {
       this.unlearnedWords = [...this.listenedUnlearnedWords];
       this.listenedUnlearnedWords = [];
     }
@@ -110,28 +112,35 @@ export class AnswersComponent implements OnInit {
   }
 
   private listenUserGuessedWordsHub() {
-    this.userGuessedWordsHub$.subscribe(datas => {
+    this.userGuessedWordsHub$
+      .pipe(exhaustMap((datas) => {
+        return of(datas);
+      })
+      ).subscribe(datas => {
 
-      if (this.listenedUnlearnedWords.length === 0) {
-        this.listenedUnlearnedWords = [...this.unlearnedWords];
-      }
+        console.log("event data : " + JSON.stringify(datas));
 
-      if (this.listenedLearnedWords.length === 0) {
-        this.listenedLearnedWords = [...this.learnedWords];
-      }
+        if (this.listenedUnlearnedWords.length === 0) {
+          this.listenedUnlearnedWords = [...this.unlearnedWords];
+        }
 
-      const unLearnedWordsHub = datas.filter(x => !x.isLearned);
-      const learnedWordsHub = datas.filter(x => x.isLearned);
+        if (this.listenedLearnedWords.length === 0) {
+          this.listenedLearnedWords = [...this.learnedWords];
+        }
 
-      this.arrangeListenedUnlearnedWords(unLearnedWordsHub, learnedWordsHub);
-      this.arrangeListenedLearnedWords(learnedWordsHub);
+        const unLearnedWordsHub = datas.filter(x => !x.isLearned);
+        const learnedWordsHub = datas.filter(x => x.isLearned);
 
-    });
+        this.arrangeListenedUnlearnedWords(unLearnedWordsHub, learnedWordsHub);
+        this.arrangeListenedLearnedWords(learnedWordsHub);
+
+        this.refreshGridWithListenedData();
+
+      });
   }
 
   private arrangeListenedUnlearnedWords(unLearnedWordsHub: WordResponse[], learnedWordsHub: WordResponse[]) {
 
-    debugger;
     this.removeLearnedWordsFromListenedUnlearnedWordList(learnedWordsHub);
 
     if (unLearnedWordsHub?.length > 0) {
@@ -194,9 +203,8 @@ export class AnswersComponent implements OnInit {
     });
   }
 
-  private mapWordResponseToAnswer(wordAnswers: WordResponse[]): Answer[] {
+  private mapWordResponseToAnswer(wordAnswers: WordResponse[], defaultAnswer?: boolean): Answer[] {
 
-    debugger;
     if (wordAnswers?.length === 0) {
       return [];
     }
@@ -214,7 +222,7 @@ export class AnswersComponent implements OnInit {
         hasTextToSpeech: true
       }
 
-      return answerObj = { ...answerObj, ...this.createAnswers(wordAnswer) }
+      return answerObj = { ...answerObj, ...this.createAnswers(wordAnswer, defaultAnswer) }
     });
 
   }
@@ -228,7 +236,7 @@ export class AnswersComponent implements OnInit {
       answers[answerProperty] = defaultAnswer;
     }
 
-    if (wordAnswer === undefined) {
+    if (wordAnswer?.wordAnswers?.length === undefined || wordAnswer?.wordAnswers?.length === 0) {
       return answers;
     }
 
@@ -247,28 +255,36 @@ export class AnswersComponent implements OnInit {
     this.wordService.getLearnedWords().subscribe(response => {
       this.clearLearnedWordsGridData();
       var wordAnswers = response as WordResponse[];
-      if (wordAnswers) {
-        wordAnswers.map((wordAnswer) => {
 
-          const answerObj: Answer = {} as Answer;
+      const learnedWords = this.mapWordResponseToAnswer(wordAnswers, true);
 
-          answerObj["id"] = wordAnswer.wordId;
-          answerObj["word"] = wordAnswer.word;
-          answerObj["meaning"] = wordAnswer.meaning;
-          answerObj["percentage"] = "100";
-          answerObj["writingInLanguage"] = {
-            value: wordAnswer.writingInLanguage,
-            hasTextToSpeech: true
-          }
+      learnedWords.forEach(learnedWord => {
 
-          for (let index = 0; index < this.SEQUENT_TRUE_ANSWER_COUNT; index++) {
-            const answerProperty = 'answer' + (index + 1).toString();
-            answerObj[answerProperty] = true;
-          }
+        learnedWord["percentage"] = "100";
+        this.learnedWords.push(learnedWord);
+      });
+      // if (wordAnswers) {
+      //   wordAnswers.map((wordAnswer) => {
 
-          this.learnedWords.push(answerObj);
-        });
-      }
+      //     const answerObj: Answer = {} as Answer;
+
+      //     answerObj["id"] = wordAnswer.wordId;
+      //     answerObj["word"] = wordAnswer.word;
+      //     answerObj["meaning"] = wordAnswer.meaning;
+      //     answerObj["percentage"] = "100";
+      //     answerObj["writingInLanguage"] = {
+      //       value: wordAnswer.writingInLanguage,
+      //       hasTextToSpeech: true
+      //     }
+
+      //     for (let index = 0; index < this.SEQUENT_TRUE_ANSWER_COUNT; index++) {
+      //       const answerProperty = 'answer' + (index + 1).toString();
+      //       answerObj[answerProperty] = true;
+      //     }
+
+      //     this.learnedWords.push(answerObj);
+      //   });
+      // }
     });
   }
 
