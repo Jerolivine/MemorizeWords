@@ -53,7 +53,7 @@ namespace MemorizeWords.Presentation
             return Results.Ok(wordUpdateIsLearnedRequest.Ids);
         }
 
-        [HttpDelete]
+        [HttpPost("delete")]
         public async Task<IResult> DeleteAsync([FromBody] List<int> ids)
         {
             await _wordService.DeleteAsync(ids);
