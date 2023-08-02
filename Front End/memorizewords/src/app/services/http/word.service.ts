@@ -12,7 +12,7 @@ import { WordUpdateIsLearnedRequest } from './model/call/WordUpdateIsLearnedRequ
 })
 export class WordService extends BaseService {
 
-    protected override baseApiName: string="word";
+    protected override baseApiName: string = "word";
 
     constructor(http: HttpClient) {
         super(http);
@@ -38,8 +38,8 @@ export class WordService extends BaseService {
         return this.post("update-is-learned", wordUpdateIsLearnedRequest);
     }
 
-    public deleteWords(ids:number[]) {
-        return this.delete("", ids);
+    public deleteWords(ids: number[]) {
+        return this.post("delete", ids);
     }
 
 }
