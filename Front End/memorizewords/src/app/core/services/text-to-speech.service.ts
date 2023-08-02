@@ -20,7 +20,7 @@ export class TextToSpeechService {
 
         // Set the language to Polish (Poland)
         utterance.lang = this.applicationVariablesService.language;
-        // utterance.lang = 'pl-PL';
+        utterance.lang = POLISH_LANGUAGE;
 
         // Optional configurations
         // utterance.lang = 'en-US'; // Specify the language
