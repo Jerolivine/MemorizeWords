@@ -42,10 +42,10 @@ namespace MemorizeWords.Infrastructure.Configuration
 
                 // Serilog configuration        
                 var logger = new LoggerConfiguration()
-                    .WriteTo.File("Logs/logs-.txt", rollingInterval: RollingInterval.Day, restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Verbose)
-                    .WriteTo.File("Logs/error-logs-.txt", rollingInterval: RollingInterval.Day, restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Error)
-                    .WriteTo.Console(restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Verbose)
-                    .CreateLogger();
+                             .WriteTo.File("Logs/logs-.txt", rollingInterval: RollingInterval.Day, restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Information)
+                             .WriteTo.File("Logs/error-logs-.txt", rollingInterval: RollingInterval.Day, restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Error)
+                             .WriteTo.Console(restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Verbose)
+                             .CreateLogger();
 
                 // Register Serilog
                 builder.Logging.AddSerilog(logger);
