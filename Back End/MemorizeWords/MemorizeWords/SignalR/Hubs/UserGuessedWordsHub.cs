@@ -1,19 +1,22 @@
 ﻿using MemorizeWords.Application.UserHubConnection.Interfaces;
 using MemorizeWords.Infrastructure.Persistence.Repository.Interfaces;
+using MemorizeWords.Infrastructure.Transversal.AppLog.Interfaces;
+using MemorizeWords.SignalR.Abstract;
 using MemorizeWords.SignalR.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 using System.Collections.Concurrent;
 
 namespace MemorizeWords.SignalR.Hubs
 {
-    public class UserGuessedWordsHub : Hub<IUserGuessedWordsHub>
+    public class UserGuessedWordsHub : BaseSignalRHub<IUserGuessedWordsHub>
     {
         private static readonly ConcurrentDictionary<string, string> activeGroups = new();
         public IWordAnswerRepository _wordAnswerRepository { get; set; }
         public IUserHubConnectionService _userHubConnectionService { get; set; }
 
         public UserGuessedWordsHub(IWordAnswerRepository wordAnswerRepository,
-            IUserHubConnectionService userHubConnectionService)
+            IUserHubConnectionService userHubConnectionService,
+            IApplicationLogger logger) : base(logger)
         {
             _wordAnswerRepository = wordAnswerRepository;
             _userHubConnectionService = userHubConnectionService;
@@ -34,21 +37,11 @@ namespace MemorizeWords.SignalR.Hubs
             await base.OnConnectedAsync();
         }
 
-        public override async Task OnDisconnectedAsync(Exception exception)
+        public new async Task OnDisconnectedAsync(Exception exception)
         {
-            LogException(exception);
-
             await RemoveUserFromHub();
 
             await base.OnDisconnectedAsync(exception);
-        }
-
-        private static void LogException(Exception exception)
-        {
-            if (exception is not null)
-            {
-                // TODO-Arda: log exception
-            }
         }
 
         private string GetUserIdFromRequest()
@@ -88,6 +81,11 @@ namespace MemorizeWords.SignalR.Hubs
         private async Task SendClientDisconnectedMessage(string userId)
         {
             await Clients.Group(userId).ReceiveUserGuessedWords($"ClientDisconnected {Context.ConnectionId}");
+        }
+
+        protected override string GetHubName()
+        {
+            return this.GetType().Name;
         }
     }
 }

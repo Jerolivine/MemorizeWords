@@ -1,4 +1,5 @@
 ﻿using MemorizeWords.Infrastructure.Persistence.Repository.Interfaces;
+using MemorizeWords.Infrastructure.Transversal.AppLog.Interfaces;
 using Quartz;
 
 namespace MemorizeWords.Quartz
@@ -9,7 +10,8 @@ namespace MemorizeWords.Quartz
         public IWordRepository _wordRepository { get; set; }
         public IWordAnswerRepository _wordAnswerRepository { get; set; }
         public SetLearnedWordToUnlearnedInOneWeekJob(IWordRepository wordRepository,
-            IWordAnswerRepository wordAnswerRepository)
+            IWordAnswerRepository wordAnswerRepository,
+            IApplicationLogger logger) :base(logger)
         {
             _wordRepository = wordRepository;
             _wordAnswerRepository = wordAnswerRepository;
@@ -25,6 +27,11 @@ namespace MemorizeWords.Quartz
             }
 
             await _wordAnswerRepository.LeaveEnoughTrueAnswerToMemorize(wordIds);
+        }
+
+        protected override string GetJobName()
+        {
+            return this.GetType().Name;
         }
     }
 }

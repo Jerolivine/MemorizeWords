@@ -1,4 +1,5 @@
-﻿using MemorizeWords.Infrastructure.Transversal.Exception.Exceptions;
+﻿using MemorizeWords.Infrastructure.Transversal.AppLog.Interfaces;
+using MemorizeWords.Infrastructure.Transversal.Exception.Exceptions;
 using System.Net;
 using System.Text.Json;
 
@@ -7,10 +8,12 @@ namespace MemorizeWords.Infrastructure.Transversal.Exception
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;
+        public IApplicationLogger _logger { get; set; }
 
-        public ExceptionMiddleware(RequestDelegate next)
+        public ExceptionMiddleware(RequestDelegate next, IApplicationLogger logger)
         {
             _next = next;
+            _logger = logger;
         }
 
         public async Task Invoke(HttpContext context)
@@ -21,6 +24,7 @@ namespace MemorizeWords.Infrastructure.Transversal.Exception
             }
             catch (System.Exception ex)
             {
+                _logger.LogException(ex,"Exception Middleware");
                 await HandleExceptionAsync(context, ex);
             }
         }
