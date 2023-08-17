@@ -42,4 +42,9 @@ export class WordService extends BaseService {
         return this.post("delete", ids);
     }
 
+    public dontAskThisWord(ids: number[]) {
+        return this.post("dont-ask-this-word", ids);
+    }
+
+
 }

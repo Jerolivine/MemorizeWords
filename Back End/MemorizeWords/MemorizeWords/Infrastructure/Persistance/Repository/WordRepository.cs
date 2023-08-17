@@ -36,6 +36,7 @@ namespace MemorizeWords.Infrastructure.Persistence.Repository
             {
                 wordEntity.Meaning = wordAddRequest.Meaning.TrimEnd();
                 wordEntity.WritingInLanguage = wordEntity.WritingInLanguage.TrimEnd();
+                wordEntity.AskWordAgain = true;
                 await _dbContext.SaveChangesAsync();
             }
             else
@@ -49,7 +50,7 @@ namespace MemorizeWords.Infrastructure.Persistence.Repository
 
         public async Task UpdateIsLearnedAsync(WordUpdateIsLearnedRequest wordUpdateIsLearnedRequest)
         {
-            ValidationupdateIsLearned(wordUpdateIsLearnedRequest.Ids);
+            ValidationupdateIsLearned(wordUpdateIsLearnedRequest);
             await SetWordIsLearnedInformation(wordUpdateIsLearnedRequest);
 
         }
@@ -87,6 +88,7 @@ namespace MemorizeWords.Infrastructure.Persistence.Repository
                             x.Word,
                             x.WritingInLanguage,
                             x.IsLearned,
+                            x.AskWordAgain,
                             WordAnswers = x.WordAnswers.OrderByDescending(x => x.AnswerDate).Take(sequentTrueAnswerCount).Select(x => new WordAnswerDto()
                             {
                                 Answer = x.Answer,
@@ -102,6 +104,7 @@ namespace MemorizeWords.Infrastructure.Persistence.Repository
                             WritingInLanguage = p.WritingInLanguage,
                             IsLearned = p.IsLearned,
                             WordAnswers = p.WordAnswers,
+                            AskWordAgain = p.AskWordAgain
                         })
                         .ToListAsync();
 
@@ -123,7 +126,8 @@ namespace MemorizeWords.Infrastructure.Persistence.Repository
                             WordId = p.Id,
                             Meaning = p.Meaning,
                             Word = p.Word,
-                            WritingInLanguage = p.WritingInLanguage
+                            WritingInLanguage = p.WritingInLanguage,
+                            AskWordAgain = p.AskWordAgain
                         })
                         .ToListAsync();
 
@@ -156,7 +160,9 @@ namespace MemorizeWords.Infrastructure.Persistence.Repository
 
         public async Task<List<int>> SetLearnedWordsSinceOneWeekAsUnlearnedAsync()
         {
-            List<int> learnedWordsSinceOneWeekIds = await Queryable().Where(x => x.IsLearned && x.LearnedDate <= DateTime.Now.AddDays(-7).Date).Select(x => x.Id).ToListAsync();
+            List<int> learnedWordsSinceOneWeekIds = await Queryable().Where(x => x.IsLearned && 
+                                                                            x.LearnedDate <= DateTime.Now.AddDays(-7).Date &&
+                                                                            x.AskWordAgain == true).Select(x => x.Id).ToListAsync();
 
             if (learnedWordsSinceOneWeekIds is null || learnedWordsSinceOneWeekIds.Count == 0)
             {
@@ -177,9 +183,17 @@ namespace MemorizeWords.Infrastructure.Persistence.Repository
                 .ExecuteDeleteAsync();
         }
 
-        private static void ValidationupdateIsLearned(List<int> ids)
+        public async Task DontAskThisWord(List<int> ids)
         {
-            NotImplementedBusinessException.ThrowIfNull(ids, "ids Cannot Be Empty");
+            await Queryable().Where(x => ids.Contains(x.Id))
+               .ExecuteUpdateAsync(s =>
+                   s.SetProperty(n => n.AskWordAgain, n => false));
+        }
+
+        private static void ValidationupdateIsLearned(WordUpdateIsLearnedRequest wordUpdateIsLearnedRequest)
+        {
+            NotImplementedBusinessException.ThrowIfNull(wordUpdateIsLearnedRequest, "WordUpdateIsLearnedRequest Cannot Be Empty");
+            NotImplementedBusinessException.ThrowIfNull(wordUpdateIsLearnedRequest.Ids, "Ids Cannot Be Empty");
         }
 
         public async Task<List<WordResponse>> GetWordAnswersHub(List<int> wordIds)

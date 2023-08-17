@@ -10,7 +10,7 @@
       style="width: 100%; height: 100%;"
       class="ag-theme-balham"
       [rowData]="unlearnedWords"
-      [columnDefs]="columnDefs"
+      [columnDefs]="columnDefsUnlearnedWords"
       [defaultColDef]="defaultColDef"
       [pagination]="true"
       [paginationPageSize]="30"
@@ -23,6 +23,7 @@
 
   <div class="bottom-divider">
     <button class="btn btn-info" (click)="onMoveToUnLearnedWordsClick()" [disabled]="!hasSelectedLearnedGridRows">Move to UnLearned Words</button>
+    <button class="btn btn-info left-divider" (click)="onDontAskThisWord()" [disabled]="!hasSelectedLearnedGridRows">Don't Ask This Word</button>
     <button class="btn btn-danger left-divider" (click)="onDeleteFromLearnedWords()" [disabled]="!hasSelectedLearnedGridRows">Delete</button>
   </div>
 
@@ -30,7 +31,7 @@
       style="width: 100%; height: 100%;"
       class="ag-theme-balham"
       [rowData]="learnedWords"
-      [columnDefs]="columnDefs"
+      [columnDefs]="columnDefsLearnedWords"
       [defaultColDef]="defaultColDef"
       [pagination]="true"
       [paginationPageSize]="30"

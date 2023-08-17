@@ -14,5 +14,6 @@ namespace MemorizeWords.Infrastructure.Persistence.Repository.Interfaces
         Task<List<int>> SetLearnedWordsSinceOneWeekAsUnlearnedAsync();
         Task DeleteAsync(List<int> ids);
         Task<List<WordResponse>> GetWordAnswersHub(List<int> wordIds);
+        Task DontAskThisWord(List<int> ids);
     }
 }

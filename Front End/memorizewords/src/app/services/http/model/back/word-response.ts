@@ -7,5 +7,6 @@ export interface WordResponse {
     percentage:string;
     writingInLanguage:string;
     isLearned:boolean;
+    askWordAgain:boolean;
     wordAnswers: WordAnswer[];
 }
