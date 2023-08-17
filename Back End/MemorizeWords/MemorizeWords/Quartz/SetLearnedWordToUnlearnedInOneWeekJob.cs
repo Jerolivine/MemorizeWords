@@ -5,18 +5,10 @@ using Quartz;
 namespace MemorizeWords.Quartz
 {
     [DisallowConcurrentExecution]
-    public class SetLearnedWordToUnlearnedInOneWeekJob : BaseJob
+    public class SetLearnedWordToUnlearnedInOneWeekJob(IWordRepository _wordRepository,
+                                                       IWordAnswerRepository _wordAnswerRepository,
+                                                       IApplicationLogger logger) : BaseJob(logger)
     {
-        public IWordRepository _wordRepository { get; set; }
-        public IWordAnswerRepository _wordAnswerRepository { get; set; }
-        public SetLearnedWordToUnlearnedInOneWeekJob(IWordRepository wordRepository,
-            IWordAnswerRepository wordAnswerRepository,
-            IApplicationLogger logger) :base(logger)
-        {
-            _wordRepository = wordRepository;
-            _wordAnswerRepository = wordAnswerRepository;
-        }
-
         protected override async Task ExecuteJob()
         {
             var wordIds = await _wordRepository.SetLearnedWordsSinceOneWeekAsUnlearnedAsync();

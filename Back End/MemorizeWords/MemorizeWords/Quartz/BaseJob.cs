@@ -3,15 +3,8 @@ using Quartz;
 
 namespace MemorizeWords.Quartz
 {
-    public abstract class BaseJob : IJob
+    public abstract class BaseJob(IApplicationLogger _logger) : IJob
     {
-        public readonly IApplicationLogger _logger;
-
-        public BaseJob(IApplicationLogger logger)
-        {
-            _logger = logger;
-        }
-
         protected abstract Task ExecuteJob();
 
         protected abstract string GetJobName();
