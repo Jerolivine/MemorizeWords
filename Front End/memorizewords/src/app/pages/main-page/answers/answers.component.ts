@@ -40,10 +40,29 @@ export class AnswersComponent implements OnInit {
 
   @ViewChild('gridUnlearned') gridUnlearned: AgGridAngular;
 
-  columnDefs: ColDef[] = [
+  columnDefsUnlearnedWords: ColDef[] = [
     { headerName: '', field: 'checkbox', checkboxSelection: true, width: 30 },
     // { field: 'id', colId: 'id' },
     { headerName: 'Word', field: 'word', filter: true, width: 150, },
+    { headerName: 'Writing In Language', field: 'writingInLanguage', filter: true, width: 150, cellRenderer: TextColumnComponent },
+    { headerName: 'Meaning', field: 'meaning', filter: true, width: 150 },
+    { headerName: 'Percentage', field: 'percentage', filter: true, width: 150, cellRenderer: ProgressbarAgColumnComponent },
+    { headerName: 'Answer1', field: 'answer1', maxWidth: this.MAX_WIDTH_ANSWER, cellRenderer: BooleanAgColumnComponent },
+    { headerName: 'Answer2', field: 'answer2', maxWidth: this.MAX_WIDTH_ANSWER, cellRenderer: BooleanAgColumnComponent },
+    { headerName: 'Answer3', field: 'answer3', maxWidth: this.MAX_WIDTH_ANSWER, cellRenderer: BooleanAgColumnComponent },
+    { headerName: 'Answer4', field: 'answer4', maxWidth: this.MAX_WIDTH_ANSWER, cellRenderer: BooleanAgColumnComponent },
+    { headerName: 'Answer5', field: 'answer5', maxWidth: this.MAX_WIDTH_ANSWER, cellRenderer: BooleanAgColumnComponent },
+    { headerName: 'Answer6', field: 'answer6', maxWidth: this.MAX_WIDTH_ANSWER, cellRenderer: BooleanAgColumnComponent },
+    { headerName: 'Answer7', field: 'answer7', maxWidth: this.MAX_WIDTH_ANSWER, cellRenderer: BooleanAgColumnComponent },
+    { headerName: 'Answer8', field: 'answer8', maxWidth: this.MAX_WIDTH_ANSWER, cellRenderer: BooleanAgColumnComponent },
+    { headerName: 'Answer9', field: 'answer9', maxWidth: this.MAX_WIDTH_ANSWER, cellRenderer: BooleanAgColumnComponent },
+    { headerName: 'Answer10', field: 'answer10', maxWidth: this.MAX_WIDTH_ANSWER, cellRenderer: BooleanAgColumnComponent }
+  ];
+
+  columnDefsLearnedWords: ColDef[] = [
+    { headerName: '', field: 'checkbox', checkboxSelection: true, width: 30 },
+    { headerName: 'Ask Again', field: 'askWordAgain', width: this.MAX_WIDTH_ANSWER, cellRenderer: BooleanAgColumnComponent },
+    // { field: 'id', colId: 'id' },
     { headerName: 'Word', field: 'word', filter: true, width: 150, },
     { headerName: 'Writing In Language', field: 'writingInLanguage', filter: true, width: 150, cellRenderer: TextColumnComponent },
     { headerName: 'Meaning', field: 'meaning', filter: true, width: 150 },
@@ -214,6 +233,7 @@ export class AnswersComponent implements OnInit {
       answerObj["word"] = wordResponse.word;
       answerObj["meaning"] = wordResponse.meaning;
       answerObj["percentage"] = wordResponse.percentage;
+      answerObj["askWordAgain"] = wordResponse.askWordAgain;
       answerObj["writingInLanguage"] = {
         value: wordResponse.writingInLanguage,
         hasTextToSpeech: true
@@ -360,7 +380,7 @@ export class AnswersComponent implements OnInit {
 
     this.wordService.dontAskThisWord(ids).pipe(
       concatMap(response => {
-        // this.refreshlearnedWords();
+        this.refreshlearnedWords();
         return of();
       })).subscribe();
   }

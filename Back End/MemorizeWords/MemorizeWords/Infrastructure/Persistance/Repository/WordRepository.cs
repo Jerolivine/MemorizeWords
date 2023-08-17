@@ -88,6 +88,7 @@ namespace MemorizeWords.Infrastructure.Persistence.Repository
                             x.Word,
                             x.WritingInLanguage,
                             x.IsLearned,
+                            x.AskWordAgain,
                             WordAnswers = x.WordAnswers.OrderByDescending(x => x.AnswerDate).Take(sequentTrueAnswerCount).Select(x => new WordAnswerDto()
                             {
                                 Answer = x.Answer,
@@ -103,6 +104,7 @@ namespace MemorizeWords.Infrastructure.Persistence.Repository
                             WritingInLanguage = p.WritingInLanguage,
                             IsLearned = p.IsLearned,
                             WordAnswers = p.WordAnswers,
+                            AskWordAgain = p.AskWordAgain
                         })
                         .ToListAsync();
 
@@ -124,7 +126,8 @@ namespace MemorizeWords.Infrastructure.Persistence.Repository
                             WordId = p.Id,
                             Meaning = p.Meaning,
                             Word = p.Word,
-                            WritingInLanguage = p.WritingInLanguage
+                            WritingInLanguage = p.WritingInLanguage,
+                            AskWordAgain = p.AskWordAgain
                         })
                         .ToListAsync();
 
@@ -157,15 +160,16 @@ namespace MemorizeWords.Infrastructure.Persistence.Repository
 
         public async Task<List<int>> SetLearnedWordsSinceOneWeekAsUnlearnedAsync()
         {
-            List<int> learnedWordsSinceOneWeekIds = await Queryable().Where(x => x.IsLearned && x.LearnedDate <= DateTime.Now.AddDays(-7).Date).Select(x => x.Id).ToListAsync();
+            List<int> learnedWordsSinceOneWeekIds = await Queryable().Where(x => x.IsLearned && 
+                                                                            x.LearnedDate <= DateTime.Now.AddDays(-7).Date &&
+                                                                            x.AskWordAgain == true).Select(x => x.Id).ToListAsync();
 
             if (learnedWordsSinceOneWeekIds is null || learnedWordsSinceOneWeekIds.Count == 0)
             {
                 return null;
             }
 
-            await Queryable().Where(x => learnedWordsSinceOneWeekIds.Contains(x.Id) 
-                                         && x.AskWordAgain == true)
+            await Queryable().Where(x => learnedWordsSinceOneWeekIds.Contains(x.Id))
                   .ExecuteUpdateAsync(s =>
                       s.SetProperty(n => n.IsLearned, n => false)
                        .SetProperty(n => n.LearnedDate, n => null));
