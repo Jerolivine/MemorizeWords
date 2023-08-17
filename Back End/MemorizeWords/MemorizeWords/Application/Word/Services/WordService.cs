@@ -4,6 +4,7 @@ using MemorizeWords.Infrastructure.Application.Interfaces;
 using MemorizeWords.Infrastructure.Persistence.Repository.Interfaces;
 using MemorizeWords.Presentation.Models.Request;
 using MemorizeWords.Presentation.Models.Response;
+using Microsoft.Identity.Client;
 
 namespace MemorizeWords.Application.Word.Services
 {
@@ -54,6 +55,11 @@ namespace MemorizeWords.Application.Word.Services
         {
             await _wordRepository.DeleteAsync(ids);
             await _wordAnswerRepository.DeleteAllAnswersAsync(ids);
+        }
+
+        public async Task DontAskThisWord(List<int> ids)
+        {
+            await _wordRepository.DontAskThisWord(ids);
         }
 
     }

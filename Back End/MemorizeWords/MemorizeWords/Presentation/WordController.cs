@@ -60,5 +60,12 @@ namespace MemorizeWords.Presentation
             return Results.Ok();
         }
 
+        [HttpPost("dont-ask-this-word")]
+        public async Task<IResult> DontAskThisWord([FromBody] List<int> ids)
+        {
+            await _wordService.DontAskThisWord(ids);
+            return Results.Ok();
+        }
+
     }
 }

@@ -9,6 +9,7 @@ namespace MemorizeWords.Entity
         public string Meaning { get; set; }
         public string WritingInLanguage { get; set; }
         public bool IsLearned { get; set; }
+        public bool AskWordAgain { get; set; }
         public DateTime? LearnedDate { get; set; }
         public ICollection<WordAnswerEntity> WordAnswers { get; set; }
     }
