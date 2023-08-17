@@ -63,7 +63,6 @@ namespace MemorizeWords.Infrastructure.Persistence.Repository
                 .ExecuteUpdateAsync(s =>
                     s.SetProperty(n => n.IsLearned, n => wordUpdateIsLearnedRequest.IsLearned)
                      .SetProperty(n => n.LearnedDate, n => DateTime.Now.Date)
-                     .SetProperty(n => n.LearnedDate, n => DateTime.Now.Date)
                 );
             }
             else

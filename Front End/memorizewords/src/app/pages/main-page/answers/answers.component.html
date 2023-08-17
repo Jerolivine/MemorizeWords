@@ -23,6 +23,7 @@
 
   <div class="bottom-divider">
     <button class="btn btn-info" (click)="onMoveToUnLearnedWordsClick()" [disabled]="!hasSelectedLearnedGridRows">Move to UnLearned Words</button>
+    <button class="btn btn-info left-divider" (click)="onDontAskThisWord()" [disabled]="!hasSelectedLearnedGridRows">Don't Ask This Word</button>
     <button class="btn btn-danger left-divider" (click)="onDeleteFromLearnedWords()" [disabled]="!hasSelectedLearnedGridRows">Delete</button>
   </div>
 

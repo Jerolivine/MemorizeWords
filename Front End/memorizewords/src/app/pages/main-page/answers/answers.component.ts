@@ -352,6 +352,19 @@ export class AnswersComponent implements OnInit {
       })).subscribe();
   }
 
+  public onDontAskThisWord(){
+
+    const ids = this.selectedLearnedGridRows.map(row => {
+      return row["id"];
+    });
+
+    this.wordService.dontAskThisWord(ids).pipe(
+      concatMap(response => {
+        // this.refreshlearnedWords();
+        return of();
+      })).subscribe();
+  }
+
   public onDeleteFromLearnedWords() {
     const ids = this.selectedLearnedGridRows.map(row => {
       return row["id"];
