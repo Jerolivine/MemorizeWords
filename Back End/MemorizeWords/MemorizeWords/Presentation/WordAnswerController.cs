@@ -19,5 +19,12 @@ namespace MemorizeWords.Presentation
             var answerResponse = await _wordAnswerService.AnswerAsync(wordAnswerRequest);
             return Results.Ok(answerResponse);
         }
+
+        [HttpPost("answerWord")]
+        public async Task<IResult> AnswerWordAsync([FromBody] WordAnswerWordRequest wordAnswerWordRequest)
+        {
+            var answerResponse = await _wordAnswerService.AnswerWordAsync(wordAnswerWordRequest);
+            return Results.Ok(answerResponse);
+        }
     }
 }

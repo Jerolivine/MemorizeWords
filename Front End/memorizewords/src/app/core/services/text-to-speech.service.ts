@@ -7,12 +7,12 @@ import { ApplicationVariablesService } from "../../services/application-variable
 })
 
 export class TextToSpeechService {
-    
-    constructor(private applicationVariablesService:ApplicationVariablesService){
+
+    constructor(private applicationVariablesService: ApplicationVariablesService) {
 
     }
 
-    speak(value: string) {
+    speak(value: string, speech_language: string) {
         var utterance = new SpeechSynthesisUtterance();
 
         // Set the text to be spoken in Polish
@@ -20,7 +20,7 @@ export class TextToSpeechService {
 
         // Set the language to Polish (Poland)
         utterance.lang = this.applicationVariablesService.language;
-        utterance.lang = POLISH_LANGUAGE;
+        utterance.lang = speech_language;
 
         // Optional configurations
         // utterance.lang = 'en-US'; // Specify the language

@@ -40,6 +40,27 @@ namespace MemorizeWords.Infrastructure.Persistence.Repository
             };
         }
 
+        public async Task<AnswerResponse> AnswerWordAsync(WordAnswerWordRequest wordAnswerWordRequest)
+        {
+            ValidationAnswerWord(wordAnswerWordRequest);
+
+            WordEntity wordEntity;
+            bool isAnswerTrue = GetGivenAnswerWord(wordAnswerWordRequest, out wordEntity);
+
+            await AddAsnyc(new()
+            {
+                WordId = wordAnswerWordRequest.WordId,
+                Answer = isAnswerTrue,
+                AnswerDate = DateTime.Now,
+            });
+
+            return new AnswerResponse()
+            {
+                IsAnswerTrue = isAnswerTrue,
+                Meaning = wordEntity.Meaning
+            };
+        }
+
         public async Task DeleteAllAnswersAsync(List<int> wordIds)
         {
             await Queryable().Where(x => wordIds.Contains(x.WordId))
@@ -104,11 +125,30 @@ namespace MemorizeWords.Infrastructure.Persistence.Repository
             var wordEntity = _dbContext.Word.FirstOrDefault(x => x.Id == wordAnswerRequest.WordId);
             NotImplementedBusinessException.ThrowIfNull(wordEntity, $"Word Couldnt found by given Id, {wordAnswerRequest.WordId}");
         }
+
+        private void ValidationAnswerWord(WordAnswerWordRequest wordAnswerWordRequest)
+        {
+            NotImplementedBusinessException.ThrowIfNull(wordAnswerWordRequest, "Request Cannot Be Empty");
+            NotImplementedBusinessException.ThrowIfNull(wordAnswerWordRequest?.WordId, "WordId Cannot Be Empty");
+            NotImplementedBusinessException.ThrowIfNull(wordAnswerWordRequest?.GivenAnswerWord, "GivenAnswerMeaning Cannot Be Empty");
+
+            var wordEntity = _dbContext.Word.FirstOrDefault(x => x.Id == wordAnswerWordRequest.WordId);
+            NotImplementedBusinessException.ThrowIfNull(wordEntity, $"Word Couldnt found by given Id, {wordAnswerWordRequest.WordId}");
+        }
+
         private bool GetGivenAnswer(WordAnswerRequest wordAnswerRequest, out WordEntity wordEntity)
         {
             wordEntity = _dbContext.Word.FirstOrDefault(x => x.Id == wordAnswerRequest.WordId) ?? throw new KeyNotFoundBusinessException($"wordId: {wordAnswerRequest.WordId} couldn't found");
 
             bool answer = wordEntity.Meaning.ToUpperInvariant().Equals(wordAnswerRequest.GivenAnswerMeaning.ToUpperInvariant().ToUpper(), StringComparison.OrdinalIgnoreCase);
+            return answer;
+        }
+
+        private bool GetGivenAnswerWord(WordAnswerWordRequest wordAnswerWordRequest, out WordEntity wordEntity)
+        {
+            wordEntity = _dbContext.Word.FirstOrDefault(x => x.Id == wordAnswerWordRequest.WordId) ?? throw new KeyNotFoundBusinessException($"wordId: {wordAnswerWordRequest.WordId} couldn't found");
+
+            bool answer = wordEntity.Word.ToUpperInvariant().Equals(wordAnswerWordRequest.GivenAnswerWord.ToUpperInvariant().ToUpper(), StringComparison.OrdinalIgnoreCase);
             return answer;
         }
 

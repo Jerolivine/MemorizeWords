@@ -23,21 +23,33 @@ namespace MemorizeWords.Application.Word.Services
 
             if (answers.IsAnswerTrue)
             {
-                await CheckWordIsLearnedState(wordAnswerRequest);
+                await CheckWordIsLearnedState(wordAnswerRequest.WordId);
             }
 
             return answers;
         }
 
-        private async Task CheckWordIsLearnedState(WordAnswerRequest wordAnswerRequest)
+        public async Task<AnswerResponse> AnswerWordAsync(WordAnswerWordRequest wordAnswerWordRequest)
         {
-            var isAllAnswersTrue = await _wordAnswerRepository.IsAllAnswersTrue(wordAnswerRequest.WordId);
+            var answers = await _wordAnswerRepository.AnswerWordAsync(wordAnswerWordRequest);
+
+            if (answers.IsAnswerTrue)
+            {
+                await CheckWordIsLearnedState(wordAnswerWordRequest.WordId);
+            }
+
+            return answers;
+        }
+
+        private async Task CheckWordIsLearnedState(int wordId)
+        {
+            var isAllAnswersTrue = await _wordAnswerRepository.IsAllAnswersTrue(wordId);
             if (isAllAnswersTrue)
             {
                 await _wordRepository.UpdateIsLearnedAsync(new WordUpdateIsLearnedRequest()
                 {
                     IsLearned = true,
-                    Ids = new List<int> { wordAnswerRequest.WordId }
+                    Ids = new List<int> { wordId }
                 });
             }
         }

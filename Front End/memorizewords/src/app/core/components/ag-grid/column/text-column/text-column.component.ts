@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { ICellRendererParams } from 'ag-grid-community';
+import { POLISH_TO_LATIN_DICTIONARY } from 'src/app/core/constants/alphabet';
+import { POLISH_LANGUAGE } from 'src/app/core/constants/languages';
 import { TextToSpeechService } from 'src/app/core/services/text-to-speech.service';
 
 @Component({
@@ -21,7 +23,7 @@ export class TextColumnComponent implements ICellRendererAngularComp {
     return true;
   }
   onSpeechClick() {
-    this.textToSpeechService.speak(this.value.value);
+    this.textToSpeechService.speak(this.value.value, POLISH_LANGUAGE);
   }
 
 }

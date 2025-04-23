@@ -3,7 +3,7 @@
 </div>
 
 <mat-dialog-content [formGroup]="form">
-    <div *ngIf="question" fxLayout="column" fxLayoutAlign="center center">
+    <div *ngIf="question && questionType == QuestionType.AskMeaning" fxLayout="column" fxLayoutAlign="center center">
 
         <div fxFlex="100%" class="word">
             <mat-label>{{question.word}}</mat-label>
@@ -15,16 +15,34 @@
 
         <div fxFlex="100%">
             <mat-form-field appearance="outline" class="form-field">
-                <input matInput placeholder="" formControlName="meaning" (keyup.enter)="answer()" (keyup)="onCtrlKeyUpForTip($event)">
+                <input matInput placeholder="" formControlName="meaning" (keyup.enter)="answer()"
+                    (keyup)="onCtrlKeyUpForTip($event)">
                 <mat-label>Meaning</mat-label>
                 <mat-error class="error" *ngIf="errorHandling('word', 'required')">Meaning is required</mat-error>
             </mat-form-field>
         </div>
 
+    </div>
+
+    <div *ngIf="question && questionType == QuestionType.AskWord" fxLayout="column" fxLayoutAlign="center center">
+
         <div fxFlex="100%" class="bottom-divider">
-            <mat-label>{{this.tip}}</mat-label>
+            <mat-label>{{question.meaning}}</mat-label>
         </div>
 
+        <div fxFlex="100%">
+            <mat-form-field appearance="outline" class="form-field">
+                <input matInput placeholder="" formControlName="word" (keyup.enter)="answer()"
+                    (keyup)="onCtrlKeyUpForTip($event)">
+                <mat-label>Word</mat-label>
+                <mat-error class="error" *ngIf="errorHandling('word', 'required')">Word is required</mat-error>
+            </mat-form-field>
+        </div>
+
+    </div>
+
+    <div fxFlex="100%" class="bottom-divider">
+        <mat-label>{{this.tip}}</mat-label>
     </div>
 
     <mat-dialog-actions align="end">

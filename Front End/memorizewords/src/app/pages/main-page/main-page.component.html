@@ -7,7 +7,11 @@
         </div>
 
         <div class="width-full bottom-divider">
-            <button type="button" class="btn btn-success width-full" (click)="openQuestion()">Memorize Words</button>
+            <button type="button" class="btn btn-success width-full" (click)="askMeanings()">Ask The Meanings</button>
+        </div>
+
+        <div class="width-full bottom-divider">
+            <button type="button" class="btn btn-success width-full" (click)="askWords()">Ask The Words</button>
         </div>
 
         <answers [refreshData$]="refreshAnswers$" [userGuessedWordsHub$]="userGuessedWordsHub$"></answers>

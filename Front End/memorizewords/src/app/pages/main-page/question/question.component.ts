@@ -9,6 +9,10 @@ import { StringCompare } from 'src/app/core/utility/string-utility';
 import { WordAnswerRequest } from 'src/app/services/http/model/call/WordAnswerRequest';
 import { TextToSpeechService } from 'src/app/core/services/text-to-speech.service';
 import { WordAnswerService } from 'src/app/services/http/word-answer.service';
+import { POLISH_TO_LATIN_DICTIONARY } from 'src/app/core/constants/alphabet';
+import { POLISH_LANGUAGE, TURKISH_LANGUAGE } from 'src/app/core/constants/languages';
+import { QuestionType } from './enum/question.type';
+import { WordAnswerWordRequest } from 'src/app/services/http/model/call/WordAnswerWordRequest';
 
 @Component({
   selector: 'question',
@@ -20,6 +24,8 @@ export class QuestionComponent implements OnInit {
   submitted: boolean = false;
   private questions: Question[] = [];
 
+  QuestionType = QuestionType;
+  public questionType: QuestionType;
   public form: FormGroup;
   public question: Question | undefined;
 
@@ -42,8 +48,25 @@ export class QuestionComponent implements OnInit {
   }
 
   private createForm() {
+
+    if (this.questionType == QuestionType.AskMeaning) {
+      this.createAskMeaningForm();
+    }
+    else {
+      this.createAskWordForm();
+    }
+
+  }
+
+  private createAskMeaningForm() {
     this.form = this.formBuilder.group({
       meaning: ['', Validators.required],
+    });
+  }
+
+  private createAskWordForm() {
+    this.form = this.formBuilder.group({
+      word: ['', Validators.required],
     });
   }
 
@@ -79,7 +102,10 @@ export class QuestionComponent implements OnInit {
 
     this.submitted = false;
     this.question = question;
-    this.textToSpeechService.speak(this.question!.writingInLanguage);
+
+    if (this.questionType == QuestionType.AskMeaning) {
+      this.textToSpeechService.speak(this.question!.writingInLanguage, POLISH_LANGUAGE);
+    }
   }
 
   private resetForm() {
@@ -94,12 +120,29 @@ export class QuestionComponent implements OnInit {
       return;
     }
 
+    if (this.questionType == QuestionType.AskMeaning) {
+      this.answerMeaning();
+    }
+    else {
+      this.answerWord();
+    }
+
+  }
+
+  private answerMeaning() {
     const wordAnswerRequest: WordAnswerRequest = { wordId: this.question!.id, givenAnswerMeaning: this.getFormValue("meaning") };
     this.wordAnswerService.answer<AnswerResponse>(wordAnswerRequest).subscribe(response => {
       this.checkAnswer(response);
       this.askQuestion();
     });
+  }
 
+  private answerWord() {
+    const wordAnswerWordRequest: WordAnswerWordRequest = { wordId: this.question!.id, givenAnswerWord: this.getFormValue("word") };
+    this.wordAnswerService.answerWord<AnswerResponse>(wordAnswerWordRequest).subscribe(response => {
+      this.checkAnswer(response);
+      this.askQuestion();
+    });
   }
 
   private checkAnswer(answerResponse: AnswerResponse) {
@@ -137,7 +180,9 @@ export class QuestionComponent implements OnInit {
       return;
     }
 
-    this.tip += this.question?.meaning[this.tip.length];
+    this.tip += this.questionType === QuestionType.AskMeaning
+      ? this.question?.meaning?.[this.tip.length] ?? ''
+      : this.question?.word?.[this.tip.length] ?? '';
   }
 
   onCtrlKeyUpForTip(event: KeyboardEvent) {

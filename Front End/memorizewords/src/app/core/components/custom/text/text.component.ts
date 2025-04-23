@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { POLISH_LANGUAGE } from 'src/app/core/constants/languages';
 import { TextToSpeechService } from 'src/app/core/services/text-to-speech.service';
 
 @Component({
@@ -15,7 +16,7 @@ export class TextComponent {
 
   onSpeechClick() {
     if (this.Text && this.HasTextToSpeech) {
-      this.textToSpeechService.speak(this.Text);
+      this.textToSpeechService.speak(this.Text,POLISH_LANGUAGE);
     }
   }
 }

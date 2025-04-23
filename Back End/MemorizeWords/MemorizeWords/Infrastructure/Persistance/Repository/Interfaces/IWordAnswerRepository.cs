@@ -7,6 +7,7 @@ namespace MemorizeWords.Infrastructure.Persistence.Repository.Interfaces
     public interface IWordAnswerRepository
     {
         Task<AnswerResponse> AnswerAsync(WordAnswerRequest wordAnswerRequest);
+        Task<AnswerResponse> AnswerWordAsync(WordAnswerWordRequest wordAnswerWordRequest);
         Task DeleteAllAnswersAsync(List<int> wordIds);
         Task LeaveEnoughTrueAnswerToMemorize(List<int> wordIds);
         Task<List<WordAnswerEntity>> GetAnswersOfUserIdAsync(int wordId, int userId);

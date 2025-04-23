@@ -7,6 +7,7 @@ import { WordResponse } from 'src/app/services/http/model/back/word-response';
 import { SignalRService } from 'src/app/core/services/hub/signalr/signalr.service';
 import { USER_GUESSED_WORDS_HUB, USER_GUESSED_WORDS_HUB_EVENT } from 'src/app/constants/hub-constants';
 import { RefreshType } from 'src/app/enums/refresh-type.enum';
+import { QuestionType } from './question/enum/question.type';
 
 @Component({
   selector: 'app-main-page',
@@ -30,8 +31,22 @@ export class MainPageComponent {
     });
   }
 
-  openQuestion() {
+  askMeanings() {
     const dialogRef = this.dialog.open(QuestionComponent);
+    dialogRef.componentInstance.questionType = QuestionType.AskMeaning;
+    
+    this.startUserGuessedWordsHub();
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.stopUserGuessedWordsHub();
+      this.refreshAnswers(RefreshType.Socket);
+    });
+  }
+
+  askWords(){
+    const dialogRef = this.dialog.open(QuestionComponent);
+    dialogRef.componentInstance.questionType = QuestionType.AskWord;
+    
     this.startUserGuessedWordsHub();
 
     dialogRef.afterClosed().subscribe(result => {
