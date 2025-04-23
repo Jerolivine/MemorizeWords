@@ -151,6 +151,10 @@ export class QuestionComponent implements OnInit {
     }
     else {
       this.alertifyService.warning(`Incorrect. "${this.question?.word} means ${answerResponse.meaning}"`);
+
+      if(this.questionType == QuestionType.AskWord){
+        this.textToSpeechService.speak(this.question!.writingInLanguage,POLISH_LANGUAGE);
+      }
     }
   }
 
