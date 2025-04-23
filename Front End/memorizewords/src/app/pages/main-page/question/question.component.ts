@@ -141,6 +141,7 @@ export class QuestionComponent implements OnInit {
     const wordAnswerWordRequest: WordAnswerWordRequest = { wordId: this.question!.id, givenAnswerWord: this.getFormValue("word") };
     this.wordAnswerService.answerWord<AnswerResponse>(wordAnswerWordRequest).subscribe(response => {
       this.checkAnswer(response);
+      this.textToSpeechService.speak(this.question!.writingInLanguage,POLISH_LANGUAGE);
       this.askQuestion();
     });
   }
@@ -151,10 +152,6 @@ export class QuestionComponent implements OnInit {
     }
     else {
       this.alertifyService.warning(`Incorrect. "${this.question?.word} means ${answerResponse.meaning}"`);
-
-      if(this.questionType == QuestionType.AskWord){
-        this.textToSpeechService.speak(this.question!.writingInLanguage,POLISH_LANGUAGE);
-      }
     }
   }
 
